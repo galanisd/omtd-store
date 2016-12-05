@@ -17,7 +17,7 @@ public class StoreServiceGeneric implements StoreService{
 	protected StorageProperties storageProperties;
 	protected IdGenerator idGen;
 	protected StorageIndex storageIndex;
-	//private FSConnector connector;
+	private FSConnector connector;
 	
 	/**
 	 * Constructor.
@@ -28,7 +28,7 @@ public class StoreServiceGeneric implements StoreService{
 	 */
 	public StoreServiceGeneric(String type, StorageProperties storageProperties, IdGenerator idGen, StorageIndex storageIndex) {
 		super();
-		//connector = FSConnectorBuilder.getConnector(type, storageProperties);				
+		connector = FSConnectorBuilder.getConnector(type, storageProperties);				
 		this.type = type;
 		this.storageProperties = storageProperties;
 		this.idGen = idGen;
@@ -62,7 +62,7 @@ public class StoreServiceGeneric implements StoreService{
 	
 	@Override
 	public String createArchive() {
-		FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
+		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
 		
 		// Get new archive id.
 		String archiveId = idGen.generateId();
@@ -80,7 +80,7 @@ public class StoreServiceGeneric implements StoreService{
 
 	@Override
 	public String createArchive(String parentArchiveId, String name) {
-		FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
+		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
 		
 		// Get new archive id.
 		String archiveId = idGen.generateId();
@@ -118,33 +118,33 @@ public class StoreServiceGeneric implements StoreService{
 
 	@Override
 	public boolean storeFile(String archiveId, InputStream is, String fileName) {
+		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
 		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storageIndex, storageProperties.getStorageRoot(), archiveId);
 		String destinationFile = Helper.appendFileToPath(destinationFolderAbsolutePathForParent, fileName);
-		
-		FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
 		return connector.storeFile(destinationFile, is);
 		
 	}
 
 	@Override
 	public boolean deleteFile(String archiveId, String fileName) {
+		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
 		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storageIndex, storageProperties.getStorageRoot(), archiveId);
 		String destinationFile = Helper.appendFileToPath(destinationFolderAbsolutePathForParent, fileName);
-		FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
-		
 		return connector.deleteFile(destinationFile);
 					
 	}
 
 	@Override
+	public boolean deleteAll() {
+		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
+		return connector.deleteAll();
+	}
+	
+	@Override
 	public String listAllFiles() {
-		FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);		
+		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);		
 		return connector.listAllFiles();
 	}
 
-	@Override
-	public boolean deleteAll() {
-		FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
-		return connector.deleteAll();
-	}
+
 }

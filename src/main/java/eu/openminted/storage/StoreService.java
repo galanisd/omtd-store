@@ -41,6 +41,7 @@ public interface StoreService {
      * @return an input stream with the contents of the archive.
      */
     InputStream downloadArchive(String archiveId);
+        
     
     /**
      * Get archive info for an archive 
@@ -56,7 +57,7 @@ public interface StoreService {
      * @param is the contents of the file
      * @param fileName (optional) the name of the file. Random UUID, if not specified.
      *           
-     * @return the identifier of the new file
+     * @return true if the files was stored.
      */    
     boolean storeFile(String archiveId, InputStream is, String fileName);
     

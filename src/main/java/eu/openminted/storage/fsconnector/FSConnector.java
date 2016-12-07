@@ -22,11 +22,7 @@ public interface FSConnector {
 	 * @return
 	 */
 	public boolean storeFile(String targetFileName, InputStream is);
-	
-	/**
-	 * @param fileName
-	 * @return
-	 */
+		
 	
 	/** Delete All.
 	 * @param fileName

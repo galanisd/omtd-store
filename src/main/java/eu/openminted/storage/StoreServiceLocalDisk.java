@@ -11,6 +11,7 @@ import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import eu.openminted.storage.config.Storage;
 import eu.openminted.storage.fsconnector.FSConnectorBuilder;
 import eu.openminted.storage.index.StorageIndex;
 
@@ -29,7 +30,7 @@ public class StoreServiceLocalDisk extends StoreServiceGeneric{
 	 */
 	@Autowired
 	public StoreServiceLocalDisk(StorageProperties storageProperties, IdGenerator idGen, StorageIndex storageIndex){		
-		super(FSConnectorBuilder.LOCAL, storageProperties, idGen, storageIndex);		 
+		super(Storage.LOCAL, storageProperties, idGen, storageIndex);		 
 	}		
 
 	@Override

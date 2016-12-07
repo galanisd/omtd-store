@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import eu.openminted.storage.config.Storage;
 import eu.openminted.storage.fsconnector.FSConnectorBuilder;
 import eu.openminted.storage.index.StorageIndex;
 
@@ -17,7 +18,7 @@ public class StoreServicePITHOS extends StoreServiceGeneric{
 				
 	@Autowired
 	public StoreServicePITHOS(StoragePropertiesPITHOS storageProperties, IdGenerator idGen, StorageIndex storageIndex){		
-		super(FSConnectorBuilder.PITHOS, storageProperties, idGen, storageIndex);
+		super(Storage.PITHOS, storageProperties, idGen, storageIndex);
 		
 	}
 

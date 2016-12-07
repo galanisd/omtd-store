@@ -14,21 +14,24 @@ public class StoragePropertiesPITHOS extends StorageProperties{
 	public String getPithosToken() {
 		return pithosToken;
 	}
+	
 	public void setPithosToken(String pithosToken) {
 		this.pithosToken = pithosToken;
 	}
+	
 	public String getPithosUUID() {
 		return pithosUUID;
 	}
+	
 	public void setPithosUUID(String pithosUUID) {
 		this.pithosUUID = pithosUUID;
 	}
+	
 	public String getPithosURL() {
 		return pithosURL;
 	}
+	
 	public void setPithosURL(String pithosURL) {
 		this.pithosURL = pithosURL;
-	}
-	
-	
+	}	
 }

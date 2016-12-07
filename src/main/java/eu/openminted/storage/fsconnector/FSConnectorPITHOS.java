@@ -1,12 +1,14 @@
 package eu.openminted.storage.fsconnector;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 import org.apache.commons.io.IOUtils;
 
 //import eu.openminted.storage.fsconnector.debug.HadoopPithosConnector;
 import gr.grnet.escience.pithos.rest.HadoopPithosConnector;
-
+import gr.grnet.escience.fs.pithos.PithosFileSystem;
 import gr.grnet.escience.fs.pithos.PithosObject;
 import gr.grnet.escience.fs.pithos.PithosOutputStream;
 import gr.grnet.escience.fs.pithos.PithosPath;
@@ -34,6 +36,9 @@ public class FSConnectorPITHOS implements FSConnector {
 		try {
 			this.pithosUrl = pithosUrl;
 			connector = new HadoopPithosConnector(pithosUrl, pithosToken, uuid);
+			// workaround.
+			PithosFileSystem.setHadoopPithosConnector(connector);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -66,11 +71,18 @@ public class FSConnectorPITHOS implements FSConnector {
 			PithosOutputStream pithosOutputStream = new PithosOutputStream(conf,
 					new PithosPath(defaultContainer, target), connector.getPithosBlockDefaultSize(defaultContainer), 1 * 1024 * 1024);
 
-			IOUtils.copy(is, pithosOutputStream);			
-			//pithosOutputStream.close();
+			int read = 0;
+			byte[] bytes = new byte[1024 * 1024 * 10];
+
+			while ((read = is.read(bytes)) != -1) {
+				pithosOutputStream.write(bytes, 0, read);
+			}
+			
 			is.close();
+			//pithosOutputStream.close();
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 

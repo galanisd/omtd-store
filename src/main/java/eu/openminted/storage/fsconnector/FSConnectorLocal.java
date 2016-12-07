@@ -53,4 +53,10 @@ public class FSConnectorLocal implements FSConnector{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public InputStream download(String targetFileName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

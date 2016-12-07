@@ -146,5 +146,10 @@ public class StoreServiceGeneric implements StoreService{
 		return connector.listAllFiles();
 	}
 
+	@Override
+	public InputStream downloadFile(String fileName) {
+		return connector.download(fileName);
+	}
+
 
 }

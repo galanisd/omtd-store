@@ -13,7 +13,7 @@ public interface FSConnector {
 	 * @param file
 	 * @return
 	 */
-	public boolean makeFolder(String file);
+	boolean makeFolder(String file);
 	
 	/**
 	 * Store file.
@@ -21,9 +21,9 @@ public interface FSConnector {
 	 * @param is
 	 * @return
 	 */
-	public boolean storeFile(String targetFileName, InputStream is);
-		
+	boolean storeFile(String targetFileName, InputStream is);
 	
+		
 	/** Delete All.
 	 * @param fileName
 	 * @return
@@ -34,12 +34,18 @@ public interface FSConnector {
 	 * @param fileName
 	 * @return
 	 */
-	boolean deleteFile(String fileName);
-	
+	boolean deleteFile(String fileName);	
 	
 	/**
 	 * List all files.
 	 * @return
 	 */
-	String listAllFiles();
+	String listAllFiles();	
+	
+	/**
+	 * Download.
+	 * @param targetFileName
+	 * @return
+	 */
+	public InputStream download(String targetFileName);
 }

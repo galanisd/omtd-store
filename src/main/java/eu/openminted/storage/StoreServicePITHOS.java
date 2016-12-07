@@ -1,11 +1,8 @@
 package eu.openminted.storage;
 
-import java.util.Properties;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import eu.openminted.storage.config.Storage;
-import eu.openminted.storage.fsconnector.FSConnectorBuilder;
 import eu.openminted.storage.index.StorageIndex;
 
 

@@ -1,8 +1,12 @@
 package eu.openminted.storage.fsconnector;
 
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 
+import gr.grnet.escience.commons.Utils;
 import gr.grnet.escience.fs.pithos.PithosFileSystem;
+import gr.grnet.escience.fs.pithos.PithosInputStream;
 import gr.grnet.escience.fs.pithos.PithosObject;
 import gr.grnet.escience.fs.pithos.PithosOutputStream;
 import gr.grnet.escience.fs.pithos.PithosPath;
@@ -16,11 +20,11 @@ import gr.grnet.escience.pithos.rest.HadoopPithosConnector;
  */
 public class FSConnectorPITHOS implements FSConnector {
 
-	private  HadoopPithosConnector connector;		
-	private  String workingContainer = "OMTD";
-	
+	private HadoopPithosConnector connector;
+	private String workingContainer = "OMTD";
+
 	private String pithosUrl;
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -35,7 +39,7 @@ public class FSConnectorPITHOS implements FSConnector {
 			connector = new HadoopPithosConnector(pithosUrl, pithosToken, uuid);
 			// workaround.
 			PithosFileSystem.setHadoopPithosConnector(connector);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -58,23 +62,23 @@ public class FSConnectorPITHOS implements FSConnector {
 	}
 
 	@Override
-	public boolean storeFile(String targetFileName, InputStream is) {		
+	public boolean storeFile(String targetFileName, InputStream is) {
 
 		try {
 			connector.storePithosObject(workingContainer, new PithosObject(targetFileName, null));
 			org.apache.hadoop.conf.Configuration conf = new org.apache.hadoop.conf.Configuration();
-			
+
 			String target = targetFileName.substring(pithosUrl.length());
-			PithosOutputStream pithosOutputStream = new PithosOutputStream(conf,
-					new PithosPath(workingContainer, target), connector.getPithosBlockDefaultSize(workingContainer), 1 * 1024 * 1024);
+			eu.openminted.storage.fsconnector.debug.PithosOutputStream pithosOutputStream = new eu.openminted.storage.fsconnector.debug.PithosOutputStream(conf,
+					new PithosPath(workingContainer, target), connector.getPithosBlockDefaultSize(workingContainer),
+					1 * 1024 * 1024);
 
 			int read = 0;
 			byte[] bytes = new byte[1024 * 1024 * 10];
-
 			while ((read = is.read(bytes)) != -1) {
 				pithosOutputStream.write(bytes, 0, read);
+				pithosOutputStream.flush();
 			}
-			
 			is.close();
 			//pithosOutputStream.close();
 
@@ -87,23 +91,23 @@ public class FSConnectorPITHOS implements FSConnector {
 	}
 
 	@Override
-	public String listAllFiles() {				
-		String result = connector.getFileList(workingContainer);	
-		
-        String[] filePaths = result.split("\\s+");
-        for (String file : filePaths) {
-        	result = result + file + "\n";        		        		
-        }
-        
+	public String listAllFiles() {
+		String result = connector.getFileList(workingContainer);
+
+		String[] filePaths = result.split("\\s+");
+		for (String file : filePaths) {
+			result = result + file + "\n";
+		}
+
 		return result;
 	}
-	
+
 	@Override
 	public boolean deleteFile(String fileName) {
 		System.out.println("deleting:" + fileName);
-		String resultCode = connector.deletePithosObject(workingContainer, fileName);		
+		String resultCode = connector.deletePithosObject(workingContainer, fileName);
 		System.out.println("resultCode:" + resultCode);
-		
+
 		if (resultCode.contains("204")) {
 			return true;
 		}
@@ -112,16 +116,33 @@ public class FSConnectorPITHOS implements FSConnector {
 
 	@Override
 	public boolean deleteAll() {
+		String result = connector.getFileList(workingContainer);
 		
-		String result = connector.getFileList(workingContainer);				
+		String[] filePaths = result.split("\\s+");
+		for (String file : filePaths) {
+			result = result + file + "\n";			
+			System.out.println("DELETE:" + file + " " + deleteFile(file));
+		}
+
+		return true;
+	}
+
+	@Override
+	public InputStream download(String targetFileName) {
+		PithosPath pithosPath = new PithosPath(workingContainer, targetFileName);
+		System.out.println("parent:" + pithosPath.getParent());
+		String pathEsc = null;
+
+		try {
+			pathEsc = Utils.urlEscape(null, null, pithosPath.getObjectAbsolutePath(), null);
+			System.out.println("escape:" + pathEsc);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		eu.openminted.storage.fsconnector.debug.PithosInputStream pithosInputStream = new eu.openminted.storage.fsconnector.debug.PithosInputStream(workingContainer, pathEsc);
 		
-        String[] filePaths = result.split("\\s+");
-        for (String file : filePaths) {        	
-        	result = result + file + "\n";
-    		System.out.println("DELETE:" + file + " " + deleteFile(file));        		        	
-        }
-       
-        return true;
+		return pithosInputStream;
+		
 	}
 
 }

@@ -2,7 +2,10 @@ package eu.openminted.storage.main;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
+import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -82,6 +85,7 @@ public class TesterRunner {
 			// Store an annotation file.
 			store.storeFile(archId, new FileInputStream(sampleAnnotatedFile),
 					"annotations/" + sampleAnnotatedFile.getName());
+			
 			store.deleteFile(archId, "annotations/" + sampleAnnotatedFile.getName());
 
 			// -- Scenario 5
@@ -98,7 +102,7 @@ public class TesterRunner {
 			// File("C:/Users/galanisd/Desktop/Data/OpenAIRE/openairemetadata/stelios_metadata/keywords.json");
 			boolean success = store.storeFile(archId, new FileInputStream(bigFile), bigFile.getName());
 			System.out.println(" uploaded:" + success + " " + bigFile.getAbsolutePath());
-			// success = store.deleteFile(archId, bigFile.getName());
+			//success = store.deleteFile(archId, bigFile.getName());
 			// System.out.println(" deleted:" + success + " " +
 			// bigFile.getName());
 
@@ -114,20 +118,36 @@ public class TesterRunner {
 			File[] inFiles = inputDir.listFiles();
 			int counter = 0;
 			// int maxNumOfFilesToBeUploaded = Integer.MAX_VALUE;
-			int maxNumOfFilesToBeUploaded = 0;
+			int maxNumOfFilesToBeUploaded = 5;
 			// int threshold = 1000;
 			for (File fileForUpload : inFiles) {
 				if (counter < maxNumOfFilesToBeUploaded) {
 					System.out.println("File to be uploaded:" + fileForUpload.getName());
 					// long x = System.currentTimeMillis();
-					boolean successFileUp = store.storeFile(archId, new FileInputStream(fileForUpload),
-							"someFiles/" + counter + ".somefile");
+					String dest = "someFiles/" + counter + ".somefile";
+					boolean successFileUp = store.storeFile(archId, new FileInputStream(fileForUpload), dest);
 					// long y = System.currentTimeMillis();
 					System.out.println(counter + " Upload status:" + successFileUp + " size:" + fileForUpload.length()
 							+ " Local path" + fileForUpload.getAbsolutePath());
 					// System.out.println("Duration:" + ((y-x)/1000) +);
 					long end = System.currentTimeMillis();
 					System.out.println("Seconds so far:" + ((float) (end - start)) / 1000);
+					
+					try{
+						InputStream is = store.downloadFile("pithos://OMTD/" + dest);						
+						FileOutputStream fos = new FileOutputStream("C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + fileForUpload.getName() + ".txt");
+						
+						int read = 0;
+						byte[] bytes = new byte[1024 * 1024 * 10];
+						while ((read = is.read(bytes)) != -1) {
+							fos.write(bytes, 0, read);
+							fos.flush();
+						}
+							
+						fos.close();
+					}catch(Exception e){
+						e.printStackTrace();
+					}
 				}
 				counter++;
 			}

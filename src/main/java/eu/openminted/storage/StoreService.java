@@ -60,6 +60,13 @@ public interface StoreService {
      * @return true if the files was stored.
      */    
     boolean storeFile(String archiveId, InputStream is, String fileName);
+        
+    /**
+     * Download file.
+     * @param fileName
+     * @return
+     */
+    InputStream downloadFile(String fileName);
     
     /**
      * Deletes all files.

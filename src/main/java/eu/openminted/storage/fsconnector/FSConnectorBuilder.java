@@ -21,7 +21,7 @@ public class FSConnectorBuilder {
 		if(type.equals(Storage.PITHOS)){
 			gr.grnet.escience.commons.Utils.setDebug(false);
 			StoragePropertiesPITHOS props = (StoragePropertiesPITHOS)properties;
-			return	new FSConnectorPITHOS(props.getPithosURL(), props.getPithosToken(), props.getPithosUUID());				
+			return	new FSConnectorPITHOS(props.getPithosURL(), props.getPithosToken(), props.getPithosUUID(), props.getStorageRoot().substring("pithos://".length()));				
 		}else if(type.equals(Storage.LOCAL)){
 			return  new FSConnectorLocal();
 		}

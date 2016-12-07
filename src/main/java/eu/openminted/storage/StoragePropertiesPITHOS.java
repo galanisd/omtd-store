@@ -11,6 +11,7 @@ public class StoragePropertiesPITHOS extends StorageProperties{
 	private String pithosUUID;
 	private String pithosURL;
 	
+	
 	public String getPithosToken() {
 		return pithosToken;
 	}

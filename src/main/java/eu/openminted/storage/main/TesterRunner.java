@@ -47,6 +47,8 @@ public class TesterRunner {
 
 			int scenario = -1;
 			// -- Scenario 0
+			System.out.println("\n\n\n" + "FILE LIST");
+			System.out.println(store.listAllFiles());
 			System.out.println("Scenario:" + (++scenario));
 			store.deleteAll();
 
@@ -100,8 +102,8 @@ public class TesterRunner {
 					"C:/Users/galanisd/Desktop/Data/OpenAIRE/openairemetadata/stelios_metadata/authors.json");
 			// File bigFile = new
 			// File("C:/Users/galanisd/Desktop/Data/OpenAIRE/openairemetadata/stelios_metadata/keywords.json");
-			boolean success = store.storeFile(archId, new FileInputStream(bigFile), bigFile.getName());
-			System.out.println(" uploaded:" + success + " " + bigFile.getAbsolutePath());	
+			//boolean success = store.storeFile(archId, new FileInputStream(bigFile), bigFile.getName());
+			//System.out.println(" uploaded:" + success + " " + bigFile.getAbsolutePath());	
 
 			// -- Scenario 6
 			System.out.println("Scenario:" + (++scenario));
@@ -113,42 +115,30 @@ public class TesterRunner {
 			// File("C:/Users/galanisd/Desktop/Data/CORE/repository_metadata_2015-09_abstractscleaned/");
 			File inputDir = new File("C:/Users/galanisd/Desktop/Data/Parliament/ParliamentAll/_Prokopis/txtsOut/");
 			File[] inFiles = inputDir.listFiles();
-			int counter = 0;
+			int fileIndex = 0;
 			// int maxNumOfFilesToBeUploaded = Integer.MAX_VALUE;
 			int maxNumOfFilesToBeUploaded = 5;
 			// int threshold = 1000;
 			for (File fileForUpload : inFiles) {
-				if (counter < maxNumOfFilesToBeUploaded) {
+				if (fileIndex < maxNumOfFilesToBeUploaded) {
 					System.out.println("File to be uploaded:" + fileForUpload.getName());
 					// long x = System.currentTimeMillis();
-					String dest = "someFiles/" + counter + ".somefile";
+					String dest = "someFiles/" + fileIndex + ".somefile";
 					boolean successFileUp = store.storeFile(archId, new FileInputStream(fileForUpload), dest);
 					// long y = System.currentTimeMillis();
-					System.out.println(counter + " Upload status:" + successFileUp + " size:" + fileForUpload.length()
+					System.out.println(fileIndex + " Upload status:" + successFileUp + " size:" + fileForUpload.length()
 							+ " Local path" + fileForUpload.getAbsolutePath());
 					// System.out.println("Duration:" + ((y-x)/1000) +);
 					long end = System.currentTimeMillis();
 					System.out.println("Seconds so far:" + ((float) (end - start)) / 1000);
 					
-					/*
-					try{
-						InputStream is = store.downloadFile(dest);						
-						FileOutputStream fos = new FileOutputStream("C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + fileForUpload.getName() + ".txt");
-						
-						int read = 0;
-						byte[] bytes = new byte[1024 * 1024 * 10];
-						while ((read = is.read(bytes)) != -1) {
-							fos.write(bytes, 0, read);
-							fos.flush();
-						}
-							
-						fos.close();
-					}catch(Exception e){
-						e.printStackTrace();
-					}
-					*/
+					
+					InputStream is = store.downloadFile(archId + "/" + dest);						
+					FileOutputStream fos = new FileOutputStream("C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + fileForUpload.getName() + ".txt");
+					TesterRunner.store(is, fos);
+					fos.close();					
 				}
-				counter++;
+				fileIndex++;
 			}
 
 			System.out.println("Scenario:" + (++scenario));
@@ -166,10 +156,24 @@ public class TesterRunner {
 		}
 	}
 	
+	public static void store(InputStream is, FileOutputStream fos){
+		try{
+			int read = 0;
+			byte[] bytes = new byte[1024 * 1024 * 10];
+			while ((read = is.read(bytes)) != -1) {
+				fos.write(bytes, 0, read);
+				fos.flush();
+			}
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	// == 
 	
 	public static void main(String args[]){
-		int t = 1;			
+		int t = 2;			
 		TesterRunner runner = new TesterRunner(t);
 		runner.executeTests();					 			 
 	}

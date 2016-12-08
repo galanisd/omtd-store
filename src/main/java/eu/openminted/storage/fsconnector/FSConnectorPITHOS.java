@@ -133,6 +133,7 @@ public class FSConnectorPITHOS implements FSConnector {
 	@Override
 	public InputStream download(String targetFileName) {
 		String target = targetFileName.substring(pithosRoot.length());
+		System.out.println("target:" + target);
 		PithosPath pithosPath = new PithosPath(workingContainer, target);
 		System.out.println("parent:" + pithosPath.getParent());
 		String pathEsc = null;

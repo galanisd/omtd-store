@@ -148,7 +148,8 @@ public class StoreServiceGeneric implements StoreService{
 
 	@Override
 	public InputStream downloadFile(String fileName) {
-		return connector.download(fileName);
+		String destinationFile = storageProperties.getStorageRoot() + fileName;
+		return connector.download(destinationFile);
 	}
 
 

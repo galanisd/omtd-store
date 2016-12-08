@@ -21,9 +21,10 @@ import gr.grnet.escience.pithos.rest.HadoopPithosConnector;
 public class FSConnectorPITHOS implements FSConnector {
 
 	private HadoopPithosConnector connector;
-	private String workingContainer = "OMTD";
-
-	private String pithosUrl;
+	private String workingContainer = "";
+	public final String PITHOSURI = "pithos://"; 			
+	
+	private String pithosRoot;
 
 	/**
 	 * Constructor.
@@ -32,10 +33,11 @@ public class FSConnectorPITHOS implements FSConnector {
 	 * @param pithosToken
 	 * @param uuid
 	 */
-	public FSConnectorPITHOS(String pithosUrl, String pithosToken, String uuid, String workingContainer) {
+	public FSConnectorPITHOS(String pithosUrl, String pithosToken, String uuid, String pithosRoot) {
 		try {
-			this.pithosUrl = pithosUrl;
-			this.workingContainer = workingContainer;
+			this.pithosRoot = pithosRoot;
+			this.workingContainer = pithosRoot.substring(PITHOSURI.length(), pithosRoot.length()-1);
+			System.out.println("workingContainer:" + workingContainer);
 			connector = new HadoopPithosConnector(pithosUrl, pithosToken, uuid);
 			// workaround.
 			PithosFileSystem.setHadoopPithosConnector(connector);
@@ -46,12 +48,11 @@ public class FSConnectorPITHOS implements FSConnector {
 	}
 
 	public boolean makeFolder(String fileName) {
-		System.out.println("uploading:" + fileName);
-		String rel = fileName.substring(pithosUrl.length());
-		System.out.println("rel:" + rel);
-
 		String resultCode = "-1";
-		resultCode = connector.uploadFileToPithos(workingContainer, fileName.substring(pithosUrl.length()), true);
+		System.out.println("uploading:" + fileName);
+		String relativePath = fileName.substring(pithosRoot.length(), fileName.length()-1);
+		System.out.println("final:" + relativePath);		
+		resultCode = connector.uploadFileToPithos(workingContainer, relativePath, true);
 
 		System.out.println("resultCode:" + resultCode);
 		if (resultCode != null && resultCode.equals("201")) {
@@ -65,13 +66,14 @@ public class FSConnectorPITHOS implements FSConnector {
 	public boolean storeFile(String targetFileName, InputStream is) {
 
 		try {
-			connector.storePithosObject(workingContainer, new PithosObject(targetFileName, null));
+			String relativeTarget = targetFileName.substring(pithosRoot.length());
+			
+			connector.storePithosObject(workingContainer, new PithosObject(relativeTarget, null));
 			org.apache.hadoop.conf.Configuration conf = new org.apache.hadoop.conf.Configuration();
-
-			String target = targetFileName.substring(pithosUrl.length());
+			long blocksize = connector.getPithosBlockDefaultSize(workingContainer);
+			PithosPath pithosTargetPath = new PithosPath(workingContainer, relativeTarget);
 			eu.openminted.storage.fsconnector.debug.PithosOutputStream pithosOutputStream = new eu.openminted.storage.fsconnector.debug.PithosOutputStream(conf,
-					new PithosPath(workingContainer, target), connector.getPithosBlockDefaultSize(workingContainer),
-					1 * 1024 * 1024);
+					pithosTargetPath, blocksize, 1 * 1024 * 1024);
 
 			int read = 0;
 			byte[] bytes = new byte[1024 * 1024 * 10];
@@ -80,7 +82,7 @@ public class FSConnectorPITHOS implements FSConnector {
 				pithosOutputStream.flush();
 			}
 			is.close();
-			//pithosOutputStream.close();
+			pithosOutputStream.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,7 +131,8 @@ public class FSConnectorPITHOS implements FSConnector {
 
 	@Override
 	public InputStream download(String targetFileName) {
-		PithosPath pithosPath = new PithosPath(workingContainer, targetFileName);
+		String target = targetFileName.substring(pithosRoot.length());
+		PithosPath pithosPath = new PithosPath(workingContainer, target);
 		System.out.println("parent:" + pithosPath.getParent());
 		String pathEsc = null;
 

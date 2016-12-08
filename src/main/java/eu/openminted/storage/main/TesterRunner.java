@@ -101,10 +101,7 @@ public class TesterRunner {
 			// File bigFile = new
 			// File("C:/Users/galanisd/Desktop/Data/OpenAIRE/openairemetadata/stelios_metadata/keywords.json");
 			boolean success = store.storeFile(archId, new FileInputStream(bigFile), bigFile.getName());
-			System.out.println(" uploaded:" + success + " " + bigFile.getAbsolutePath());
-			//success = store.deleteFile(archId, bigFile.getName());
-			// System.out.println(" deleted:" + success + " " +
-			// bigFile.getName());
+			System.out.println(" uploaded:" + success + " " + bigFile.getAbsolutePath());	
 
 			// -- Scenario 6
 			System.out.println("Scenario:" + (++scenario));
@@ -133,8 +130,9 @@ public class TesterRunner {
 					long end = System.currentTimeMillis();
 					System.out.println("Seconds so far:" + ((float) (end - start)) / 1000);
 					
+					/*
 					try{
-						InputStream is = store.downloadFile("pithos://OMTD/" + dest);						
+						InputStream is = store.downloadFile(dest);						
 						FileOutputStream fos = new FileOutputStream("C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + fileForUpload.getName() + ".txt");
 						
 						int read = 0;
@@ -148,6 +146,7 @@ public class TesterRunner {
 					}catch(Exception e){
 						e.printStackTrace();
 					}
+					*/
 				}
 				counter++;
 			}
@@ -170,7 +169,7 @@ public class TesterRunner {
 	// == 
 	
 	public static void main(String args[]){
-		int t = 2;			
+		int t = 1;			
 		TesterRunner runner = new TesterRunner(t);
 		runner.executeTests();					 			 
 	}

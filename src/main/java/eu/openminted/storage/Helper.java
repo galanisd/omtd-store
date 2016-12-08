@@ -19,14 +19,19 @@ public class Helper {
 		String destinationFolderAbsolutePath = null;
 		String rootLocation = null;
 		
-		// Build path with archives if needed.
+		// If needed build path with archives 
 		if(parents != null){
 		  			  
 		  String relativePath = "";		  
 		  for(int i = parents.size() - 1; i >= 0; i--){
 			  relativePath = appendDirToPath(relativePath, parents.get(i));
 		  }
-		  rootLocation = storageRoot + relativePath.toString();
+		  
+		  if(!storageRoot.endsWith(separator)){
+			  rootLocation = storageRoot + relativePath.toString();
+		  }else{
+			  rootLocation = storageRoot + relativePath.toString().substring(1);
+		  }
 		  
 		}else{
 			rootLocation = storageRoot;			
@@ -39,6 +44,7 @@ public class Helper {
 	
 	public static String appendDirToPath(String path, String dir){
 		String finalPath = "";
+		
 		if(path.endsWith(separator)){
 			finalPath = path + dir + separator;
 		}else{
@@ -51,8 +57,7 @@ public class Helper {
 	public static String appendFileToPath(String path, String file){
 
 		String finalPath = "";
-		if(path.endsWith(separator)){
-			
+		if(path.endsWith(separator)){			
 			finalPath = path + file;
 		}else{
 			finalPath = path + separator + file ;	

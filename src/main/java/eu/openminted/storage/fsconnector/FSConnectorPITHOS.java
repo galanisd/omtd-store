@@ -95,11 +95,12 @@ public class FSConnectorPITHOS implements FSConnector {
 	@Override
 	public String listAllFiles() {
 		String result = connector.getFileList(workingContainer);
-
-		String[] filePaths = result.split("\\s+");
+		
+		/*
+		String[] filePaths = result.split("\\s+");				
 		for (String file : filePaths) {
 			result = result + file + "\n";
-		}
+		}*/
 
 		return result;
 	}

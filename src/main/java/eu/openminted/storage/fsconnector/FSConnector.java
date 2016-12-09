@@ -30,6 +30,12 @@ public interface FSConnector {
 	 */
 	boolean deleteAll();
 	
+	/** Delete Folder.
+	 * @param fileName
+	 * @return
+	 */
+	boolean deleteFolder(String folder, boolean recursively);	
+	
 	/** Delete file.
 	 * @param fileName
 	 * @return

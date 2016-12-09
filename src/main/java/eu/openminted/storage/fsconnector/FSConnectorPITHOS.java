@@ -105,17 +105,7 @@ public class FSConnectorPITHOS implements FSConnector {
 		return result;
 	}
 
-	@Override
-	public boolean deleteFile(String fileName) {
-		System.out.println("deleting:" + fileName);
-		String resultCode = connector.deletePithosObject(workingContainer, fileName);
-		System.out.println("resultCode:" + resultCode);
 
-		if (resultCode.contains("204")) {
-			return true;
-		}
-		return false;
-	}
 
 	@Override
 	public boolean deleteAll() {
@@ -129,7 +119,25 @@ public class FSConnectorPITHOS implements FSConnector {
 
 		return true;
 	}
+	
+	@Override
+	public boolean deleteFolder(String folder, boolean recursively) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
+	@Override
+	public boolean deleteFile(String fileName) {
+		System.out.println("deleting:" + fileName);
+		String resultCode = connector.deletePithosObject(workingContainer, fileName);
+		System.out.println("resultCode:" + resultCode);
+
+		if (resultCode.contains("204")) {
+			return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public InputStream download(String targetFileName) {
 		String target = targetFileName.substring(pithosRoot.length());
@@ -149,5 +157,7 @@ public class FSConnectorPITHOS implements FSConnector {
 		return pithosInputStream;
 		
 	}
+
+
 
 }

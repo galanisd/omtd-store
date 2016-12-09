@@ -100,8 +100,9 @@ public class StoreServiceGeneric implements StoreService{
 
 	@Override
 	public boolean deleteArchive(String archiveId, boolean force) {
-		// TODO Auto-generated method stub
-		return false;
+		String destinationFolderAbsolutePath = Helper.getAbsolutePathForArchive(storageIndex, storageProperties.getStorageRoot(), archiveId);
+		return connector.deleteFolder(destinationFolderAbsolutePath, force);
+		
 	}
 
 	@Override

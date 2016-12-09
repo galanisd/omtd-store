@@ -62,8 +62,8 @@ public interface StoreService {
     boolean storeFile(String archiveId, InputStream is, String fileName);
         
     /**
-     * Download file.
-     * @param fileName
+     * Downloads file. 
+     * @param fileName is the path of the file.
      * @return
      */
     InputStream downloadFile(String fileName);

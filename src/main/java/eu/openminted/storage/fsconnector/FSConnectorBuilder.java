@@ -23,7 +23,8 @@ public class FSConnectorBuilder {
 			StoragePropertiesPITHOS props = (StoragePropertiesPITHOS)properties;
 			return	new FSConnectorPITHOS(props.getPithosURL(), props.getPithosToken(), props.getPithosUUID(), props.getStorageRoot());				
 		}else if(type.equals(Storage.LOCAL)){
-			return  new FSConnectorLocal();
+			StorageProperties props = (StorageProperties)properties;
+			return  new FSConnectorLocal(props.getStorageRoot());
 		}
 		
 		return null;

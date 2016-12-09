@@ -11,6 +11,7 @@ public class Starter {
 	
 	public static void main(String[] args) {
 				
+		System.setProperty("spring.devtools.restart.enabled", "false");
 		// If required load default applications properties.
 		String appPropFile = System.getProperty(applicationProperties);
 		if(appPropFile == null){
@@ -28,7 +29,8 @@ public class Starter {
 		}
 		
 		// Run
-		SpringApplication.run(ApplicationBoot.class, args);
+		SpringApplication springApplication = new SpringApplication(ApplicationBoot.class);
+		springApplication.run();
 	}
 
 }

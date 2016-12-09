@@ -20,11 +20,18 @@ import eu.openminted.store.StoreService;
 @Controller
 public class StoreController {
 
-    private final StoreService storageService;
+    private final StoreService storeService;
 
     @Autowired
-    public StoreController(StoreService storageService) {
-        this.storageService = storageService;
+    public StoreController(StoreService storeService) {
+       this.storeService = storeService;
+    }
+    
+    
+    @RequestMapping(value="/store/listfiles", method=RequestMethod.GET)
+    @ResponseBody
+    public String listFiles(){    	       	    	
+    	return storeService.listAllFiles();     
     }
     
     /*

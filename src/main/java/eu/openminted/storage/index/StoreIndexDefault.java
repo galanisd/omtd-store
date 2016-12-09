@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * A basic implementation of {@link eu.openminted.storage.index.StorageIndex}
+ * A basic implementation of {@link eu.openminted.storage.index.StoreIndex}
  * @author galanisd
  *
  */
-public class StorageIndexBasic implements StorageIndex{
+public class StoreIndexDefault implements StoreIndex{
 
 	public HashMap<String, String> archivesStructure;
 	
-	public StorageIndexBasic(){
+	public StoreIndexDefault(){
 		archivesStructure = new HashMap<String, String>();
 	}
 	

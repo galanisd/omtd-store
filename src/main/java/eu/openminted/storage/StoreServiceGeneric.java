@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 import eu.openminted.storage.fsconnector.FSConnector;
 import eu.openminted.storage.fsconnector.FSConnectorBuilder;
-import eu.openminted.storage.index.StorageIndex;
+import eu.openminted.storage.index.StoreIndex;
 
 /**
  * 
@@ -14,9 +14,9 @@ import eu.openminted.storage.index.StorageIndex;
 public class StoreServiceGeneric implements StoreService{
 		
 	private String type;
-	protected StorageProperties storageProperties;
+	protected StoreProperties storageProperties;
 	protected IdGenerator idGen;
-	protected StorageIndex storageIndex;
+	protected StoreIndex storageIndex;
 	private FSConnector connector;
 	
 	/**
@@ -26,7 +26,7 @@ public class StoreServiceGeneric implements StoreService{
 	 * @param idGen
 	 * @param storageIndex
 	 */
-	public StoreServiceGeneric(String type, StorageProperties storageProperties, IdGenerator idGen, StorageIndex storageIndex) {
+	public StoreServiceGeneric(String type, StoreProperties storageProperties, IdGenerator idGen, StoreIndex storageIndex) {
 		super();
 		connector = FSConnectorBuilder.getConnector(type, storageProperties);				
 		this.type = type;
@@ -44,19 +44,19 @@ public class StoreServiceGeneric implements StoreService{
 		this.idGen = idGen;
 	}
 	
-	public StorageProperties getStorageProperties() {
+	public StoreProperties getStorageProperties() {
 		return storageProperties;
 	}
 
-	public void setStorageProperties(StorageProperties storageProperties) {
+	public void setStorageProperties(StoreProperties storageProperties) {
 		this.storageProperties = storageProperties;
 	}
 
-	public StorageIndex getStorageIndex() {
+	public StoreIndex getStorageIndex() {
 		return storageIndex;
 	}
 
-	public void setStorageIndex(StorageIndex storageIndex) {
+	public void setStorageIndex(StoreIndex storageIndex) {
 		this.storageIndex = storageIndex;
 	}
 	

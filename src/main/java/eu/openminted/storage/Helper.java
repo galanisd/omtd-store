@@ -2,7 +2,7 @@ package eu.openminted.storage;
 
 import java.util.ArrayList;
 
-import eu.openminted.storage.index.StorageIndex;
+import eu.openminted.storage.index.StoreIndex;
 
 /**
  * @author galanisd
@@ -12,7 +12,7 @@ public class Helper {
 
 	public static String separator = "/";
 	
-	public static String getAbsolutePathForArchive(StorageIndex storageIndex, String storageRoot, String archiveId){
+	public static String getAbsolutePathForArchive(StoreIndex storageIndex, String storageRoot, String archiveId){
 		
 		ArrayList<String> parents = storageIndex.getParentArchives(archiveId);
 		

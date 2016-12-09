@@ -3,7 +3,7 @@ package eu.openminted.storage;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import eu.openminted.storage.config.Storage;
-import eu.openminted.storage.index.StorageIndex;
+import eu.openminted.storage.index.StoreIndex;
 
 
 /**
@@ -14,7 +14,7 @@ import eu.openminted.storage.index.StorageIndex;
 public class StoreServicePITHOS extends StoreServiceGeneric{
 				
 	@Autowired
-	public StoreServicePITHOS(StoragePropertiesPITHOS storageProperties, IdGenerator idGen, StorageIndex storageIndex){		
+	public StoreServicePITHOS(StorePropertiesPITHOS storageProperties, IdGenerator idGen, StoreIndex storageIndex){		
 		super(Storage.PITHOS, storageProperties, idGen, storageIndex);
 		
 	}

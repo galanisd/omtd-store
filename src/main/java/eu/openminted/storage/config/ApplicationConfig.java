@@ -8,18 +8,18 @@ import org.springframework.core.env.Environment;
 
 import eu.openminted.storage.IdGenerator;
 import eu.openminted.storage.SimpleIdGenerator;
-import eu.openminted.storage.StorageProperties;
-import eu.openminted.storage.StoragePropertiesPITHOS;
+import eu.openminted.storage.StoreProperties;
+import eu.openminted.storage.StorePropertiesLocal;
+import eu.openminted.storage.StorePropertiesPITHOS;
 import eu.openminted.storage.StoreServiceGeneric;
 import eu.openminted.storage.StoreServiceLocalDisk;
 import eu.openminted.storage.StoreServicePITHOS;
-import eu.openminted.storage.index.StorageIndex;
-import eu.openminted.storage.index.StorageIndexBasic;
+import eu.openminted.storage.index.StoreIndex;
+import eu.openminted.storage.index.StoreIndexDefault;
 
 @Configuration
 @PropertySource("${storeApplication.properties}")
-public class AppConfig {
-
+public class ApplicationConfig {
 		
 	@Autowired
 	private Environment environment;
@@ -31,15 +31,19 @@ public class AppConfig {
 		String type = environment.getProperty("storage.type");
 				
 		if(type.equalsIgnoreCase(Storage.PITHOS)){
-			StoragePropertiesPITHOS sp = new StoragePropertiesPITHOS(); 				
+			// Read PITHOS Storage properties.
+			StorePropertiesPITHOS sp = new StorePropertiesPITHOS(); 				
 			sp.setStorageRoot(environment.getProperty("storage.storageRoot"));
 			sp.setPithosURL(environment.getProperty("storage.pithosURL"));		
 			sp.setPithosToken(environment.getProperty("storage.pithosToken"));
 			sp.setPithosUUID(environment.getProperty("storage.pithosUUID"));
+			// Init storageService
 			storageService = new StoreServicePITHOS(sp, getIdGenerator(), getStorageIndex());
 		}else if(type.equalsIgnoreCase(Storage.LOCAL)){
-			StorageProperties sp = new StorageProperties();			
-			sp.setStorageRoot(environment.getProperty("storage.storageRoot"));			
+			// Read Local Storage properties.
+			StorePropertiesLocal sp = new StorePropertiesLocal();			
+			sp.setStorageRoot(environment.getProperty("storage.storageRoot"));
+			// Init storageService
 			storageService = new StoreServiceLocalDisk(sp, getIdGenerator(), getStorageIndex());
 		}		
 				
@@ -52,8 +56,8 @@ public class AppConfig {
 	}		
 	
 	@Bean 
-	public StorageIndex getStorageIndex(){
-		return new StorageIndexBasic();
+	public StoreIndex getStorageIndex(){
+		return new StoreIndexDefault();
 	}
 	
 }

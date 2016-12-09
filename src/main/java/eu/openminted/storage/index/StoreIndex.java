@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author galanisd
  *
  */
-public interface StorageIndex {
+public interface StoreIndex {
 
 	/**
 	 * Find parent archive.

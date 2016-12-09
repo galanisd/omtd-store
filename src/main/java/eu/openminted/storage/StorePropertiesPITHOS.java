@@ -5,7 +5,7 @@ package eu.openminted.storage;
  * @author galanisd
  *
  */
-public class StoragePropertiesPITHOS extends StorageProperties{
+public class StorePropertiesPITHOS extends StoreProperties{
 	
 	private String pithosToken;
 	private String pithosUUID;

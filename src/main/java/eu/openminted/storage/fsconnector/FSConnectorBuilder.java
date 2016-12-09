@@ -1,7 +1,8 @@
 package eu.openminted.storage.fsconnector;
 
-import eu.openminted.storage.StorageProperties;
-import eu.openminted.storage.StoragePropertiesPITHOS;
+import eu.openminted.storage.StoreProperties;
+import eu.openminted.storage.StorePropertiesLocal;
+import eu.openminted.storage.StorePropertiesPITHOS;
 import eu.openminted.storage.config.Storage;
 
 /**
@@ -17,13 +18,13 @@ public class FSConnectorBuilder {
 	 * @param properties
 	 * @return the {@code FSConnector}.
 	 */
-	public static FSConnector getConnector(String type, StorageProperties properties){
+	public static FSConnector getConnector(String type, StoreProperties properties){
 		if(type.equals(Storage.PITHOS)){
 			gr.grnet.escience.commons.Utils.setDebug(false);
-			StoragePropertiesPITHOS props = (StoragePropertiesPITHOS)properties;
+			StorePropertiesPITHOS props = (StorePropertiesPITHOS)properties;
 			return	new FSConnectorPITHOS(props.getPithosURL(), props.getPithosToken(), props.getPithosUUID(), props.getStorageRoot());				
 		}else if(type.equals(Storage.LOCAL)){
-			StorageProperties props = (StorageProperties)properties;
+			StorePropertiesLocal props = (StorePropertiesLocal)properties;
 			return  new FSConnectorLocal(props.getStorageRoot());
 		}
 		

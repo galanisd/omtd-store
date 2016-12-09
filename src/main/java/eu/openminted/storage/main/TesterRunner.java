@@ -12,7 +12,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import eu.openminted.storage.StoreService;
 import eu.openminted.storage.StoreServiceLocalDisk;
 import eu.openminted.storage.StoreServicePITHOS;
-import eu.openminted.storage.config.AppConfig;
+import eu.openminted.storage.config.ApplicationConfig;
 import eu.openminted.storage.config.Storage;
 
 /**
@@ -34,12 +34,12 @@ public class TesterRunner {
 		if (t.equalsIgnoreCase(Storage.LOCAL)) {
 			System.setProperty("storeApplication.properties",
 					"classpath:/eu/openminted/storage/config/configLocal.properties");
-			ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+			ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 			store = (StoreService) ctx.getBean(StoreServiceLocalDisk.class);
 		} else if (t.equalsIgnoreCase(Storage.PITHOS)) {
 			System.setProperty("storeApplication.properties",
 					"classpath:/eu/openminted/storage/config/configPITHOS.properties");
-			ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+			ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 			store = (StoreService) ctx.getBean(StoreServicePITHOS.class);
 		}
 	}

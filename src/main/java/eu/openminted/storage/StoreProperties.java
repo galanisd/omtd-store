@@ -2,8 +2,8 @@ package eu.openminted.storage;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("storage")
-public class StorageProperties {
+//@ConfigurationProperties("storage")
+public class StoreProperties {
 	
     /** Root folder for Storage */
     private String storageRoot = "upload-dir";

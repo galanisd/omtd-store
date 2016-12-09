@@ -8,6 +8,7 @@ public class Starter {
 	
 	public final static String applicationProperties = "storeApplicationCfg";
 	public final static String storagePropertiesFile = "storage.propertiesFile";
+	public final static String defaultApplicationProperties = "myApp.properties";
 	
 	public static void main(String[] args) {
 				
@@ -18,14 +19,14 @@ public class Starter {
 						
 			Properties props = new Properties();						
 			try{								
-				props.load(ApplicationBoot.class.getResourceAsStream("myApp.properties"));
-				System.out.println("Loading default config:" + props.getProperty(storagePropertiesFile));
+				props.load(ApplicationBoot.class.getResourceAsStream(defaultApplicationProperties));
+				System.out.println("==Loading default config:" + props.getProperty(storagePropertiesFile));
 				System.setProperty(applicationProperties, props.getProperty(storagePropertiesFile));				
 			}catch(Exception e){
 				e.printStackTrace();
 			}								
 		}else{
-			System.out.println("--Config:" + System.getProperty(applicationProperties));
+			System.out.println("==Config:" + System.getProperty(applicationProperties));
 		}
 		
 		// Run

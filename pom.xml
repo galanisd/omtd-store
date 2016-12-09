@@ -12,7 +12,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<start-class>eu.openminted.store.controller.ApplicationBoot</start-class>
+		<start-class>eu.openminted.store.controller.Starter</start-class>
 	</properties>
 	
     <parent>

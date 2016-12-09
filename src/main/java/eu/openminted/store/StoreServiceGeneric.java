@@ -4,6 +4,7 @@ import java.io.InputStream;
 
 import eu.openminted.store.fsconnector.FSConnector;
 import eu.openminted.store.fsconnector.FSConnectorBuilder;
+import eu.openminted.store.idgenerator.IdGenerator;
 import eu.openminted.store.index.StoreIndex;
 
 /**

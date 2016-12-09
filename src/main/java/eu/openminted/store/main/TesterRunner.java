@@ -33,12 +33,12 @@ public class TesterRunner {
 		
 		if (t.equalsIgnoreCase(Storage.LOCAL)) {
 			System.setProperty("storeApplication.properties",
-					"classpath:/eu/openminted/storage/config/configLocal.properties");
+					"classpath:/eu/openminted/store/config/configLocal.properties");
 			ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 			store = (StoreService) ctx.getBean(StoreServiceLocalDisk.class);
 		} else if (t.equalsIgnoreCase(Storage.PITHOS)) {
 			System.setProperty("storeApplication.properties",
-					"classpath:/eu/openminted/storage/config/configPITHOS.properties");
+					"classpath:/eu/openminted/store/config/configPITHOS.properties");
 			ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 			store = (StoreService) ctx.getBean(StoreServicePITHOS.class);
 		}

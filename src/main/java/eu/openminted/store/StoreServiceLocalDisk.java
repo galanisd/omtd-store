@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import eu.openminted.store.config.Storage;
+import eu.openminted.store.idgenerator.IdGenerator;
 import eu.openminted.store.index.StoreIndex;
 
 /**
@@ -21,7 +22,7 @@ public class StoreServiceLocalDisk extends StoreServiceGeneric{
 	 * @param storageIndex
 	 */
 	@Autowired
-	public StoreServiceLocalDisk(StoreProperties storageProperties, IdGenerator idGen, StoreIndex storageIndex){		
+	public StoreServiceLocalDisk(StorePropertiesLocal storageProperties, IdGenerator idGen, StoreIndex storageIndex){		
 		super(Storage.LOCAL, storageProperties, idGen, storageIndex);		 
 	}		
 	

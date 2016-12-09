@@ -63,7 +63,7 @@ public class FSConnectorLocal implements FSConnector{
 		File root = new File(localRoot);
 		ArrayList<File> allFiles = listFileTree(root);
 		for(File f : allFiles){
-			list = list + f.getAbsolutePath() + "\n";
+			list = list + f.getAbsolutePath().substring(this.localRoot.length()) + "\n";
 		}
 		
 		return list;
@@ -71,12 +71,18 @@ public class FSConnectorLocal implements FSConnector{
 
 	public static ArrayList<File> listFileTree(File dir) {
 		ArrayList<File> fileTree = new ArrayList<File>();
-	    if(dir==null || dir.listFiles()==null){
+		
+	    if(dir == null || dir.listFiles() == null){
 	        return fileTree;
 	    }
+	    
 	    for (File entry : dir.listFiles()) {
-	        if (entry.isFile()) fileTree.add(entry);
-	        else fileTree.addAll(listFileTree(entry));
+	        if (entry.isFile()) {
+	        	fileTree.add(entry);
+	        }else {
+	        	fileTree.add(entry);
+	        	fileTree.addAll(listFileTree(entry));
+	        }
 	    }
 	    return fileTree;
 	}
@@ -90,8 +96,8 @@ public class FSConnectorLocal implements FSConnector{
 		for(File file : files){
 			if(file.isDirectory()){
 				boolean success = deleteFolder(file.getAbsolutePath(), true);
-				if(!status){
-					status = true;
+				if(!success){
+					status = false;
 				}
 			}else{
 				status = file.delete();

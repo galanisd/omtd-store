@@ -234,8 +234,8 @@ public class TesterRunner {
 	public static void main(String args[]){
 		
 		String t = "";
-		//t = Storage.PITHOS;
-		t = Storage.LOCAL;
+		t = Storage.PITHOS;
+		//t = Storage.LOCAL;
 		
 		TesterRunner runner = new TesterRunner(t);
 		runner.executeTests();					 			 

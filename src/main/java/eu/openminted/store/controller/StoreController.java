@@ -25,8 +25,7 @@ public class StoreController {
     @Autowired
     public StoreController(StoreService storeService) {
        this.storeService = storeService;
-    }
-    
+    }    
     
     @RequestMapping(value="/store/listfiles", method=RequestMethod.GET)
     @ResponseBody
@@ -34,58 +33,17 @@ public class StoreController {
     	return storeService.listAllFiles();     
     }
     
+    @RequestMapping(value="/store/deleteall", method=RequestMethod.GET)
+    @ResponseBody
+    public String deleteAll(){    	       	    	
+    	return storeService.deleteAll() + "";    
+    }
+    
     /*
     @RequestMapping(value="/", method=RequestMethod.GET)
-    public String listUploadedFiles(Model model) throws IOException {
-        
+    public String listUploadedFiles(Model model) throws IOException {        
         return "uploadForm";
     }
     */
-    
-    /*
-    @RequestMapping(value="/storage/uploadresource", method=RequestMethod.POST )
-    @ResponseBody
-    public String uploadFile(@RequestParam("file") MultipartFile file){
-    	
-    	String status = "Uploaded";
-    	
-    	try{
-    		String name = file.getOriginalFilename();
-    		System.out.println("name: " + name);
-    		storageService.store(file);
-    	}catch(Exception e){
-    		status = "Failed to upload " + e.getMessage();	
-    	}
-    	
-    	return status;
-    }*/
-        
-    /*
-    @RequestMapping(value="/storage/downloadresource", method=RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<Resource> downloadFile(@RequestParam("file") String filename){    	
-       	    	
-        Resource file = storageService.retrieve(filename);
-        return ResponseEntity
-                .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file.getFilename()+"\"")
-                .body(file);    	
-    }
-        
-    @RequestMapping(value="/storage/listresources", method=RequestMethod.GET)
-    @ResponseBody
-    public String listResources(){
-    	String response = "---Resources list---\n\r";
-    	try{
-    		File[] resources = storageService.listResources();
-    		for(int i = 0; i < resources.length; i++){
-    			response = response + resources[i].getAbsolutePath() + "\n\r";
-    		}
-    	}catch(Exception e){    		
-    		response = "An error has occured." + e.getMessage();
-    	}
-    	    		
-    	return response;    	
-    }
-    */
+
 }

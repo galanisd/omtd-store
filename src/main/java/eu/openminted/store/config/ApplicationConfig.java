@@ -18,7 +18,7 @@ import eu.openminted.store.index.StoreIndex;
 import eu.openminted.store.index.StoreIndexDefault;
 
 @Configuration
-@PropertySource("${storeApplication.properties}")
+@PropertySource("${storeApplicationCfg}")
 public class ApplicationConfig {
 		
 	@Autowired

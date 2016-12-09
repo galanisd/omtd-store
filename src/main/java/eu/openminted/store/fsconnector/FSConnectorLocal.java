@@ -98,6 +98,7 @@ public class FSConnectorLocal implements FSConnector{
 				boolean success = deleteFolder(file.getAbsolutePath(), true);
 				if(!success){
 					status = false;
+					System.out.println("failed deleting:" + file.getAbsolutePath());
 				}
 			}else{
 				status = file.delete();
@@ -124,15 +125,13 @@ public class FSConnectorLocal implements FSConnector{
 	@Override
 	public boolean deleteFolder(String folder, boolean recursively) {
 		boolean status = true;
-		if(recursively){
-			
+		if(recursively){			
 			try{
 				FileUtils.forceDelete(new File(folder));
 			}catch(Exception e){
 				status = false;
-			}
-			
-			return false;
+			}			
+			return status;
 		}else{
 			status = Paths.get(folder).toFile().delete();			
 		}

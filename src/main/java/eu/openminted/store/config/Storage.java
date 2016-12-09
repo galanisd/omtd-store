@@ -1,4 +1,4 @@
-package eu.openminted.storage.config;
+package eu.openminted.store.config;
 
 /**
  * @author galanisd

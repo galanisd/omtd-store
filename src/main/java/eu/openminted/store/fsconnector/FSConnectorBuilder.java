@@ -1,9 +1,9 @@
-package eu.openminted.storage.fsconnector;
+package eu.openminted.store.fsconnector;
 
-import eu.openminted.storage.StoreProperties;
-import eu.openminted.storage.StorePropertiesLocal;
-import eu.openminted.storage.StorePropertiesPITHOS;
-import eu.openminted.storage.config.Storage;
+import eu.openminted.store.StoreProperties;
+import eu.openminted.store.StorePropertiesLocal;
+import eu.openminted.store.StorePropertiesPITHOS;
+import eu.openminted.store.config.Storage;
 
 /**
  * A {@code FSConnector} builder.

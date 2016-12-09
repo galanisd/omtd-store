@@ -1,10 +1,10 @@
-package eu.openminted.storage;
+package eu.openminted.store;
 
 import java.io.InputStream;
 
-import eu.openminted.storage.fsconnector.FSConnector;
-import eu.openminted.storage.fsconnector.FSConnectorBuilder;
-import eu.openminted.storage.index.StoreIndex;
+import eu.openminted.store.fsconnector.FSConnector;
+import eu.openminted.store.fsconnector.FSConnectorBuilder;
+import eu.openminted.store.index.StoreIndex;
 
 /**
  * 

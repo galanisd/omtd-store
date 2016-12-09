@@ -1,4 +1,4 @@
-package eu.openminted.storage.config;
+package eu.openminted.store.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -6,16 +6,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
-import eu.openminted.storage.IdGenerator;
-import eu.openminted.storage.SimpleIdGenerator;
-import eu.openminted.storage.StoreProperties;
-import eu.openminted.storage.StorePropertiesLocal;
-import eu.openminted.storage.StorePropertiesPITHOS;
-import eu.openminted.storage.StoreServiceGeneric;
-import eu.openminted.storage.StoreServiceLocalDisk;
-import eu.openminted.storage.StoreServicePITHOS;
-import eu.openminted.storage.index.StoreIndex;
-import eu.openminted.storage.index.StoreIndexDefault;
+import eu.openminted.store.IdGenerator;
+import eu.openminted.store.SimpleIdGenerator;
+import eu.openminted.store.StoreProperties;
+import eu.openminted.store.StorePropertiesLocal;
+import eu.openminted.store.StorePropertiesPITHOS;
+import eu.openminted.store.StoreServiceGeneric;
+import eu.openminted.store.StoreServiceLocalDisk;
+import eu.openminted.store.StoreServicePITHOS;
+import eu.openminted.store.index.StoreIndex;
+import eu.openminted.store.index.StoreIndexDefault;
 
 @Configuration
 @PropertySource("${storeApplication.properties}")

@@ -1,4 +1,4 @@
-package eu.openminted.storage.fsconnector.debug;
+package eu.openminted.store.fsconnector.debug;
 
 
 import java.io.DataInputStream;

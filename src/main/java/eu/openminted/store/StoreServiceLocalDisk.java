@@ -1,14 +1,14 @@
-package eu.openminted.storage;
+package eu.openminted.store;
 
 import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import eu.openminted.storage.config.Storage;
-import eu.openminted.storage.index.StoreIndex;
+import eu.openminted.store.config.Storage;
+import eu.openminted.store.index.StoreIndex;
 
 /**
- * An {@link eu.openminted.storage.StoreService} implementation for local disk.
+ * An {@link eu.openminted.store.StoreService} implementation for local disk.
  * @author galanisd
  *
  */

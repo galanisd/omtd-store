@@ -1,8 +1,8 @@
-package eu.openminted.storage;
+package eu.openminted.store;
 
 import java.util.ArrayList;
 
-import eu.openminted.storage.index.StoreIndex;
+import eu.openminted.store.index.StoreIndex;
 
 /**
  * @author galanisd

@@ -1,4 +1,4 @@
-package eu.openminted.storage;
+package eu.openminted.store;
 
 public interface IdGenerator {
 	

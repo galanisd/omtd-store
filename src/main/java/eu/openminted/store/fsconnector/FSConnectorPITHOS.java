@@ -1,4 +1,4 @@
-package eu.openminted.storage.fsconnector;
+package eu.openminted.store.fsconnector;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -72,7 +72,7 @@ public class FSConnectorPITHOS implements FSConnector {
 			org.apache.hadoop.conf.Configuration conf = new org.apache.hadoop.conf.Configuration();
 			long blocksize = connector.getPithosBlockDefaultSize(workingContainer);
 			PithosPath pithosTargetPath = new PithosPath(workingContainer, relativeTarget);
-			eu.openminted.storage.fsconnector.debug.PithosOutputStream pithosOutputStream = new eu.openminted.storage.fsconnector.debug.PithosOutputStream(conf,
+			eu.openminted.store.fsconnector.debug.PithosOutputStream pithosOutputStream = new eu.openminted.store.fsconnector.debug.PithosOutputStream(conf,
 					pithosTargetPath, blocksize, 1 * 1024 * 1024);
 
 			int read = 0;
@@ -152,7 +152,7 @@ public class FSConnectorPITHOS implements FSConnector {
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
-		eu.openminted.storage.fsconnector.debug.PithosInputStream pithosInputStream = new eu.openminted.storage.fsconnector.debug.PithosInputStream(workingContainer, pathEsc);
+		eu.openminted.store.fsconnector.debug.PithosInputStream pithosInputStream = new eu.openminted.store.fsconnector.debug.PithosInputStream(workingContainer, pathEsc);
 		
 		return pithosInputStream;
 		

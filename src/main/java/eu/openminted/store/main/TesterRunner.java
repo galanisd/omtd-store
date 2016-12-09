@@ -1,4 +1,4 @@
-package eu.openminted.storage.main;
+package eu.openminted.store.main;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,11 +9,11 @@ import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import eu.openminted.storage.StoreService;
-import eu.openminted.storage.StoreServiceLocalDisk;
-import eu.openminted.storage.StoreServicePITHOS;
-import eu.openminted.storage.config.ApplicationConfig;
-import eu.openminted.storage.config.Storage;
+import eu.openminted.store.StoreService;
+import eu.openminted.store.StoreServiceLocalDisk;
+import eu.openminted.store.StoreServicePITHOS;
+import eu.openminted.store.config.ApplicationConfig;
+import eu.openminted.store.config.Storage;
 
 /**
  * @author galanisd

@@ -1,10 +1,10 @@
-package eu.openminted.storage.index;
+package eu.openminted.store.index;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * A basic implementation of {@link eu.openminted.storage.index.StoreIndex}
+ * A basic implementation of {@link eu.openminted.store.index.StoreIndex}
  * @author galanisd
  *
  */

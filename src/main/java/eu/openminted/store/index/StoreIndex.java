@@ -1,4 +1,4 @@
-package eu.openminted.storage.index;
+package eu.openminted.store.index;
 
 import java.util.ArrayList;
 

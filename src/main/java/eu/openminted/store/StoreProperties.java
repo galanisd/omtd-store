@@ -1,4 +1,4 @@
-package eu.openminted.storage;
+package eu.openminted.store;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

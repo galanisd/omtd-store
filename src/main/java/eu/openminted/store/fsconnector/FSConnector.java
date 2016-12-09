@@ -1,4 +1,4 @@
-package eu.openminted.storage.fsconnector;
+package eu.openminted.store.fsconnector;
 
 import java.io.InputStream;
 

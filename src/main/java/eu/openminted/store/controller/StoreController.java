@@ -1,4 +1,4 @@
-package eu.openminted.storage.controller;
+package eu.openminted.store.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import eu.openminted.storage.StoreService;
+import eu.openminted.store.StoreService;
 
 @Controller
-public class StorageController {
+public class StoreController {
 
     private final StoreService storageService;
 
     @Autowired
-    public StorageController(StoreService storageService) {
+    public StoreController(StoreService storageService) {
         this.storageService = storageService;
     }
     

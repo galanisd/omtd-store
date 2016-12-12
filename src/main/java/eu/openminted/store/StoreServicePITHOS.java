@@ -3,6 +3,7 @@ package eu.openminted.store;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import eu.openminted.store.config.Storage;
+import eu.openminted.store.config.StorePropertiesPITHOS;
 import eu.openminted.store.idgenerator.IdGenerator;
 import eu.openminted.store.index.StoreIndex;
 

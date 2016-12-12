@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import eu.openminted.store.config.Storage;
+import eu.openminted.store.config.StorePropertiesLocal;
 import eu.openminted.store.idgenerator.IdGenerator;
 import eu.openminted.store.index.StoreIndex;
 

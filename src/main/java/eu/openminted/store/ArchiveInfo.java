@@ -2,6 +2,10 @@ package eu.openminted.store;
 
 import java.util.List;
 
+/**
+ * @author galanisd
+ *
+ */
 class ArchiveInfo {
 	
     private String id;

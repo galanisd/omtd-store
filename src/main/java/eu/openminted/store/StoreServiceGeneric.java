@@ -2,6 +2,7 @@ package eu.openminted.store;
 
 import java.io.InputStream;
 
+import eu.openminted.store.config.StoreProperties;
 import eu.openminted.store.fsconnector.FSConnector;
 import eu.openminted.store.fsconnector.FSConnectorBuilder;
 import eu.openminted.store.idgenerator.IdGenerator;

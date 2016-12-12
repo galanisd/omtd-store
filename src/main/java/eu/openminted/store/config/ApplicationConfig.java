@@ -6,9 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
-import eu.openminted.store.StoreProperties;
-import eu.openminted.store.StorePropertiesLocal;
-import eu.openminted.store.StorePropertiesPITHOS;
 import eu.openminted.store.StoreServiceGeneric;
 import eu.openminted.store.StoreServiceLocalDisk;
 import eu.openminted.store.StoreServicePITHOS;

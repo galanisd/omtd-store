@@ -26,15 +26,14 @@ public class Starter {
 		
 		// If required load default applications properties.
 		String appPropFile = System.getProperty(applicationProperties);
-		if(appPropFile == null){
-						
+		if(appPropFile == null){						
 			Properties props = new Properties();						
 			try{								
 				props.load(ApplicationBoot.class.getResourceAsStream(defaultApplicationProperties));
 				log.info("==> Loading default config:" + props.getProperty(storagePropertiesFile));
 				System.setProperty(applicationProperties, props.getProperty(storagePropertiesFile));				
 			}catch(Exception e){
-				e.printStackTrace();
+				log.info("ERROR:", e);
 			}								
 		}else{
 			log.info("==> Config:" + System.getProperty(applicationProperties));

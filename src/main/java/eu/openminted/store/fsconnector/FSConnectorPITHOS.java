@@ -41,13 +41,13 @@ public class FSConnectorPITHOS implements FSConnector {
 		try {
 			this.pithosRoot = pithosRoot;
 			this.workingContainer = pithosRoot.substring(PITHOSURI.length(), pithosRoot.length()-1);
-			log.info("workingContainer:" + workingContainer);
+			log.debug("workingContainer:" + workingContainer);
 			connector = new HadoopPithosConnector(pithosUrl, pithosToken, uuid);
 			// workaround.
 			PithosFileSystem.setHadoopPithosConnector(connector);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.debug("Error on initialization", e);
 		}
 	}
 
@@ -58,7 +58,7 @@ public class FSConnectorPITHOS implements FSConnector {
 		log.info("final:" + relativePath);		
 		resultCode = connector.uploadFileToPithos(workingContainer, relativePath, true);
 
-		log.info("resultCode:" + resultCode);
+		log.debug("resultCode:" + resultCode);
 		if (resultCode != null && resultCode.equals("201")) {
 			return true;
 		} else {
@@ -118,7 +118,7 @@ public class FSConnectorPITHOS implements FSConnector {
 		String[] filePaths = result.split("\\s+");
 		for (String file : filePaths) {
 			result = result + file + "\n";			
-			log.info("DELETE:" + file + " " + deleteFile(file));
+			log.debug("DELETE:" + file + " " + deleteFile(file));
 		}
 
 		return true;
@@ -132,9 +132,9 @@ public class FSConnectorPITHOS implements FSConnector {
 
 	@Override
 	public boolean deleteFile(String fileName) {
-		log.info("deleting:" + fileName);
+		log.debug("deleting:" + fileName);
 		String resultCode = connector.deletePithosObject(workingContainer, fileName);
-		log.info("resultCode:" + resultCode);
+		log.debug("resultCode:" + resultCode);
 
 		if (resultCode.contains("204")) {
 			return true;
@@ -145,16 +145,16 @@ public class FSConnectorPITHOS implements FSConnector {
 	@Override
 	public InputStream download(String targetFileName) {
 		String target = targetFileName.substring(pithosRoot.length());
-		log.info("target:" + target);
+		log.debug("target:" + target);
 		PithosPath pithosPath = new PithosPath(workingContainer, target);
 		log.info("parent:" + pithosPath.getParent());
 		String pathEsc = null;
 
 		try {
 			pathEsc = Utils.urlEscape(null, null, pithosPath.getObjectAbsolutePath(), null);
-			log.info("escape:" + pathEsc);
+			log.debug("escape:" + pathEsc);
 		} catch (URISyntaxException e) {
-			e.printStackTrace();
+			log.debug("Error on downloading", e);
 		}
 		eu.openminted.store.fsconnector.debug.PithosInputStream pithosInputStream = new eu.openminted.store.fsconnector.debug.PithosInputStream(workingContainer, pathEsc);
 		

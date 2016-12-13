@@ -2,13 +2,11 @@ package eu.openminted.store.fsconnector;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -57,6 +55,7 @@ public class FSConnectorLocal implements FSConnector{
 			Path path = Paths.get(fileName);
 			return path.toFile().delete();
 		}catch(Exception e){
+			log.debug("ERROR:", e);
 			return false;
 		}
 	}
@@ -118,9 +117,10 @@ public class FSConnectorLocal implements FSConnector{
 		
 		try{
 			Path path = Paths.get(targetFileName);
+			log.info("Opened FileInputStream:" + path.toFile().getAbsolutePath());
 			fis = new FileInputStream(path.toFile());					
 		}catch(Exception e){
-			e.printStackTrace();
+			log.debug("Error on downloading", e);
 		}
 		
 		return fis;		
@@ -133,6 +133,7 @@ public class FSConnectorLocal implements FSConnector{
 			try{
 				FileUtils.forceDelete(new File(folder));
 			}catch(Exception e){
+				log.debug("ERROR:", e);
 				status = false;
 			}			
 			return status;

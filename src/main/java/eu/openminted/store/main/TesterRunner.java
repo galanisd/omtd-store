@@ -5,7 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-import org.apache.commons.compress.utils.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -14,8 +15,6 @@ import eu.openminted.store.StoreServiceLocalDisk;
 import eu.openminted.store.StoreServicePITHOS;
 import eu.openminted.store.config.ApplicationConfig;
 import eu.openminted.store.config.Store;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author galanisd

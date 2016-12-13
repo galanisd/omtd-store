@@ -15,19 +15,25 @@ public class ApplicationBoot {
 	
 	public static void main(String args[]){
 		
-		StoreRESTClient client = new StoreRESTClient("http://localhost:8080/");
+		StoreRESTClient store = new StoreRESTClient("http://localhost:8080/");
 		
-		String result = client.deleteAll();
-		log.info("Delete all" + result);
+		//String result = client.deleteAll();
+		//log.info("Delete all" + result);
 		
-		String archiveID = client.createArchive();
+		String archiveID = store.createArchive();
 		log.info("Create Archive:" + archiveID);
 						
-		File f = new File("C:/Users/galanisd/Desktop/Data/_AppTestData/DataForUpload/BILI_TMX_886_el-en.txt.zip"); 
-		client.updload(f, archiveID, f.getName());
+		//File f = new File("C:/Users/galanisd/Desktop/Data/_AppTestData/DataForUpload/BILI_TMX_886_el-en.txt.zip");
+		File f = new File("C:/Users/galanisd/Desktop/Data/OpenAIRE/openairemetadata/stelios_metadata/authors.json");
+		//File f = new File("C:/Users/galanisd/Desktop/Data/OpenAIRE/openairemetadata/stelios_metadata/authorspubs.json");
+		
+		store.updload(f, archiveID, f.getName());
 				
 		log.info("List Files");
-		log.info(client.listFiles());
+		log.info(store.listFiles());
+		
+		log.info("Download");
+		store.download(archiveID + "/" + f.getName(), "C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + f.getName());
 		
 	}
 	

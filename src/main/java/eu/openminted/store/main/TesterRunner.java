@@ -13,7 +13,9 @@ import eu.openminted.store.StoreService;
 import eu.openminted.store.StoreServiceLocalDisk;
 import eu.openminted.store.StoreServicePITHOS;
 import eu.openminted.store.config.ApplicationConfig;
-import eu.openminted.store.config.Storage;
+import eu.openminted.store.config.Store;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author galanisd
@@ -21,9 +23,11 @@ import eu.openminted.store.config.Storage;
  */
 public class TesterRunner {
 
-	int scenario = -1;
-	long start = 0;
-	StoreService store = null;
+	private static final Logger log = LoggerFactory.getLogger(TesterRunner.class);
+	
+	private int scenario = -1;
+	private long start = 0;
+	private StoreService store = null;
 
 	/**
 	 * Constructor.
@@ -31,12 +35,12 @@ public class TesterRunner {
 	 */
 	public TesterRunner(String t) {
 		
-		if (t.equalsIgnoreCase(Storage.LOCAL)) {
+		if (t.equalsIgnoreCase(Store.LOCAL)) {
 			System.setProperty("storeApplicationCfg",
 					"classpath:/eu/openminted/store/config/configLocal.properties");
 			ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 			store = (StoreService) ctx.getBean(StoreServiceLocalDisk.class);
-		} else if (t.equalsIgnoreCase(Storage.PITHOS)) {
+		} else if (t.equalsIgnoreCase(Store.PITHOS)) {
 			System.setProperty("storeApplicationCfg",
 					"classpath:/eu/openminted/store/config/configPITHOS.properties");
 			ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
@@ -72,10 +76,10 @@ public class TesterRunner {
 			listFiles();
 						
 			long end = System.currentTimeMillis();
-			System.out.println("===Summary===");
-			System.out.println("Duration");
-			System.out.println("Milliseconds:" + (end - start));
-			System.out.println("Seconds:" + ((float) (end - start)) / 1000);
+			log.info("===Summary===");
+			log.info("Duration");
+			log.info("Milliseconds:" + (end - start));
+			log.info("Seconds:" + ((float) (end - start)) / 1000);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,9 +91,9 @@ public class TesterRunner {
 	 * @throws Exception
 	 */
 	public void listAllFilesAndThenDeleteAll() throws Exception{
-		System.out.println("Scenario:" + (++scenario));
-		System.out.println("\n\n\n" + "FILE LIST");
-		System.out.println(store.listAllFiles());			
+		log.info("Scenario:" + (++scenario));
+		log.info("\n\n\n" + "FILE LIST");
+		log.info(store.listAllFiles());			
 		store.deleteAll();
 	}
 	
@@ -99,14 +103,14 @@ public class TesterRunner {
 	 * @throws Exception
 	 */
 	public void createAHierarchyOfArchivesAndStoreAFileInTheLastOne(File sampleAnnotatedFile) throws Exception{
-		System.out.println("Scenario:" + (++scenario));
+		log.info("Scenario:" + (++scenario));
 		// Creating a hierarchy of archives.
 		String level0ArchId = store.createArchive();
-		System.out.println("Created archive level 0:" + level0ArchId);
+		log.info("Created archive level 0:" + level0ArchId);
 		String level1ArchId = store.createArchive(level0ArchId, "");
-		System.out.println("Created archive level 1:" + level1ArchId);
+		log.info("Created archive level 1:" + level1ArchId);
 		String level2ArchId = store.createArchive(level1ArchId, "");
-		System.out.println("Created archive level 2:" + level2ArchId);
+		log.info("Created archive level 2:" + level2ArchId);
 		// Store a file in the last archive
 		store.storeFile(level2ArchId, new FileInputStream(sampleAnnotatedFile), sampleAnnotatedFile.getName());
 	}
@@ -117,7 +121,7 @@ public class TesterRunner {
 	 * @throws Exception
 	 */
 	public void createArchiveWithAFolderThatContainsAPDFFile(File samplePDFFile) throws Exception{
-		System.out.println("Scenario:" + (++scenario));
+		log.info("Scenario:" + (++scenario));
 		// Creating an archive.
 		String archId = store.createArchive();
 		// Store a PDF
@@ -130,7 +134,7 @@ public class TesterRunner {
 	 * @throws Exception
 	 */
 	public void createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(File sampleAnnotatedFile) throws Exception{
-		System.out.println("Scenario:" + (++scenario));
+		log.info("Scenario:" + (++scenario));
 		// Creating an archive.
 		String archId = store.createArchive();
 		// Store an annotation file.
@@ -145,7 +149,7 @@ public class TesterRunner {
 	 * @throws Exception
 	 */
 	public void createArchiveWithLargeFileAndDownloadTheFile() throws Exception{
-		System.out.println("Scenario:" + (++scenario));
+		log.info("Scenario:" + (++scenario));
 		// Creating an archive with a big file.
 		String archId = store.createArchive();
 		// File bigFile = new
@@ -157,7 +161,7 @@ public class TesterRunner {
 		// File bigFile = new
 		// File("C:/Users/galanisd/Desktop/Data/OpenAIRE/openairemetadata/stelios_metadata/keywords.json");
 		boolean success = store.storeFile(archId, new FileInputStream(bigFile), bigFile.getName());
-		System.out.println(" uploaded:" + success + " " + bigFile.getAbsolutePath());	
+		log.info(" uploaded:" + success + " " + bigFile.getAbsolutePath());	
 		InputStream is = store.downloadFile(archId + "/" + bigFile.getName());
 		FileOutputStream fos = new FileOutputStream("C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + bigFile.getName() + ".txt");
 		TesterRunner.store(is, fos);
@@ -171,7 +175,7 @@ public class TesterRunner {
 	 */
 	public void createArchiveWithManyFilesAndDownloadEachOfThem() throws Exception{
 		
-		System.out.println("Scenario:" + (++scenario));
+		log.info("Scenario:" + (++scenario));
 		// Creating an archive with many files.
 		String archId = store.createArchive();
 		// File inputDir = new
@@ -186,16 +190,16 @@ public class TesterRunner {
 		// int threshold = 1000;
 		for (File fileForUpload : inFiles) {
 			if (fileIndex < maxNumOfFilesToBeUploaded) {
-				System.out.println("File to be uploaded:" + fileForUpload.getName());
+				log.info("File to be uploaded:" + fileForUpload.getName());
 				// long x = System.currentTimeMillis();
 				String dest = "someFiles/" + fileIndex + ".somefile";
 				boolean successFileUp = store.storeFile(archId, new FileInputStream(fileForUpload), dest);
 				// long y = System.currentTimeMillis();
-				System.out.println(fileIndex + " Upload status:" + successFileUp + " size:" + fileForUpload.length()
+				log.info(fileIndex + " Upload status:" + successFileUp + " size:" + fileForUpload.length()
 						+ " Local path" + fileForUpload.getAbsolutePath());
-				// System.out.println("Duration:" + ((y-x)/1000) +);
+				// log.info("Duration:" + ((y-x)/1000) +);
 				long end = System.currentTimeMillis();
-				System.out.println("Seconds so far:" + ((float) (end - start)) / 1000);					
+				log.info("Seconds so far:" + ((float) (end - start)) / 1000);					
 				
 				InputStream is = store.downloadFile(archId + "/" + dest);						
 				FileOutputStream fos = new FileOutputStream("C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + fileForUpload.getName() + ".txt");
@@ -211,9 +215,9 @@ public class TesterRunner {
 	 * @throws Exception
 	 */
 	public void listFiles() throws Exception{
-		System.out.println("Scenario:" + (++scenario));
-		System.out.println("\n\n\n" + "FILE LIST");
-		System.out.println(store.listAllFiles());
+		log.info("Scenario:" + (++scenario));
+		log.info("\n\n\n" + "FILE LIST");
+		log.info(store.listAllFiles());
 	}
 	
 	public static void store(InputStream is, FileOutputStream fos){
@@ -234,7 +238,7 @@ public class TesterRunner {
 	public static void main(String args[]){
 		
 		String t = "";
-		t = Storage.PITHOS;
+		t = Store.PITHOS;
 		//t = Storage.LOCAL;
 		
 		TesterRunner runner = new TesterRunner(t);

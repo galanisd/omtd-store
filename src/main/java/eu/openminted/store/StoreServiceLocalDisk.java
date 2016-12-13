@@ -4,7 +4,7 @@ import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import eu.openminted.store.config.Storage;
+import eu.openminted.store.config.Store;
 import eu.openminted.store.config.StorePropertiesLocal;
 import eu.openminted.store.idgenerator.IdGenerator;
 import eu.openminted.store.index.StoreIndex;
@@ -24,7 +24,7 @@ public class StoreServiceLocalDisk extends StoreServiceGeneric{
 	 */
 	@Autowired
 	public StoreServiceLocalDisk(StorePropertiesLocal storageProperties, IdGenerator idGen, StoreIndex storageIndex){		
-		super(Storage.LOCAL, storageProperties, idGen, storageIndex);		 
+		super(Store.LOCAL, storageProperties, idGen, storageIndex);		 
 	}		
 	
 }

@@ -1,5 +1,6 @@
 package eu.openminted.store;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 
 import eu.openminted.store.config.StoreProperties;
@@ -15,6 +16,8 @@ import eu.openminted.store.index.StoreIndex;
  */
 public class StoreServiceGeneric implements StoreService{
 		
+	private static final Logger log = LoggerFactory.getLogger(StoreServiceGeneric.class);
+	
 	private String type;
 	protected StoreProperties storageProperties;
 	protected IdGenerator idGen;
@@ -70,7 +73,7 @@ public class StoreServiceGeneric implements StoreService{
 		String archiveId = idGen.generateId();
 		// Create Folder.
 		String destinationFolderAbsolutePath = Helper.getAbsolutePathForArchive(storageIndex, storageProperties.getStorageRoot(), archiveId);
-		System.out.println(destinationFolderAbsolutePath.toString());
+		log.info(destinationFolderAbsolutePath.toString());
 		boolean creationStatus = connector.makeFolder(destinationFolderAbsolutePath);
 		// Return archiveId.
     	if(creationStatus){    		
@@ -89,7 +92,7 @@ public class StoreServiceGeneric implements StoreService{
 		// Create Folder.
 		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storageIndex, storageProperties.getStorageRoot(), parentArchiveId);
 		String destinationFolderAbsolutePath = Helper.appendDirToPath(destinationFolderAbsolutePathForParent, archiveId);		
-		System.out.println(destinationFolderAbsolutePath.toString());
+		log.info(destinationFolderAbsolutePath.toString());
 		boolean creationStatus = connector.makeFolder(destinationFolderAbsolutePath);
 		// Return archiveId.
     	if(creationStatus){

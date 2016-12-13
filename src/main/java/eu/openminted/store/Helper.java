@@ -3,6 +3,8 @@ package eu.openminted.store;
 import java.util.ArrayList;
 
 import eu.openminted.store.index.StoreIndex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author galanisd
@@ -10,8 +12,10 @@ import eu.openminted.store.index.StoreIndex;
  */
 public class Helper {
 
-	public static String separator = "/";
+	private static final Logger log = LoggerFactory.getLogger(Helper.class);
 	
+	public static String separator = "/";
+		
 	public static String getAbsolutePathForArchive(StoreIndex storageIndex, String storageRoot, String archiveId){
 		
 		ArrayList<String> parents = storageIndex.getParentArchives(archiveId);

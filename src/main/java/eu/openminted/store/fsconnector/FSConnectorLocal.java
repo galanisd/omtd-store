@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * 
@@ -18,7 +21,8 @@ import org.apache.commons.io.FileUtils;
  *
  */
 public class FSConnectorLocal implements FSConnector{
-
+	
+	private static final Logger log = LoggerFactory.getLogger(FSConnectorLocal.class);	
 	private String localRoot;
 		
 	public FSConnectorLocal(String localRoot) {
@@ -98,7 +102,7 @@ public class FSConnectorLocal implements FSConnector{
 				boolean success = deleteFolder(file.getAbsolutePath(), true);
 				if(!success){
 					status = false;
-					System.out.println("failed deleting:" + file.getAbsolutePath());
+					log.info("failed deleting:" + file.getAbsolutePath());
 				}
 			}else{
 				status = file.delete();

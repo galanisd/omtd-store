@@ -27,7 +27,7 @@ public class ApplicationConfig {
 		StoreServiceGeneric storageService = null;		
 		String type = environment.getProperty("storage.type");
 				
-		if(type.equalsIgnoreCase(Storage.PITHOS)){
+		if(type.equalsIgnoreCase(Store.PITHOS)){
 			// Read PITHOS Storage properties.
 			StorePropertiesPITHOS sp = new StorePropertiesPITHOS(); 				
 			sp.setStorageRoot(environment.getProperty("storage.storageRoot"));
@@ -36,7 +36,7 @@ public class ApplicationConfig {
 			sp.setPithosUUID(environment.getProperty("storage.pithosUUID"));
 			// Init storageService
 			storageService = new StoreServicePITHOS(sp, getIdGenerator(), getStorageIndex());
-		}else if(type.equalsIgnoreCase(Storage.LOCAL)){
+		}else if(type.equalsIgnoreCase(Store.LOCAL)){
 			// Read Local Storage properties.
 			StorePropertiesLocal sp = new StorePropertiesLocal();			
 			sp.setStorageRoot(environment.getProperty("storage.storageRoot"));

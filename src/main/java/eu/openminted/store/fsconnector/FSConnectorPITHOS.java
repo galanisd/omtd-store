@@ -12,6 +12,8 @@ import gr.grnet.escience.fs.pithos.PithosOutputStream;
 import gr.grnet.escience.fs.pithos.PithosPath;
 //import eu.openminted.storage.fsconnector.debug.HadoopPithosConnector;
 import gr.grnet.escience.pithos.rest.HadoopPithosConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -19,7 +21,9 @@ import gr.grnet.escience.pithos.rest.HadoopPithosConnector;
  *
  */
 public class FSConnectorPITHOS implements FSConnector {
-
+	
+	private static final Logger log = LoggerFactory.getLogger(FSConnectorPITHOS.class);
+	
 	private HadoopPithosConnector connector;
 	private String workingContainer = "";
 	public final String PITHOSURI = "pithos://"; 			
@@ -37,7 +41,7 @@ public class FSConnectorPITHOS implements FSConnector {
 		try {
 			this.pithosRoot = pithosRoot;
 			this.workingContainer = pithosRoot.substring(PITHOSURI.length(), pithosRoot.length()-1);
-			System.out.println("workingContainer:" + workingContainer);
+			log.info("workingContainer:" + workingContainer);
 			connector = new HadoopPithosConnector(pithosUrl, pithosToken, uuid);
 			// workaround.
 			PithosFileSystem.setHadoopPithosConnector(connector);
@@ -49,12 +53,12 @@ public class FSConnectorPITHOS implements FSConnector {
 
 	public boolean makeFolder(String fileName) {
 		String resultCode = "-1";
-		System.out.println("uploading:" + fileName);
+		log.info("uploading:" + fileName);
 		String relativePath = fileName.substring(pithosRoot.length(), fileName.length()-1);
-		System.out.println("final:" + relativePath);		
+		log.info("final:" + relativePath);		
 		resultCode = connector.uploadFileToPithos(workingContainer, relativePath, true);
 
-		System.out.println("resultCode:" + resultCode);
+		log.info("resultCode:" + resultCode);
 		if (resultCode != null && resultCode.equals("201")) {
 			return true;
 		} else {
@@ -114,7 +118,7 @@ public class FSConnectorPITHOS implements FSConnector {
 		String[] filePaths = result.split("\\s+");
 		for (String file : filePaths) {
 			result = result + file + "\n";			
-			System.out.println("DELETE:" + file + " " + deleteFile(file));
+			log.info("DELETE:" + file + " " + deleteFile(file));
 		}
 
 		return true;
@@ -128,9 +132,9 @@ public class FSConnectorPITHOS implements FSConnector {
 
 	@Override
 	public boolean deleteFile(String fileName) {
-		System.out.println("deleting:" + fileName);
+		log.info("deleting:" + fileName);
 		String resultCode = connector.deletePithosObject(workingContainer, fileName);
-		System.out.println("resultCode:" + resultCode);
+		log.info("resultCode:" + resultCode);
 
 		if (resultCode.contains("204")) {
 			return true;
@@ -141,14 +145,14 @@ public class FSConnectorPITHOS implements FSConnector {
 	@Override
 	public InputStream download(String targetFileName) {
 		String target = targetFileName.substring(pithosRoot.length());
-		System.out.println("target:" + target);
+		log.info("target:" + target);
 		PithosPath pithosPath = new PithosPath(workingContainer, target);
-		System.out.println("parent:" + pithosPath.getParent());
+		log.info("parent:" + pithosPath.getParent());
 		String pathEsc = null;
 
 		try {
 			pathEsc = Utils.urlEscape(null, null, pithosPath.getObjectAbsolutePath(), null);
-			System.out.println("escape:" + pathEsc);
+			log.info("escape:" + pathEsc);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}

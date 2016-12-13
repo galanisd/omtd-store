@@ -1,31 +1,33 @@
 package eu.openminted.store.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import eu.openminted.store.StoreException;
 import eu.openminted.store.StoreService;
 
+/**
+ * A Spring Controller for the Store Service.
+ * @author galanisd
+ *
+ */
 @Controller
 public class StoreController {
 
+	private static final Logger log = LoggerFactory.getLogger(StoreController.class);
+	
     private final StoreService storeService;
 
     @Autowired
@@ -35,26 +37,25 @@ public class StoreController {
     
     @RequestMapping(value="/store/createArchive", method=RequestMethod.GET)
     @ResponseBody
-    public String createArchive(){    	       	    	
+    public String createArchive(){
     	return storeService.createArchive() + "";    
     }
-
     
     @RequestMapping(value="/store/listFiles", method=RequestMethod.GET)
     @ResponseBody
-    public String listFiles(){    	       	    	
+    public String listFiles(){
     	return storeService.listAllFiles();     
     }
     
     @RequestMapping(value="/store/deleteAll", method=RequestMethod.GET)
     @ResponseBody
-    public String deleteAll(){    	       	    	
+    public String deleteAll(){
     	return storeService.deleteAll() + "";    
     }
     
-    @RequestMapping(value="/storage/downloadFile", method=RequestMethod.POST)
+    @RequestMapping(value="/store/downloadFile", method=RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Resource> downloadFile(@RequestParam("fileName") String fileName){    	
+    public ResponseEntity<Resource> downloadFile(@RequestParam("fileName") String fileName){
        	    	
         InputStream is = storeService.downloadFile(fileName);
         Resource resource  = null;

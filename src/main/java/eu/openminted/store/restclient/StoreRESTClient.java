@@ -1,21 +1,13 @@
 package eu.openminted.store.restclient;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.annotation.Resource;
-
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -80,8 +72,7 @@ public class StoreRESTClient {
 		requestFactory.setBufferRequestBody(false);
 		restTemplate.setRequestFactory(requestFactory);
 		
-		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map,
-				headers);	
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
 		restTemplate.postForEntity(endpoint + "/store/uploadFile/", requestEntity, String.class);
 		
 		return "";

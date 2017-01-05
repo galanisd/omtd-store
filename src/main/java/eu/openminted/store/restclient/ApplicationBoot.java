@@ -33,7 +33,7 @@ public class ApplicationBoot {
 		log.info(store.listFiles());
 		
 		log.info("Download");
-		store.download(archiveID + "/" + f.getName(), "C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + f.getName());
+		//store.download(archiveID + "/" + f.getName(), "C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + f.getName());
 		
 	}
 	

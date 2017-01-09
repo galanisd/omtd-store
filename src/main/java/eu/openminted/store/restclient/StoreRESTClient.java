@@ -35,7 +35,6 @@ public class StoreRESTClient {
 
 	/**
 	 * Constructor.
-	 * 
 	 * @param endpoint
 	 */
 	public StoreRESTClient(String endpoint) {
@@ -43,21 +42,40 @@ public class StoreRESTClient {
 		this.endpoint = endpoint;
 	}
 
+	/**
+	 * List all files stored in the Store.
+	 * @return
+	 */
 	public String listFiles() {
 		String response = restTemplate.getForObject(endpoint + "/store/listFiles/", String.class);
 		return response;
 	}
 
-	public String createArchive() {
-		String response = restTemplate.getForObject(endpoint + "/store/createArchive/", String.class);
-		return response;
-	}
-
+	/**
+	 * Deletes all files in the Store.
+	 * @return
+	 */
 	public String deleteAll() {
 		String response = restTemplate.getForObject(endpoint + "/store/deleteAll/", String.class);
 		return response;
 	}
 	
+	/**
+	 * Creates an archive
+	 * @return the if of the archive.
+	 */
+	public String createArchive() {
+		String response = restTemplate.getForObject(endpoint + "/store/createArchive/", String.class);
+		return response;
+	}
+	
+	/**
+	 * Uploads a file in a archive.
+	 * @param file
+	 * @param archiveID
+	 * @param fileName
+	 * @return
+	 */
 	public String updload(File file, String archiveID, String fileName) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add("file", new FileSystemResource(file));
@@ -73,11 +91,18 @@ public class StoreRESTClient {
 		restTemplate.setRequestFactory(requestFactory);
 		
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
-		restTemplate.postForEntity(endpoint + "/store/uploadFile/", requestEntity, String.class);
+		ResponseEntity<String> st = restTemplate.postForEntity(endpoint + "/store/uploadFile/", requestEntity, String.class);
 		
-		return "";
+		return st.getBody();
 	}
 	
+	
+	/**
+	 * Downloads a file (TO BE COMPLETED).
+	 * @param fileName
+	 * @param target
+	 * @return
+	 */
 	public boolean download(String fileName, String target) {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		map.add("fileName", fileName);
@@ -86,23 +111,19 @@ public class StoreRESTClient {
 		try{
 			output = new FileOutputStream(target);
 		}catch(Exception e){
-			e.printStackTrace();
+			log.debug("ERROR", e);
 		}
 		
-		try{
-			
+		try{			
 			final ResponseExtractor<ResponseEntity<File>> responseExtractor =
 			        new ResponseExtractor<ResponseEntity<File>>() {
-
 			    // (2)
 			    @Override
 			    public ResponseEntity<File> extractData(ClientHttpResponse response)
 			            throws IOException {
 
 			        File rcvFile = File.createTempFile("rcvFile", "zip");
-
 			        FileCopyUtils.copy(response.getBody(), new FileOutputStream(rcvFile));
-
 			        return ResponseEntity.status(response.getStatusCode())
 			                .headers(response.getHeaders()).body(rcvFile);
 			    }
@@ -125,7 +146,7 @@ public class StoreRESTClient {
 					output.flush();
 				}
 			}catch(Exception e){
-				e.printStackTrace();
+				log.debug("ERROR", e);
 			}
 
 		}catch(Exception e){
@@ -133,8 +154,7 @@ public class StoreRESTClient {
 			return false;
 		}
 		
-		return true;
-		
+		return true;		
 	}
 	
 	

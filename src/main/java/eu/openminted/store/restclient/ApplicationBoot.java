@@ -23,11 +23,13 @@ public class ApplicationBoot {
 		String archiveID = store.createArchive();
 		log.info("Create Archive:" + archiveID);
 						
+		String subArchiveId = store.createSubArchive(archiveID, "authors");
+		
 		//File f = new File("C:/Users/galanisd/Desktop/Data/_AppTestData/DataForUpload/BILI_TMX_886_el-en.txt.zip");
 		File f = new File("C:/Users/galanisd/Desktop/Data/OpenAIRE/openairemetadata/stelios_metadata/authors.json");
 		//File f = new File("C:/Users/galanisd/Desktop/Data/OpenAIRE/openairemetadata/stelios_metadata/authorspubs.json");
 		
-		store.updload(f, archiveID, f.getName());
+		store.updload(f, subArchiveId, f.getName());
 				
 		log.info("List Files");
 		log.info(store.listFiles());

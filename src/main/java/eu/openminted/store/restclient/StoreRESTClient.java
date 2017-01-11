@@ -62,11 +62,28 @@ public class StoreRESTClient {
 	
 	/**
 	 * Creates an archive
-	 * @return the if of the archive.
+	 * @return the id of the archive.
 	 */
 	public String createArchive() {
 		String response = restTemplate.getForObject(endpoint + "/store/createArchive/", String.class);
 		return response;
+	}
+	
+	/**
+	 * Creates an subarchive
+	 * @return the id of the subarchive.
+	 */
+	public String createSubArchive(String archiveID, String archive) {
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		map.add("archiveID", archiveID);
+		map.add("archiveName", archive);
+
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
+		ResponseEntity<String> st = restTemplate.postForEntity(endpoint + "/store/createSubArchive/", requestEntity, String.class);
+		return st.getBody();
 	}
 	
 	/**

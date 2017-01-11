@@ -50,10 +50,20 @@ public class StoreController {
     public String createArchive(){
     	return storeService.createArchive() + "";    
     }
+
+    /**
+     * Creates a subArchive under a given archive.
+     * @return
+     */
+    @RequestMapping(value="/store/createSubArchive", method=RequestMethod.POST)
+    @ResponseBody
+    public String createSubArchive(@RequestParam("archiveID") String archiveId, @RequestParam("archiveName") String archiveName){
+    	return storeService.createArchive(archiveId, archiveName) + "";    
+    }
     
     /**
      * List files
-     * @return
+     * @return a list of files.
      */
     @RequestMapping(value="/store/listFiles", method=RequestMethod.GET)
     @ResponseBody
@@ -63,7 +73,7 @@ public class StoreController {
     
     /**
      * Delete all files.
-     * @return
+     * @return action status
      */
     @RequestMapping(value="/store/deleteAll", method=RequestMethod.GET)
     @ResponseBody
@@ -104,7 +114,7 @@ public class StoreController {
      * @param archiveId
      * @param fileName
      * @param file
-     * @return
+     * @return action status.
      */
     @RequestMapping(value="/store/uploadFile", method=RequestMethod.POST)
     @ResponseBody

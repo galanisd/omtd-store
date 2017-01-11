@@ -88,7 +88,7 @@ public class StoreServiceGeneric implements StoreService{
 		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
 		
 		// Get new archive id.
-		String archiveId = idGen.generateId();
+		String archiveId = name;
 		// Create Folder.
 		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storageIndex, storageProperties.getStorageRoot(), parentArchiveId);
 		String destinationFolderAbsolutePath = Helper.appendDirToPath(destinationFolderAbsolutePathForParent, archiveId);		
@@ -96,8 +96,8 @@ public class StoreServiceGeneric implements StoreService{
 		boolean creationStatus = connector.makeFolder(destinationFolderAbsolutePath);
 		// Return archiveId.
     	if(creationStatus){
-    		storageIndex.addChildArchive(parentArchiveId, archiveId);
-    		return archiveId;    		
+    		//storageIndex.addChildArchive(parentArchiveId, archiveId);
+    		return parentArchiveId + "/" + archiveId;    		
     	}else{
     		return null;
     	}

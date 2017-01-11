@@ -106,9 +106,9 @@ public class TesterRunner {
 		// Creating a hierarchy of archives.
 		String level0ArchId = store.createArchive();
 		log.info("Created archive level 0:" + level0ArchId);
-		String level1ArchId = store.createArchive(level0ArchId, "");
+		String level1ArchId = store.createArchive(level0ArchId, "level1");
 		log.info("Created archive level 1:" + level1ArchId);
-		String level2ArchId = store.createArchive(level1ArchId, "");
+		String level2ArchId = store.createArchive(level1ArchId, "level2");
 		log.info("Created archive level 2:" + level2ArchId);
 		// Store a file in the last archive
 		store.storeFile(level2ArchId, new FileInputStream(sampleAnnotatedFile), sampleAnnotatedFile.getName());
@@ -237,8 +237,8 @@ public class TesterRunner {
 	public static void main(String args[]){
 		
 		String t = "";
-		t = Store.PITHOS;
-		//t = Storage.LOCAL;
+		//t = Store.PITHOS;
+		t = Store.LOCAL;
 		
 		TesterRunner runner = new TesterRunner(t);
 		runner.executeTests();					 			 

@@ -43,7 +43,7 @@ public class StoreRESTClient {
 	}
 
 	/**
-	 * List all files stored in the Store.
+	 * List all files of the Store.
 	 * @return
 	 */
 	public String listFiles() {
@@ -52,7 +52,7 @@ public class StoreRESTClient {
 	}
 
 	/**
-	 * Deletes all files in the Store.
+	 * Delete all files in the Store.
 	 * @return
 	 */
 	public String deleteAll() {
@@ -111,8 +111,7 @@ public class StoreRESTClient {
 		ResponseEntity<String> st = restTemplate.postForEntity(endpoint + "/store/uploadFile/", requestEntity, String.class);
 		
 		return st.getBody();
-	}
-	
+	}	
 	
 	/**
 	 * Downloads a file (TO BE COMPLETED).

@@ -81,6 +81,36 @@ public class StoreController {
     	return storeService.deleteAll() + "";    
     }
     
+    /**
+     * Delete archive.
+     * @return action status
+     */
+    @RequestMapping(value="/store/deleteArchive", method=RequestMethod.POST)
+    @ResponseBody
+    public String deleteArhive(@RequestParam("archiveID") String archiveId){
+    	return storeService.deleteArchive(archiveId, true) + "";    
+    }    
+    
+    /**
+     * Upload file.
+     * @param archiveId
+     * @param fileName
+     * @param file
+     * @return action status.
+     */
+    @RequestMapping(value="/store/uploadFile", method=RequestMethod.POST)
+    @ResponseBody
+    public String uploadFile(@RequestParam("archiveID") String archiveId, @RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+    	String result = "";
+    	try{
+    		result = "" + storeService.storeFile(archiveId, file.getInputStream(), fileName);
+    	}catch(Exception e){
+    		log.debug("ERROR", e);
+    	}
+    	
+    	return result;
+    }
+    
     /** 
      * Download file
      * @param fileName
@@ -109,24 +139,4 @@ public class StoreController {
                 .body(resource);                	
     }
     
-    /**
-     * Upload file.
-     * @param archiveId
-     * @param fileName
-     * @param file
-     * @return action status.
-     */
-    @RequestMapping(value="/store/uploadFile", method=RequestMethod.POST)
-    @ResponseBody
-    public String uploadFile(@RequestParam("archiveID") String archiveId, @RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
-    	String result = "";
-    	try{
-    		result = "" + storeService.storeFile(archiveId, file.getInputStream(), fileName);
-    	}catch(Exception e){
-    		log.debug("ERROR", e);
-    	}
-    	
-    	return result;
-    }
-
 }

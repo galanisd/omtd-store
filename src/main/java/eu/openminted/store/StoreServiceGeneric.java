@@ -19,7 +19,7 @@ public class StoreServiceGeneric implements StoreService{
 	private static final Logger log = LoggerFactory.getLogger(StoreServiceGeneric.class);
 	
 	private String type;
-	protected StoreProperties storageProperties;
+	protected StoreProperties storeProperties;
 	protected IdGenerator idGen;
 	protected StoreMetadata storeMetadata;
 	private FSConnector connector;
@@ -27,17 +27,17 @@ public class StoreServiceGeneric implements StoreService{
 	/**
 	 * Constructor.
 	 * @param type
-	 * @param storageProperties
+	 * @param storeProperties
 	 * @param idGen
-	 * @param storageIndex
+	 * @param storeMetadata
 	 */
-	public StoreServiceGeneric(String type, StoreProperties storageProperties, IdGenerator idGen, StoreMetadata storageIndex) {
+	public StoreServiceGeneric(String type, StoreProperties storeProperties, IdGenerator idGen, StoreMetadata storeMetadata) {
 		super();
-		connector = FSConnectorBuilder.getConnector(type, storageProperties);				
+		connector = FSConnectorBuilder.getConnector(type, storeProperties);				
 		this.type = type;
-		this.storageProperties = storageProperties;
+		this.storeProperties = storeProperties;
 		this.idGen = idGen;
-		this.storeMetadata = storageIndex;
+		this.storeMetadata = storeMetadata;
 		
 	}
 	
@@ -49,19 +49,19 @@ public class StoreServiceGeneric implements StoreService{
 		this.idGen = idGen;
 	}
 	
-	public StoreProperties getStorageProperties() {
-		return storageProperties;
+	public StoreProperties getStoreProperties() {
+		return storeProperties;
 	}
 
-	public void setStorageProperties(StoreProperties storageProperties) {
-		this.storageProperties = storageProperties;
+	public void setStoreProperties(StoreProperties storageProperties) {
+		this.storeProperties = storageProperties;
 	}
 
-	public StoreMetadata getStorageIndex() {
+	public StoreMetadata getStoreMetadata() {
 		return storeMetadata;
 	}
 
-	public void setStorageIndex(StoreMetadata storageIndex) {
+	public void setStoreIndex(StoreMetadata storageIndex) {
 		this.storeMetadata = storageIndex;
 	}
 	
@@ -72,7 +72,7 @@ public class StoreServiceGeneric implements StoreService{
 		// Get new archive id.
 		String archiveId = idGen.generateId();
 		// Create Folder.
-		String destinationFolderAbsolutePath = Helper.getAbsolutePathForArchive(storeMetadata, storageProperties.getStorageRoot(), archiveId);
+		String destinationFolderAbsolutePath = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
 		log.info(destinationFolderAbsolutePath.toString());
 		boolean creationStatus = connector.makeFolder(destinationFolderAbsolutePath);
 		// Return archiveId.
@@ -90,7 +90,7 @@ public class StoreServiceGeneric implements StoreService{
 		// Get new archive id.
 		String archiveId = name;
 		// Create Folder.
-		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storageProperties.getStorageRoot(), parentArchiveId);
+		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), parentArchiveId);
 		String destinationFolderAbsolutePath = Helper.appendDirToPath(destinationFolderAbsolutePathForParent, archiveId);		
 		log.info(destinationFolderAbsolutePath.toString());
 		boolean creationStatus = connector.makeFolder(destinationFolderAbsolutePath);
@@ -105,7 +105,7 @@ public class StoreServiceGeneric implements StoreService{
 
 	@Override
 	public boolean deleteArchive(String archiveId, boolean force) {
-		String destinationFolderAbsolutePath = Helper.getAbsolutePathForArchive(storeMetadata, storageProperties.getStorageRoot(), archiveId);
+		String destinationFolderAbsolutePath = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
 		return connector.deleteFolder(destinationFolderAbsolutePath, force);
 		
 	}
@@ -125,7 +125,7 @@ public class StoreServiceGeneric implements StoreService{
 	@Override
 	public boolean storeFile(String archiveId, InputStream is, String fileName) {
 		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
-		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storageProperties.getStorageRoot(), archiveId);
+		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
 		String destinationFile = Helper.appendFileToPath(destinationFolderAbsolutePathForParent, fileName);
 		return connector.storeFile(destinationFile, is);
 		
@@ -134,7 +134,7 @@ public class StoreServiceGeneric implements StoreService{
 	@Override
 	public boolean deleteFile(String archiveId, String fileName) {
 		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
-		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storageProperties.getStorageRoot(), archiveId);
+		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
 		String destinationFile = Helper.appendFileToPath(destinationFolderAbsolutePathForParent, fileName);
 		return connector.deleteFile(destinationFile);
 					
@@ -154,7 +154,7 @@ public class StoreServiceGeneric implements StoreService{
 
 	@Override
 	public InputStream downloadFile(String fileName) {
-		String destinationFile = storageProperties.getStorageRoot() + fileName;
+		String destinationFile = storeProperties.getStorageRoot() + fileName;
 		return connector.download(destinationFile);
 	}
 

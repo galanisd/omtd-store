@@ -14,65 +14,70 @@ import eu.openminted.store.StoreService;
 import eu.openminted.store.StoreServiceLocalDisk;
 import eu.openminted.store.StoreServicePITHOS;
 import eu.openminted.store.config.ApplicationConfig;
+import eu.openminted.store.config.ApplicationConfigParams;
 import eu.openminted.store.config.Store;
 
 /**
  * @author galanisd
- *
+ * A simple tester for the omtd-store-api. 
+ * 
  */
-public class TesterRunner {
+public class AppTester {
 
-	private static final Logger log = LoggerFactory.getLogger(TesterRunner.class);
+	private static final Logger log = LoggerFactory.getLogger(AppTester.class);
+	public static final String gateDoc = "eu/openminted/store/rizospastis_AVVd-4ehg3d853ySFFif.xml.gate";
+	public static final String pdfDoc = "eu/openminted/store/2016_Kathaa_NAACL.pdf";
 	
 	private int scenario = -1;
 	private long start = 0;
 	private StoreService store = null;
 
 	/**
-	 * Constructor.
+	 * Constructor. Creates a store service using the default config (LOCAL OR PITHOS).
 	 * @param storeType
 	 */
-	public TesterRunner(String storeType) {
+	public AppTester(String storeType) {
 		
 		if (storeType.equalsIgnoreCase(Store.LOCAL)) {
-			System.setProperty("storeApplicationCfg",
-					"classpath:/eu/openminted/store/config/configLocal.properties");
+			System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configLocal.properties");
 			ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 			store = (StoreService) ctx.getBean(StoreServiceLocalDisk.class);
 		} else if (storeType.equalsIgnoreCase(Store.PITHOS)) {
-			System.setProperty("storeApplicationCfg",
-					"classpath:/eu/openminted/store/config/configPITHOS.properties");
+			System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configPITHOS.properties");
 			ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 			store = (StoreService) ctx.getBean(StoreServicePITHOS.class);
 		}
 	}
-
+	
 	/**
-	 * Execute Tests.
+	 * Constructor.
+	 * @param storeType
+	 */
+	public AppTester(StoreService store) {
+		this.store = store;		
+	}
+	
+	/**
+	 * Execute all tests.
 	 */
 	public void executeTests() {
 		try {
-			ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-			
-			File sampleAnnotatedFile = new File(classLoader.getResource("eu/openminted/storage/rizospastis_AVVd-4ehg3d853ySFFif.xml.gate").getFile());			
-			File samplePDFFile = new File(classLoader.getResource("eu/openminted/storage/2016_Kathaa_NAACL.pdf").getFile());
+			// Load Test Files.
+			ClassLoader classLoader = ClassLoader.getSystemClassLoader();			
+			File sampleAnnotatedFile = new File(classLoader.getResource(gateDoc).getFile());			
+			File samplePDFFile = new File(classLoader.getResource(pdfDoc).getFile());
 
+			// Start clock.
 			start = System.currentTimeMillis();
-
-			listAllFilesAndThenDeleteAll();
-			
-			createAHierarchyOfArchivesAndStoreAFileInTheLastOne(sampleAnnotatedFile);
-			
-			createArchiveWithAFolderThatContainsAPDFFile(samplePDFFile);
-			
-			createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(sampleAnnotatedFile);
-						
-			createArchiveWithLargeFileAndDownloadTheFile();
-			
-			createArchiveWithManyFilesAndDownloadEachOfThem();
-			
-			listFiles();
-						
+			// Tests.
+			listAllFilesAndThenDeleteAll();			
+			createAHierarchyOfArchivesAndStoreAFileInTheLastOne(sampleAnnotatedFile);			
+			createArchiveWithAFolderThatContainsAPDFFile(samplePDFFile);			
+			createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(sampleAnnotatedFile);						
+			createArchiveWithLargeFileAndDownloadTheFile();			
+			createArchiveWithManyFilesAndDownloadEachOfThem();			
+			listFiles();					
+			// Done.
 			long end = System.currentTimeMillis();
 			
 			log.info("===Summary===");
@@ -101,7 +106,7 @@ public class TesterRunner {
 	 * @param sampleAnnotatedFile
 	 * @throws Exception
 	 */
-	public void createAHierarchyOfArchivesAndStoreAFileInTheLastOne(File sampleAnnotatedFile) throws Exception{
+	public boolean createAHierarchyOfArchivesAndStoreAFileInTheLastOne(File sampleAnnotatedFile) throws Exception{
 		log.info("Scenario:" + (++scenario));
 		// Creating a hierarchy of archives.
 		String level0ArchId = store.createArchive();
@@ -111,7 +116,8 @@ public class TesterRunner {
 		String level2ArchId = store.createArchive(level1ArchId, "level2");
 		log.info("Created archive level 2:" + level2ArchId);
 		// Store a file in the last archive
-		store.storeFile(level2ArchId, new FileInputStream(sampleAnnotatedFile), sampleAnnotatedFile.getName());
+		boolean status = store.storeFile(level2ArchId, new FileInputStream(sampleAnnotatedFile), sampleAnnotatedFile.getName());
+		return status;
 	}
 	
 	/**
@@ -119,12 +125,14 @@ public class TesterRunner {
 	 * @param samplePDFFile
 	 * @throws Exception
 	 */
-	public void createArchiveWithAFolderThatContainsAPDFFile(File samplePDFFile) throws Exception{
+	public boolean createArchiveWithAFolderThatContainsAPDFFile(File samplePDFFile) throws Exception{
 		log.info("Scenario:" + (++scenario));
 		// Creating an archive.
 		String archId = store.createArchive();
 		// Store a PDF
-		store.storeFile(archId, new FileInputStream(samplePDFFile), "pdfs/" + samplePDFFile.getName());
+		boolean status = store.storeFile(archId, new FileInputStream(samplePDFFile), "pdfs/" + samplePDFFile.getName());
+		
+		return status;
 	}
 	
 	/**
@@ -163,7 +171,7 @@ public class TesterRunner {
 		log.info(" uploaded:" + success + " " + bigFile.getAbsolutePath());	
 		InputStream is = store.downloadFile(archId + "/" + bigFile.getName());
 		FileOutputStream fos = new FileOutputStream("C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + bigFile.getName() + ".txt");
-		TesterRunner.store(is, fos);
+		AppTester.store(is, fos);
 		fos.close();
 	}
 
@@ -202,7 +210,7 @@ public class TesterRunner {
 				
 				InputStream is = store.downloadFile(archId + "/" + dest);						
 				FileOutputStream fos = new FileOutputStream("C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + fileForUpload.getName() + ".txt");
-				TesterRunner.store(is, fos);
+				AppTester.store(is, fos);
 				fos.close();					
 			}
 			fileIndex++;
@@ -240,7 +248,7 @@ public class TesterRunner {
 		//storeType = Store.PITHOS;
 		storeType = Store.LOCAL;
 		
-		TesterRunner runner = new TesterRunner(storeType);
+		AppTester runner = new AppTester(storeType);
 		runner.executeTests();					 			 
 	}
 }

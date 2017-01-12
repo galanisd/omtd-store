@@ -29,6 +29,7 @@ public class StoreTests {
 
 	private AppTester tester;
 	private File sampleAnnotatedFile;
+	File samplePDFFile;
 	
 	@BeforeClass
 	public static void beforeClass() {
@@ -42,21 +43,31 @@ public class StoreTests {
 		
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 		sampleAnnotatedFile = new File(classLoader.getResource(AppTester.gateDoc).getFile());
+		samplePDFFile = new File(classLoader.getResource(AppTester.pdfDoc).getFile());
 	}
 	
 	@Test
 	public void test00() throws Exception{
 		tester.listAllFilesAndThenDeleteAll();		
-		String fileList = store.listAllFiles();
-		
+		String fileList = store.listAllFiles();		
 		assertTrue(fileList.isEmpty());		
 	}
 
 	@Test
 	public void test01() throws Exception{
-		boolean status = tester.createAHierarchyOfArchivesAndStoreAFileInTheLastOne(sampleAnnotatedFile);
-		
+		boolean status = tester.createAHierarchyOfArchivesAndStoreAFileInTheLastOne(sampleAnnotatedFile);		
 		assertTrue(status);		
 	}
 	
+	@Test
+	public void test02() throws Exception{
+		boolean status = tester.createArchiveWithAFolderThatContainsAPDFFile(samplePDFFile);		
+		assertTrue(status);		
+	}	
+	
+	@Test
+	public void test03() throws Exception{
+		boolean status = tester.createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(sampleAnnotatedFile);		
+		assertTrue(status);		
+	}
 }

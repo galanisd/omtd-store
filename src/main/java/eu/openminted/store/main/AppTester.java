@@ -147,22 +147,27 @@ public class AppTester {
 	 * @param sampleAnnotatedFile
 	 * @throws Exception
 	 */
-	public void createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(File sampleAnnotatedFile) throws Exception{
+	public boolean createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(File sampleAnnotatedFile) throws Exception{
 		//log.info("Scenario:" + (++scenario));
 		// Creating an archive.
 		String archId = store.createArchive();
 		// Store an annotation file.
-		store.storeFile(archId, new FileInputStream(sampleAnnotatedFile),
+		boolean status = store.storeFile(archId, new FileInputStream(sampleAnnotatedFile),
 				"annotations/" + sampleAnnotatedFile.getName());
 		// Delete the annotation file.
-		store.deleteFile(archId, "annotations/" + sampleAnnotatedFile.getName());
+		boolean status2 = store.deleteFile(archId, "annotations/" + sampleAnnotatedFile.getName());
+		if(archId != null && status && status2){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	/**
 	 * Create Archive With LargeFile And Download The File.
 	 * @throws Exception
 	 */
-	public void createArchiveWithLargeFileAndDownloadTheFile() throws Exception{
+	public boolean createArchiveWithLargeFileAndDownloadTheFile() throws Exception{
 		//log.info("Scenario:" + (++scenario));
 		// Creating an archive with a big file.
 		String archId = store.createArchive();
@@ -174,12 +179,19 @@ public class AppTester {
 				"C:/Users/galanisd/Desktop/Data/OpenAIRE/openairemetadata/stelios_metadata/authors.json");
 		// File bigFile = new
 		// File("C:/Users/galanisd/Desktop/Data/OpenAIRE/openairemetadata/stelios_metadata/keywords.json");
-		boolean success = store.storeFile(archId, new FileInputStream(bigFile), bigFile.getName());
-		log.info(" uploaded:" + success + " " + bigFile.getAbsolutePath());	
+		boolean successUpload = store.storeFile(archId, new FileInputStream(bigFile), bigFile.getName());
+		log.info(" uploaded:" + successUpload + " " + bigFile.getAbsolutePath());	
 		InputStream is = store.downloadFile(archId + "/" + bigFile.getName());
 		FileOutputStream fos = new FileOutputStream("C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + bigFile.getName() + ".txt");
-		AppTester.store(is, fos);
+		boolean down = AppTester.store(is, fos);
 		fos.close();
+		
+		if(successUpload && down){ 
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 	/**
@@ -187,11 +199,16 @@ public class AppTester {
 	 * Then each of them is downloaded in the local folder.
 	 * @throws Exception
 	 */
-	public void createArchiveWithManyFilesAndDownloadEachOfThem() throws Exception{
+	public boolean createArchiveWithManyFilesAndDownloadEachOfThem() throws Exception{
+		boolean status = true;
 		
 		//log.info("Scenario:" + (++scenario));
 		// Creating an archive with many files.
 		String archId = store.createArchive();
+		if(archId == null){
+			status = false; 	
+		}
+		
 		// File inputDir = new
 		// File("C:/Users/galanisd/Desktop/Data/CORE/repository_metadata_2015-09_abstractscleaned_toy/");
 		// File inputDir = new
@@ -208,6 +225,11 @@ public class AppTester {
 				// long x = System.currentTimeMillis();
 				String dest = "someFiles/" + fileIndex + ".somefile";
 				boolean successFileUp = store.storeFile(archId, new FileInputStream(fileForUpload), dest);
+				
+				if(!successFileUp){
+					status = false;
+				}
+				
 				// long y = System.currentTimeMillis();
 				log.info(fileIndex + " Upload status:" + successFileUp + " size:" + fileForUpload.length()
 						+ " Local path" + fileForUpload.getAbsolutePath());
@@ -215,13 +237,18 @@ public class AppTester {
 				long end = System.currentTimeMillis();
 				log.info("Seconds so far:" + ((float) (end - start)) / 1000);					
 				
-				InputStream is = store.downloadFile(archId + "/" + dest);						
+				InputStream is = store.downloadFile(archId + "/" + dest);	
+				
 				FileOutputStream fos = new FileOutputStream("C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + fileForUpload.getName() + ".txt");
-				AppTester.store(is, fos);
+				boolean statusDown = AppTester.store(is, fos);
+				if(!statusDown)
+					status = false;
 				fos.close();					
 			}
 			fileIndex++;
 		}
+		
+		return status;
 	}
 	
 	/**
@@ -234,7 +261,7 @@ public class AppTester {
 		log.info(store.listAllFiles());
 	}
 	
-	public static void store(InputStream is, FileOutputStream fos){
+	public static boolean store(InputStream is, FileOutputStream fos){
 		try{
 			int read = 0;
 			byte[] bytes = new byte[1024 * 1024 * 10];
@@ -242,13 +269,15 @@ public class AppTester {
 				fos.write(bytes, 0, read);
 				fos.flush();
 			}
+			
+			return true;
 		}catch(Exception e){
 			log.error("ERROR:", e);
+			return false;
 		}
 	}
 	
-	// == 
-	
+	// == = == = == == = == = == = == = == = == = == = == = ==
 	public static void main(String args[]){
 		
 		String storeType = "";

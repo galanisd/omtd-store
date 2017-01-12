@@ -30,16 +30,16 @@ public class TesterRunner {
 
 	/**
 	 * Constructor.
-	 * @param t
+	 * @param storeType
 	 */
-	public TesterRunner(String t) {
+	public TesterRunner(String storeType) {
 		
-		if (t.equalsIgnoreCase(Store.LOCAL)) {
+		if (storeType.equalsIgnoreCase(Store.LOCAL)) {
 			System.setProperty("storeApplicationCfg",
 					"classpath:/eu/openminted/store/config/configLocal.properties");
 			ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 			store = (StoreService) ctx.getBean(StoreServiceLocalDisk.class);
-		} else if (t.equalsIgnoreCase(Store.PITHOS)) {
+		} else if (storeType.equalsIgnoreCase(Store.PITHOS)) {
 			System.setProperty("storeApplicationCfg",
 					"classpath:/eu/openminted/store/config/configPITHOS.properties");
 			ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
@@ -53,10 +53,9 @@ public class TesterRunner {
 	public void executeTests() {
 		try {
 			ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-			File sampleAnnotatedFile = new File(classLoader
-					.getResource("eu/openminted/storage/rizospastis_AVVd-4ehg3d853ySFFif.xml.gate").getFile());
-			File samplePDFFile = new File(
-					classLoader.getResource("eu/openminted/storage/2016_Kathaa_NAACL.pdf").getFile());
+			
+			File sampleAnnotatedFile = new File(classLoader.getResource("eu/openminted/storage/rizospastis_AVVd-4ehg3d853ySFFif.xml.gate").getFile());			
+			File samplePDFFile = new File(classLoader.getResource("eu/openminted/storage/2016_Kathaa_NAACL.pdf").getFile());
 
 			start = System.currentTimeMillis();
 
@@ -75,13 +74,14 @@ public class TesterRunner {
 			listFiles();
 						
 			long end = System.currentTimeMillis();
+			
 			log.info("===Summary===");
 			log.info("Duration");
 			log.info("Milliseconds:" + (end - start));
 			log.info("Seconds:" + ((float) (end - start)) / 1000);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("ERROR:", e);
 		}
 	}
 	
@@ -97,7 +97,7 @@ public class TesterRunner {
 	}
 	
 	/**
-	 * Create A Hierarchy Of Archives.
+	 * Create A Hierarchy Of Archives And Store A File In The Last One.
 	 * @param sampleAnnotatedFile
 	 * @throws Exception
 	 */
@@ -128,7 +128,7 @@ public class TesterRunner {
 	}
 	
 	/**
-	 * CreateArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile
+	 * Create Archive With A Folder ThatContains AnAnnotation File. Then Delete The AnnotationFile.
 	 * @param sampleAnnotatedFile
 	 * @throws Exception
 	 */
@@ -144,7 +144,7 @@ public class TesterRunner {
 	}
 	
 	/**
-	 * createArchiveWithLargeFileAndDownloadTheFile
+	 * Create Archive With LargeFile And Download The File.
 	 * @throws Exception
 	 */
 	public void createArchiveWithLargeFileAndDownloadTheFile() throws Exception{
@@ -228,7 +228,7 @@ public class TesterRunner {
 				fos.flush();
 			}
 		}catch(Exception e){
-			e.printStackTrace();
+			log.error("ERROR:", e);
 		}
 	}
 	
@@ -236,11 +236,11 @@ public class TesterRunner {
 	
 	public static void main(String args[]){
 		
-		String t = "";
-		//t = Store.PITHOS;
-		t = Store.LOCAL;
+		String storeType = "";
+		//storeType = Store.PITHOS;
+		storeType = Store.LOCAL;
 		
-		TesterRunner runner = new TesterRunner(t);
+		TesterRunner runner = new TesterRunner(storeType);
 		runner.executeTests();					 			 
 	}
 }

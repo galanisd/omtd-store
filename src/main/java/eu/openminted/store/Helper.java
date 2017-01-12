@@ -2,9 +2,10 @@ package eu.openminted.store;
 
 import java.util.ArrayList;
 
-import eu.openminted.store.index.StoreIndex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import eu.openminted.store.metadata.StoreMetadata;
 
 /**
  * @author galanisd
@@ -16,7 +17,7 @@ public class Helper {
 	
 	public static String separator = "/";
 		
-	public static String getAbsolutePathForArchive(StoreIndex storageIndex, String storageRoot, String archiveId){
+	public static String getAbsolutePathForArchive(StoreMetadata storageIndex, String storageRoot, String archiveId){
 		
 		ArrayList<String> parents = storageIndex.getParentArchives(archiveId);
 		

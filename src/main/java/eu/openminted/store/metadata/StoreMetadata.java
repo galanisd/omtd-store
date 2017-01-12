@@ -1,4 +1,4 @@
-package eu.openminted.store.index;
+package eu.openminted.store.metadata;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author galanisd
  *
  */
-public interface StoreIndex {
+public interface StoreMetadata {
 
 	/**
 	 * Find parent archive.

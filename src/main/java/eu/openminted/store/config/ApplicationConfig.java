@@ -11,13 +11,13 @@ import eu.openminted.store.StoreServiceLocalDisk;
 import eu.openminted.store.StoreServicePITHOS;
 import eu.openminted.store.idgenerator.IdGenerator;
 import eu.openminted.store.idgenerator.SimpleIdGenerator;
-import eu.openminted.store.index.StoreIndex;
-import eu.openminted.store.index.StoreIndexDefault;
+import eu.openminted.store.metadata.StoreMetadata;
+import eu.openminted.store.metadata.StoreMetadataDefault;
 
 @Configuration
 @PropertySource("${storeApplicationCfg}")
 public class ApplicationConfig {
-		
+			
 	@Autowired
 	private Environment environment;
 	
@@ -30,18 +30,18 @@ public class ApplicationConfig {
 		if(type.equalsIgnoreCase(Store.PITHOS)){
 			// Read PITHOS Storage properties.
 			StorePropertiesPITHOS sp = new StorePropertiesPITHOS(); 				
-			sp.setStorageRoot(environment.getProperty("storage.storageRoot"));
-			sp.setPithosURL(environment.getProperty("storage.pithosURL"));		
-			sp.setPithosToken(environment.getProperty("storage.pithosToken"));
-			sp.setPithosUUID(environment.getProperty("storage.pithosUUID"));
+			sp.setStorageRoot(environment.getProperty(ApplicationConfigParams.storageRoot));
+			sp.setPithosURL(environment.getProperty(ApplicationConfigParams.pithosURL));		
+			sp.setPithosToken(environment.getProperty(ApplicationConfigParams.pithosToken));
+			sp.setPithosUUID(environment.getProperty(ApplicationConfigParams.pithosUUID));
 			// Init storageService
-			storageService = new StoreServicePITHOS(sp, getIdGenerator(), getStorageIndex());
+			storageService = new StoreServicePITHOS(sp, getIdGenerator(), getStoreMetadata());
 		}else if(type.equalsIgnoreCase(Store.LOCAL)){
 			// Read Local Storage properties.
 			StorePropertiesLocal sp = new StorePropertiesLocal();			
-			sp.setStorageRoot(environment.getProperty("storage.storageRoot"));
+			sp.setStorageRoot(environment.getProperty(ApplicationConfigParams.storageRoot));
 			// Init storageService
-			storageService = new StoreServiceLocalDisk(sp, getIdGenerator(), getStorageIndex());
+			storageService = new StoreServiceLocalDisk(sp, getIdGenerator(), getStoreMetadata());
 		}		
 				
 		return storageService;
@@ -53,8 +53,8 @@ public class ApplicationConfig {
 	}		
 	
 	@Bean 
-	public StoreIndex getStorageIndex(){
-		return new StoreIndexDefault();
+	public StoreMetadata getStoreMetadata(){
+		return new StoreMetadataDefault();
 	}
 	
 }

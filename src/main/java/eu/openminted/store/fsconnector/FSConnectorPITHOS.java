@@ -161,7 +161,4 @@ public class FSConnectorPITHOS implements FSConnector {
 		return pithosInputStream;
 		
 	}
-
-
-
 }

@@ -1,18 +1,18 @@
-package eu.openminted.store.index;
+package eu.openminted.store.metadata;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * A basic implementation of {@link eu.openminted.store.index.StoreIndex}
+ * A basic implementation of {@link eu.openminted.store.metadata.StoreMetadata}
  * @author galanisd
  *
  */
-public class StoreIndexDefault implements StoreIndex{
+public class StoreMetadataDefault implements StoreMetadata{
 
 	public HashMap<String, String> archivesStructure;
 	
-	public StoreIndexDefault(){
+	public StoreMetadataDefault(){
 		archivesStructure = new HashMap<String, String>();
 	}
 	

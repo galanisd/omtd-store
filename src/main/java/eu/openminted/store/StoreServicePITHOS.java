@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import eu.openminted.store.config.Store;
 import eu.openminted.store.config.StorePropertiesPITHOS;
 import eu.openminted.store.idgenerator.IdGenerator;
-import eu.openminted.store.index.StoreIndex;
+import eu.openminted.store.metadata.StoreMetadata;
 
 
 /**
@@ -16,7 +16,7 @@ import eu.openminted.store.index.StoreIndex;
 public class StoreServicePITHOS extends StoreServiceGeneric{
 				
 	@Autowired
-	public StoreServicePITHOS(StorePropertiesPITHOS storageProperties, IdGenerator idGen, StoreIndex storageIndex){		
+	public StoreServicePITHOS(StorePropertiesPITHOS storageProperties, IdGenerator idGen, StoreMetadata storageIndex){		
 		super(Store.PITHOS, storageProperties, idGen, storageIndex);
 		
 	}

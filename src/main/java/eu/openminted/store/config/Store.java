@@ -7,6 +7,5 @@ package eu.openminted.store.config;
 public class Store {
 	
 	public final static String PITHOS = "PITHOS";
-	public final static String LOCAL = "LOCAL";
-	
+	public final static String LOCAL = "LOCAL";	
 }

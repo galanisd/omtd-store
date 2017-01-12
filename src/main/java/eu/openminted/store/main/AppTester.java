@@ -70,12 +70,19 @@ public class AppTester {
 			// Start clock.
 			start = System.currentTimeMillis();
 			// Tests.
-			listAllFilesAndThenDeleteAll();			
-			createAHierarchyOfArchivesAndStoreAFileInTheLastOne(sampleAnnotatedFile);			
-			createArchiveWithAFolderThatContainsAPDFFile(samplePDFFile);			
-			createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(sampleAnnotatedFile);						
-			createArchiveWithLargeFileAndDownloadTheFile();			
-			createArchiveWithManyFilesAndDownloadEachOfThem();			
+			log.info("Scenario:" + (++scenario));
+			listAllFilesAndThenDeleteAll();		
+			log.info("Scenario:" + (++scenario));
+			createAHierarchyOfArchivesAndStoreAFileInTheLastOne(sampleAnnotatedFile);
+			log.info("Scenario:" + (++scenario));
+			createArchiveWithAFolderThatContainsAPDFFile(samplePDFFile);
+			log.info("Scenario:" + (++scenario));
+			createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(sampleAnnotatedFile);
+			log.info("Scenario:" + (++scenario));
+			createArchiveWithLargeFileAndDownloadTheFile();
+			log.info("Scenario:" + (++scenario));
+			createArchiveWithManyFilesAndDownloadEachOfThem();
+			log.info("Scenario:" + (++scenario));
 			listFiles();					
 			// Done.
 			long end = System.currentTimeMillis();
@@ -95,7 +102,7 @@ public class AppTester {
 	 * @throws Exception
 	 */
 	public void listAllFilesAndThenDeleteAll() throws Exception{
-		log.info("Scenario:" + (++scenario));
+		//log.info("Scenario:" + (++scenario));
 		log.info("\n\n\n" + "FILE LIST");
 		log.info(store.listAllFiles());			
 		store.deleteAll();
@@ -107,7 +114,7 @@ public class AppTester {
 	 * @throws Exception
 	 */
 	public boolean createAHierarchyOfArchivesAndStoreAFileInTheLastOne(File sampleAnnotatedFile) throws Exception{
-		log.info("Scenario:" + (++scenario));
+		//log.info("Scenario:" + (++scenario));
 		// Creating a hierarchy of archives.
 		String level0ArchId = store.createArchive();
 		log.info("Created archive level 0:" + level0ArchId);
@@ -126,7 +133,7 @@ public class AppTester {
 	 * @throws Exception
 	 */
 	public boolean createArchiveWithAFolderThatContainsAPDFFile(File samplePDFFile) throws Exception{
-		log.info("Scenario:" + (++scenario));
+		//log.info("Scenario:" + (++scenario));
 		// Creating an archive.
 		String archId = store.createArchive();
 		// Store a PDF
@@ -141,7 +148,7 @@ public class AppTester {
 	 * @throws Exception
 	 */
 	public void createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(File sampleAnnotatedFile) throws Exception{
-		log.info("Scenario:" + (++scenario));
+		//log.info("Scenario:" + (++scenario));
 		// Creating an archive.
 		String archId = store.createArchive();
 		// Store an annotation file.
@@ -156,7 +163,7 @@ public class AppTester {
 	 * @throws Exception
 	 */
 	public void createArchiveWithLargeFileAndDownloadTheFile() throws Exception{
-		log.info("Scenario:" + (++scenario));
+		//log.info("Scenario:" + (++scenario));
 		// Creating an archive with a big file.
 		String archId = store.createArchive();
 		// File bigFile = new
@@ -182,7 +189,7 @@ public class AppTester {
 	 */
 	public void createArchiveWithManyFilesAndDownloadEachOfThem() throws Exception{
 		
-		log.info("Scenario:" + (++scenario));
+		//log.info("Scenario:" + (++scenario));
 		// Creating an archive with many files.
 		String archId = store.createArchive();
 		// File inputDir = new
@@ -222,7 +229,7 @@ public class AppTester {
 	 * @throws Exception
 	 */
 	public void listFiles() throws Exception{
-		log.info("Scenario:" + (++scenario));
+		//log.info("Scenario:" + (++scenario));
 		log.info("\n\n\n" + "FILE LIST");
 		log.info(store.listAllFiles());
 	}

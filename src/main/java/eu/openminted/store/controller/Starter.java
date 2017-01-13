@@ -17,6 +17,7 @@ public class Starter {
 			
 	public static void main(String[] args) {
 		
+		log.info("Starting OMTD STORE SERVICE.");
 		// Disable restarts.
 		System.setProperty("spring.devtools.restart.enabled", "false");
 		
@@ -29,3 +30,4 @@ public class Starter {
 	}
 
 }
+

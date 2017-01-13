@@ -1,7 +1,5 @@
 package eu.openminted.store;
 
-import java.nio.file.Paths;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import eu.openminted.store.config.Store;

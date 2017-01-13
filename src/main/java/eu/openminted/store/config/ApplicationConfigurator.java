@@ -11,7 +11,7 @@ public class ApplicationConfigurator {
 	private final static Logger log = LoggerFactory.getLogger(ApplicationConfigurator.class);
 	
 	/**
-	 * Configure the app, i.e., locates and sets the {@code ApplicationConfigParams.storeApplicationCfg} file.
+	 * Configure the app, i.e., locate and set the {@link ApplicationConfigParams#storeApplicationCfg} file.
 	 */
 	public static void configure(){
 		// Retrieve applicationPropertiesFile location.		
@@ -22,7 +22,7 @@ public class ApplicationConfigurator {
 			try{				
 				//ClassLoader classLoader = Starter.class.getClass().getClassLoader();
 				//props.load(ApplicationBoot.class.getResourceAsStream(applicationPropertiesDefaultHolder));
-				props.load(ApplicationConfigurator.class.getResourceAsStream(ApplicationConfigParams.applicationPropertiesDefaultHolder));				
+				props.load(ApplicationConfigurator.class.getResourceAsStream(ApplicationConfigParams.storeApplicationCfgDefaultHolder));				
 				log.info("==> Loading default config:" + props.getProperty(ApplicationConfigParams.storeApplicationCfg));
 				System.setProperty(ApplicationConfigParams.storeApplicationCfg, props.getProperty(ApplicationConfigParams.storeApplicationCfg));				
 			}catch(Exception e){

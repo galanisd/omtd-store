@@ -10,6 +10,8 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -24,12 +26,14 @@ import eu.openminted.store.main.AppTester;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class StoreTests {
 
-	@Autowired
-	private StoreServiceGeneric store;
+	private static final Logger log = LoggerFactory.getLogger(StoreTests.class);
 
 	private AppTester tester;
 	private File sampleAnnotatedFile;
 	File samplePDFFile;
+	
+	@Autowired
+	private StoreServiceGeneric store;
 	
 	@BeforeClass
 	public static void beforeClass() {
@@ -38,9 +42,8 @@ public class StoreTests {
 	
 	@Before
 	public void beforeTests() {
-		System.out.println("@Before");		
-		tester = new AppTester(store);
-		
+		log.info("Load everyhting I need before running tests.");		
+		tester = new AppTester(store);		
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 		sampleAnnotatedFile = new File(classLoader.getResource(AppTester.gateDoc).getFile());
 		samplePDFFile = new File(classLoader.getResource(AppTester.pdfDoc).getFile());

@@ -113,29 +113,29 @@ public class StoreController {
     
     /** 
      * Download file
-     * @param fileName
+     * @param fname
      * @return
      */
     @RequestMapping(value="/store/downloadFile", method=RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Resource> downloadFile(@RequestParam("fileName") String fileName){
+    public ResponseEntity<Resource> downloadFile(@RequestParam("fileName") String fname){
        	    	
-        InputStream fileInputStream = storeService.downloadFile(fileName);
+        InputStream fileInputStream = storeService.downloadFile(fname);
         Resource resource  = null;
         
         try {            
             resource = new InputStreamResource(fileInputStream);
             if(!resource.exists() || !resource.isReadable()) {
-            	throw new StoreException("Could not read file: " + fileName);
+            	throw new StoreException("Could not read file: " + fname);
             }
             
         } catch (StoreException e) {
-            throw new StoreException("Could not read file: " + fileName, e);
+            throw new StoreException("Could not read file: " + fname, e);
         }
             
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fname + "\"")
                 .body(resource);                	
     }
     

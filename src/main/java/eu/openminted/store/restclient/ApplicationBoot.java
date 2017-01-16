@@ -22,13 +22,14 @@ public class ApplicationBoot {
 		log.info("Create Archive:" + archiveID);		
 		String subArchiveId = store.createSubArchive(archiveID, "authors");
 		log.info("Create SubArchive:" + subArchiveId);		
-		File f = new File("C:/Users/galanisd/Desktop/Data/OpenAIRE/openairemetadata/stelios_metadata/authors.json");		
-		store.updload(f, subArchiveId, f.getName());
+		File fileForUploading = new File("C:/Users/galanisd/Desktop/Data/OpenAIRE/openairemetadata/stelios_metadata/authors.json");		
+		store.updload(fileForUploading, subArchiveId, fileForUploading.getName());
 		log.info("Upload to SubArchive:" + subArchiveId);			
 		log.info("List Files");
 		log.info(store.listFiles());		
-		log.info("Download");
-		//store.download(archiveID + "/" + f.getName(), "C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + f.getName());
+		log.info("Download " + subArchiveId + "/" + fileForUploading.getName());
+		boolean status = store.download(subArchiveId + "/" + fileForUploading.getName(), "C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + fileForUploading.getName());
+		log.info("Download status " + status);
 		
 	}
 	

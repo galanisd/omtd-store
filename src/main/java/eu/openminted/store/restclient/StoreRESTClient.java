@@ -4,6 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +22,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
@@ -114,57 +125,30 @@ public class StoreRESTClient {
 	}	
 	
 	/**
-	 * Downloads a file (TO BE COMPLETED).
+	 * Downloads a file.
 	 * @param fileName
-	 * @param target
+	 * @param destination
 	 * @return
 	 */
-	public boolean download(String fileName, String target) {
-		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-		map.add("fileName", fileName);
-		
-		FileOutputStream output = null;
+	public boolean download(String fileName, String destination) {						
 		try{
-			output = new FileOutputStream(target);
-		}catch(Exception e){
-			log.debug("ERROR", e);
-		}
-		
-		try{			
-			final ResponseExtractor<ResponseEntity<File>> responseExtractor =
-			        new ResponseExtractor<ResponseEntity<File>>() {
-			    // (2)
-			    @Override
-			    public ResponseEntity<File> extractData(ClientHttpResponse response)
-			            throws IOException {
+			// Parameters
+			MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<String, Object>();
+			parameters.add("fileName", fileName);
+												
+			// Callback
+			RequestCallback requestCallback = new DataRequestCallback(parameters);			
 
-			        File rcvFile = File.createTempFile("rcvFile", "zip");
-			        FileCopyUtils.copy(response.getBody(), new FileOutputStream(rcvFile));
-			        return ResponseEntity.status(response.getStatusCode())
-			                .headers(response.getHeaders()).body(rcvFile);
-			    }
-
+			// Streams the response.
+			ResponseExtractor<Void> responseExtractor = response -> {
+			    // Write the response to a file.
+			    Path path = Paths.get(destination);
+			    Files.copy(response.getBody(), path, StandardCopyOption.REPLACE_EXISTING);
+			    return null;
 			};
-
-			File getFile = null;
-			//ResponseEntity<File> entity = restTemplate.execute(endpoint + "/store/downloadFile/", map, InputStream.class);
-			ResponseEntity<File> responseEntity  = restTemplate.execute(endpoint + "/store/downloadFile/", HttpMethod.POST, null, responseExtractor, map);
-			if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
-			    getFile = responseEntity.getBody();
-			}
-			FileInputStream fis = new FileInputStream(getFile);
 			
-			try{
-				int read = 0;
-				byte[] bytes = new byte[1024 * 1024 * 10];
-				while ((read = fis.read(bytes)) != -1) {
-					output.write(bytes, 0, read);
-					output.flush();
-				}
-			}catch(Exception e){
-				log.debug("ERROR", e);
-			}
-
+			restTemplate.execute(endpoint + "/store/downloadFile/", HttpMethod.POST, requestCallback, responseExtractor);
+	
 		}catch(Exception e){
 			log.debug("ERROR", e);
 			return false;
@@ -173,5 +157,40 @@ public class StoreRESTClient {
 		return true;		
 	}
 	
+    private class DataRequestCallback<T> implements RequestCallback {
+    	 
+        private List<MediaType> mediaTypes = Arrays.asList(MediaType.APPLICATION_OCTET_STREAM, MediaType.ALL);
+ 
+        private HttpEntity<T> requestEntity;
+ 
+        public DataRequestCallback(T entity) {
+            requestEntity = new HttpEntity<>(entity);
+        }
+ 
+        @SuppressWarnings("unchecked")
+        @Override
+        public void doWithRequest(ClientHttpRequest httpRequest) throws IOException {
+        	log.debug("doWithRequest");
+            httpRequest.getHeaders().setAccept(mediaTypes);
+            T requestBody = requestEntity.getBody();
+            Class<?> requestType = requestBody.getClass();
+            HttpHeaders requestHeaders = requestEntity.getHeaders();
+            MediaType requestContentType = requestHeaders.getContentType();
+ 
+            for (HttpMessageConverter<?> messageConverter : restTemplate.getMessageConverters()) {
+                if (messageConverter.canWrite(requestType, requestContentType)) {
+                    if (!requestHeaders.isEmpty()) {
+                        httpRequest.getHeaders().putAll(requestHeaders);
+                    }
+                    ((HttpMessageConverter<Object>) messageConverter).write(requestBody, requestContentType, httpRequest);
+                    return;
+                }
+            }
+            
+         
+        }
+
+
+    }
 	
 }

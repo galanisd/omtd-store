@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,8 @@ import eu.openminted.store.StoreServiceLocalDisk;
 import eu.openminted.store.StoreServicePITHOS;
 import eu.openminted.store.config.ApplicationConfig;
 import eu.openminted.store.config.ApplicationConfigParams;
+import eu.openminted.store.config.ApplicationConfigTestParams;
+import eu.openminted.store.config.ApplicationConfigurator;
 import eu.openminted.store.config.Store;
 
 /**
@@ -25,13 +28,16 @@ import eu.openminted.store.config.Store;
 public class AppTester {
 
 	private static final Logger log = LoggerFactory.getLogger(AppTester.class);
+	
 	public static final String gateDoc = "eu/openminted/store/rizospastis_AVVd-4ehg3d853ySFFif.xml.gate";
 	public static final String pdfDoc = "eu/openminted/store/2016_Kathaa_NAACL.pdf";
+		
 	
 	private int scenario = -1;
 	private long start = 0;
 	private StoreService store = null;
-
+	private Properties testFiles;
+	
 	/**
 	 * Constructor. Creates a store service using the default config (LOCAL OR PITHOS).
 	 * @param storeType
@@ -47,6 +53,8 @@ public class AppTester {
 			ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 			store = (StoreService) ctx.getBean(StoreServicePITHOS.class);
 		}
+		
+		init();
 	}
 	
 	/**
@@ -54,7 +62,27 @@ public class AppTester {
 	 * @param storeType
 	 */
 	public AppTester(StoreService store) {
-		this.store = store;		
+		this.store = store;
+		init();
+	}
+	
+	/**
+	 * Initialize test files locations.
+	 */
+	public void init(){		
+		testFiles = new Properties();
+		
+		try{
+			String testFileLocationsFile = System.getProperty(ApplicationConfigTestParams.testFilesCfg);		
+			// If is not provided load default applications properties (based on applicationPropertiesDefaultHolder).
+			if(testFileLocationsFile == null){																			
+				testFiles.load(AppTester.class.getResourceAsStream(ApplicationConfigTestParams.testFilesDefault));
+			}else{
+				testFiles.load(new FileInputStream(testFileLocationsFile));
+			}
+		}catch(Exception e){
+			log.debug("ERROR", e);
+		}
 	}
 	
 	/**
@@ -171,25 +199,17 @@ public class AppTester {
 		//log.info("Scenario:" + (++scenario));
 		// Creating an archive with a big file.
 		String archId = store.createArchive();
-		// File bigFile = new
-		// File("C:/Users/galanisd/Desktop/Data/CORE/repository_text_2015-09.tar.gz");
-		// File bigFile = new
-		// File("C:/Users/galanisd/Desktop/Data/CORE/repository_metadata_2015-09.tar.gz");
-		File bigFile = new File(
-				"C:/Users/galanisd/Desktop/Data/OpenAIRE/openairemetadata/stelios_metadata/authors.json");
-		// File bigFile = new
-		// File("C:/Users/galanisd/Desktop/Data/OpenAIRE/openairemetadata/stelios_metadata/keywords.json");
+		File bigFile = new File(testFiles.getProperty(ApplicationConfigTestParams.bigFile));				
 		boolean successUpload = store.storeFile(archId, new FileInputStream(bigFile), bigFile.getName());
 		log.info(" uploaded:" + successUpload + " " + bigFile.getAbsolutePath());	
 		InputStream is = store.downloadFile(archId + "/" + bigFile.getName());
-		FileOutputStream fos = new FileOutputStream("C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + bigFile.getName() + ".txt");
+		FileOutputStream fos = new FileOutputStream(testFiles.getProperty(ApplicationConfigTestParams.downloadFolder) + bigFile.getName());
 		boolean down = AppTester.store(is, fos);
 		fos.close();
 		
-		if(successUpload && down){ 
+		if(archId != null & successUpload && down){ 
 			return true;
-		}
-		else{
+		}else{
 			return false;
 		}
 	}
@@ -209,11 +229,7 @@ public class AppTester {
 			status = false; 	
 		}
 		
-		// File inputDir = new
-		// File("C:/Users/galanisd/Desktop/Data/CORE/repository_metadata_2015-09_abstractscleaned_toy/");
-		// File inputDir = new
-		// File("C:/Users/galanisd/Desktop/Data/CORE/repository_metadata_2015-09_abstractscleaned/");
-		File inputDir = new File("C:/Users/galanisd/Desktop/Data/Parliament/ParliamentAll/_Prokopis/txtsOut/");
+		File inputDir = new File(testFiles.getProperty(ApplicationConfigTestParams.folderWithManyFiles));
 		File[] inFiles = inputDir.listFiles();
 		int fileIndex = 0;
 		// int maxNumOfFilesToBeUploaded = Integer.MAX_VALUE;
@@ -239,7 +255,7 @@ public class AppTester {
 				
 				InputStream is = store.downloadFile(archId + "/" + dest);	
 				
-				FileOutputStream fos = new FileOutputStream("C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + fileForUpload.getName() + ".txt");
+				FileOutputStream fos = new FileOutputStream(testFiles.getProperty(ApplicationConfigTestParams.downloadFolder) + fileForUpload.getName() + ".txt");
 				boolean statusDown = AppTester.store(is, fos);
 				if(!statusDown)
 					status = false;

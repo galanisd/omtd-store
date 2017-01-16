@@ -17,4 +17,7 @@ public class ApplicationConfigParams {
 	
 	/** Specifies the file that contains a reference to the default {@code storeApplicationCfg} */
 	public final static String storeApplicationCfgDefaultHolder = "/eu/openminted/store/config/storeApplicationCfgDefaultHolder.properties";
+
+
+
 }

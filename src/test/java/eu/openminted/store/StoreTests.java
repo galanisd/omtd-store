@@ -28,9 +28,9 @@ public class StoreTests {
 
 	private static final Logger log = LoggerFactory.getLogger(StoreTests.class);
 
-	private AppTester tester;
+	private AppTester appTester;
 	private File sampleAnnotatedFile;
-	File samplePDFFile;
+	private File samplePDFFile;
 	
 	@Autowired
 	private StoreServiceGeneric store;
@@ -43,7 +43,7 @@ public class StoreTests {
 	@Before
 	public void beforeTests() {
 		log.info("Load everyhting I need before running tests.");		
-		tester = new AppTester(store);		
+		appTester = new AppTester(store);		
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 		sampleAnnotatedFile = new File(classLoader.getResource(AppTester.gateDoc).getFile());
 		samplePDFFile = new File(classLoader.getResource(AppTester.pdfDoc).getFile());
@@ -51,26 +51,26 @@ public class StoreTests {
 	
 	@Test
 	public void test00() throws Exception{
-		tester.listAllFilesAndThenDeleteAll();		
+		appTester.listAllFilesAndThenDeleteAll();		
 		String fileList = store.listAllFiles();		
 		assertTrue(fileList.isEmpty());		
 	}
 
 	@Test
 	public void test01() throws Exception{
-		boolean status = tester.createAHierarchyOfArchivesAndStoreAFileInTheLastOne(sampleAnnotatedFile);		
+		boolean status = appTester.createAHierarchyOfArchivesAndStoreAFileInTheLastOne(sampleAnnotatedFile);		
 		assertTrue(status);		
 	}
 	
 	@Test
 	public void test02() throws Exception{
-		boolean status = tester.createArchiveWithAFolderThatContainsAPDFFile(samplePDFFile);		
+		boolean status = appTester.createArchiveWithAFolderThatContainsAPDFFile(samplePDFFile);		
 		assertTrue(status);		
 	}	
 	
 	@Test
 	public void test03() throws Exception{
-		boolean status = tester.createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(sampleAnnotatedFile);		
+		boolean status = appTester.createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(sampleAnnotatedFile);		
 		assertTrue(status);		
 	}
 }

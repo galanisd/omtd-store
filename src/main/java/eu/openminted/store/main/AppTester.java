@@ -171,7 +171,7 @@ public class AppTester {
 	}
 	
 	/**
-	 * Create Archive With A Folder ThatContains AnAnnotation File. Then Delete The AnnotationFile.
+	 * Create Archive With A Folder That Contains An Annotation File. Then Delete The Annotation File.
 	 * @param sampleAnnotatedFile
 	 * @throws Exception
 	 */

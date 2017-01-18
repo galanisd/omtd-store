@@ -54,4 +54,12 @@ public interface FSConnector {
 	 * @return
 	 */
 	public InputStream download(String targetFileName);
+	
+	/**
+	 * Compress dir (recursively) and create a zip.
+	 * @param dir
+	 * @param zipFile
+	 * @return
+	 */
+	public boolean compressDir(String dir, String zipFile);
 }

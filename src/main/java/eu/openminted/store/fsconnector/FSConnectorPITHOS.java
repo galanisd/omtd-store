@@ -161,4 +161,10 @@ public class FSConnectorPITHOS implements FSConnector {
 		return pithosInputStream;
 		
 	}
+
+	@Override
+	public boolean compressDir(String dir, String zipFile) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

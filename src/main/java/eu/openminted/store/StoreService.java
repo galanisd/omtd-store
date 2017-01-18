@@ -42,6 +42,12 @@ public interface StoreService {
      */
     InputStream downloadArchive(String archiveId);
         
+    /**
+     * Finalize archive.
+     * @param archiveId
+     * @return
+     */
+    boolean finalizeArchive(String archiveId);    
     
     /**
      * Get archive info for an archive 
@@ -49,7 +55,7 @@ public interface StoreService {
      * @return
      */
     ArchiveInfo getArchiveInfo(String archiveId);
-    
+            
     /**
      * Stores the contents of the input stream in the archive as a file.
      * 

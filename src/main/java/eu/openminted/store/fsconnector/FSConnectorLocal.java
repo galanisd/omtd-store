@@ -143,4 +143,18 @@ public class FSConnectorLocal implements FSConnector{
 		
 		return status;
 	}
+
+	@Override
+	public boolean compressDir(String dir, String zipFile) {		
+		try{			
+			DirCompressor.zipDir(zipFile, dir);
+			return true;
+		}catch(Exception e){
+			log.debug("ERROR", e);
+			return false;	
+		}
+		
+	}
+	
+	
 }

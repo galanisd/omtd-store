@@ -112,8 +112,8 @@ public class StoreServiceGeneric implements StoreService{
 
 	@Override
 	public InputStream downloadArchive(String archiveId) {
-		// TODO Auto-generated method stub
-		return null;
+		String destinationFile = storeProperties.getStorageRoot() + archiveId + ".zip";
+		return connector.download(destinationFile);
 	}
 
 	@Override
@@ -156,6 +156,12 @@ public class StoreServiceGeneric implements StoreService{
 	public InputStream downloadFile(String fileName) {
 		String destinationFile = storeProperties.getStorageRoot() + fileName;
 		return connector.download(destinationFile);
+	}
+
+	@Override
+	public boolean finalizeArchive(String archiveId) {
+		String destinationZip = storeProperties.getStorageRoot() + archiveId + ".zip";
+		return connector.compressDir(storeProperties.getStorageRoot() + archiveId + "/", destinationZip);
 	}
 
 

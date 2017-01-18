@@ -60,6 +60,28 @@ public class StoreController {
     public String createSubArchive(@RequestParam("archiveID") String archiveId, @RequestParam("archiveName") String archiveName){
     	return storeService.createArchive(archiveId, archiveName) + "";    
     }
+
+    /**
+     * Finalize archive
+     * @return
+     */
+    @RequestMapping(value="/store/finalizeArchive", method=RequestMethod.POST)
+    @ResponseBody
+    public boolean finalizeArchive(@RequestParam("archiveID") String archiveId){
+    	return storeService.finalizeArchive(archiveId);
+    }
+   
+    	
+    /**
+     * Download archive
+     * @return
+     */
+    @RequestMapping(value="/store/downloadArchive", method=RequestMethod.POST)
+    @ResponseBody
+    public  ResponseEntity<Resource> downloadArchive(@RequestParam("archiveID") String archiveId){
+        InputStream fileInputStream = storeService.downloadArchive(archiveId);
+        return Utils.download(fileInputStream, archiveId);
+    }
     
     /**
      * List files
@@ -121,22 +143,7 @@ public class StoreController {
     public ResponseEntity<Resource> downloadFile(@RequestParam("fileName") String fname){
        	    	
         InputStream fileInputStream = storeService.downloadFile(fname);
-        Resource resource  = null;
-        
-        try {            
-            resource = new InputStreamResource(fileInputStream);
-            if(!resource.exists() || !resource.isReadable()) {
-            	throw new StoreException("Could not read file: " + fname);
-            }
-            
-        } catch (StoreException e) {
-            throw new StoreException("Could not read file: " + fname, e);
-        }
-            
-        return ResponseEntity
-                .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fname + "\"")
-                .body(resource);                	
-    }
+        return Utils.download(fileInputStream, fname);
+	}
     
 }

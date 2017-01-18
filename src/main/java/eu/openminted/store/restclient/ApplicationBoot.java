@@ -31,9 +31,8 @@ public class ApplicationBoot {
 		boolean status = store.downloadFile(subArchiveId + "/" + fileForUploading.getName(), "C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + fileForUploading.getName());
 		log.info("Download status " + status);
 		
-		log.info("finalize archive " + archiveID);
-		log.info("finalize archive " + store.finalizeArchive(archiveID));
-		log.info("dowload archive " + store.downloadArchive(archiveID, "C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/"));
+		log.info("finalize archive " + archiveID + " " + store.finalizeArchive(archiveID));
+		log.info("dowload archive " + store.downloadArchive(archiveID, "C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + archiveID + ".zip"));
 		
 		
 	}

@@ -91,6 +91,22 @@ public class StoreRESTClient {
 	}
 	
 	/**
+	 * Finalize archive.
+	 * @return the id of the archive.
+	 */
+	public String finalizeArchive(String archiveID) {
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		map.add("archiveID", archiveID);
+
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
+		ResponseEntity<String> st = restTemplate.postForEntity(endpoint + "/store/finalizeArchive/", requestEntity, String.class);
+		return st.getBody();
+	}
+	
+	/**
 	 * Uploads a file in a archive.
 	 * @param file
 	 * @param archiveID
@@ -123,12 +139,41 @@ public class StoreRESTClient {
 	 * @param destination
 	 * @return
 	 */
-	public boolean download(String fileName, String destination) {						
+	public boolean downloadFile(String fileName, String destination) {
+		
+		// Parameters
+		MultiValueMap<String, Object> callParameters = new LinkedMultiValueMap<String, Object>();
+		callParameters.add("fileName", fileName);
+		
+		return downloadFromServer(callParameters, "/store/downloadFile/", fileName, destination); 		
+	}
+	
+	/**
+	 * Downloads a file.
+	 * @param fileName
+	 * @param destination
+	 * @return
+	 */
+	public boolean downloadArchive(String archiveID, String destination) {
+		
+		// Parameters
+		MultiValueMap<String, Object> callParameters = new LinkedMultiValueMap<String, Object>();
+		callParameters.add("archiveID", archiveID);
+		
+		return downloadFromServer(callParameters, "/store/downloadArchive/", archiveID, destination);		
+	}
+	
+	/**
+	 * Downloads from server.
+	 * @param parameters
+	 * @param service
+	 * @param fileName
+	 * @param destination
+	 * @return
+	 */
+	private boolean downloadFromServer(MultiValueMap<String, Object> parameters, String service, String fileName, String destination){
 		try{
-			// Parameters
-			MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<String, Object>();
-			parameters.add("fileName", fileName);
-												
+			
 			// Callback
 			RequestCallback requestCallback = new DataRequestCallback(parameters);			
 
@@ -140,14 +185,14 @@ public class StoreRESTClient {
 			    return null;
 			};
 			
-			restTemplate.execute(endpoint + "/store/downloadFile/", HttpMethod.POST, requestCallback, responseExtractor);
+			restTemplate.execute(endpoint + service, HttpMethod.POST, requestCallback, responseExtractor);
 	
 		}catch(Exception e){
 			log.debug("ERROR", e);
 			return false;
 		}
 		
-		return true;		
+		return true;
 	}
 	
 	// == === ==

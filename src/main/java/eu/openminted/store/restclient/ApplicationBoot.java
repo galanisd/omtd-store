@@ -28,8 +28,13 @@ public class ApplicationBoot {
 		log.info("List Files");
 		log.info(store.listFiles());		
 		log.info("Download " + subArchiveId + "/" + fileForUploading.getName());
-		boolean status = store.download(subArchiveId + "/" + fileForUploading.getName(), "C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + fileForUploading.getName());
+		boolean status = store.downloadFile(subArchiveId + "/" + fileForUploading.getName(), "C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/" + fileForUploading.getName());
 		log.info("Download status " + status);
+		
+		log.info("finalize archive " + archiveID);
+		log.info("finalize archive " + store.finalizeArchive(archiveID));
+		log.info("dowload archive " + store.downloadArchive(archiveID, "C:/Users/galanisd/Desktop/Data/_AppTestData/Downloaded/"));
+		
 		
 	}
 	

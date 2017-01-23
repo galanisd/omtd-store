@@ -42,7 +42,7 @@ public class ApplicationConfig {
 			sp.setStorageRoot(environment.getProperty(ApplicationConfigParams.storageRoot));
 			// Init storageService
 			storageService = new StoreServiceLocalDisk(sp, getIdGenerator(), getStoreMetadata());
-		}		
+		}
 				
 		return storageService;
 	}

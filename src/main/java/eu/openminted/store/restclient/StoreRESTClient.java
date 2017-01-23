@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,13 +27,15 @@ import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
+import eu.openminted.store.restclient.cmd.ApplicationBoot;
+
 /**
  * @author galanisd
  *
  */
 public class StoreRESTClient {
 
-	private static final Logger log = LoggerFactory.getLogger(ApplicationBoot.class);
+	private static final Logger log = LoggerFactory.getLogger(StoreRESTClient.class);
 
 	private RestTemplate restTemplate;
 	private String endpoint;
@@ -41,9 +44,10 @@ public class StoreRESTClient {
 	 * Constructor.
 	 * @param endpoint
 	 */
-	public StoreRESTClient(String endpoint) {
-		this.restTemplate = new RestTemplate();
+	public StoreRESTClient(String endpoint) {		
 		this.endpoint = endpoint;
+		this.restTemplate = new RestTemplate();
+		
 	}
 
 	/**

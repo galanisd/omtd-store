@@ -22,10 +22,14 @@ public class ApplicationBoot implements CommandLineRunner {
 
 	private StoreRESTClient store;
 	private String endpoint;
+	public final static String defaultEndpoint = "http://localhost:8080/";
 	
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("\n\nStarting Store Command Line Client ");	
+		System.out.println("\n\nStarting Store Command Line Client ");		
+		setEndpoint(defaultEndpoint);
+		System.out.println("Using default endpoint: " + defaultEndpoint);
+			
 		printHelp();
 		
         final Scanner console = new Scanner(System.in);
@@ -43,8 +47,7 @@ public class ApplicationBoot implements CommandLineRunner {
 	            	if(allCMDArgs.length != 2 ){            		
 	            		this.printHelp();
 	            	}else{
-	            		endpoint = allCMDArgs[1];
-	            		buildRESTClient();
+	            		setEndpoint(allCMDArgs[1]);
 	            	}            	
 	            } else if (command.startsWith("printEndpoint")) {
 	            	this.printEndpoint();
@@ -54,7 +57,16 @@ public class ApplicationBoot implements CommandLineRunner {
 	            	System.out.println(store.listFiles());
 	            }	else if (command.startsWith("deleteAll")) {
 	            	System.out.println(store.deleteAll());
-	            }	            	            
+	            }
+	        	else if (command.startsWith("finalizeArchive")) {
+	            	final String[] allCMDArgs = command.split(" ");
+	            	if(allCMDArgs.length != 2 ){            		
+	            		this.printHelp();
+	            	}else{
+	            		String archiveID = allCMDArgs[1];
+	            		System.out.println(store.finalizeArchive(archiveID));
+	            	} 	            	
+	            }	            
 	            else if (command.startsWith("help")) {
 	            	this.printHelp();
 	            } else{
@@ -65,6 +77,11 @@ public class ApplicationBoot implements CommandLineRunner {
         		printHelp();
         	}
         }
+	}
+	
+	private void setEndpoint(String enpoint){
+		this.endpoint = enpoint;
+		buildRESTClient();
 	}
 	
 	private void printEndpoint(){
@@ -87,13 +104,13 @@ public class ApplicationBoot implements CommandLineRunner {
         System.out.printf(format, "quit", " => Quit Store Client");
         // == ===
         System.out.printf(format, "setEndpoint [endpoint] ", " => Set store endpoint ");
-        System.out.printf(format, "setConfig [config] ", " => Set test config");
-        System.out.printf(format, "printParams ", " => Print parameters (config, endpoint)");
+        System.out.printf(format, "printEndpoint ", " => Prints endpoint");
         // == ===                
         System.out.printf(format, "createArchive ", " => Creates archive and returns its id");
         System.out.printf(format, "listFiles ", " => List all store files");
         System.out.printf(format, "deleteAll ", " => Delete all store files");
-        
+        System.out.printf(format, "finalizeArchive [archiveID]", " => Finalize Archive");
+               
     }
     
 	private void buildRESTClient() {

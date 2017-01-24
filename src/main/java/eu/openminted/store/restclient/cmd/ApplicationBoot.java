@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,7 +29,7 @@ public class ApplicationBoot implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		System.out.println("\n\nStarting Store Command Line Client ");		
 		setEndpoint(defaultEndpoint);
-		System.out.println("Using default endpoint: " + defaultEndpoint);
+		System.out.println("Using default endpoint: " + defaultEndpoint + "\n\n");
 			
 		printHelp();
 		
@@ -119,6 +120,8 @@ public class ApplicationBoot implements CommandLineRunner {
 
 	// == === ==
 	public static void main(String args[]) {
-		SpringApplication.run(ApplicationBoot.class, args);
+		SpringApplication app = new SpringApplication(ApplicationBoot.class);
+        app.setBannerMode(Banner.Mode.OFF);
+		app.run(args);
 	}
 }

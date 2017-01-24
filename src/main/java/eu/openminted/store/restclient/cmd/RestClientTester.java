@@ -24,15 +24,7 @@ public class RestClientTester {
 		super();
 		this.store = store;
 	}
-	
-	/**
-	 * Run all tests.
-	 * @param testPropertiesList
-	 */
-	public void runAllTests(TestPropertiesList testPropertiesList){
-		this.test01(testPropertiesList.getMap().get("test01"));
-	}
-	
+		
 	/**
 	 * Scenario 01.
 	 * @param props

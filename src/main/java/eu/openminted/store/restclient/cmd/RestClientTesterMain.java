@@ -10,12 +10,8 @@ public class RestClientTesterMain {
 		StoreRESTClient store = new StoreRESTClient("http://localhost:8080/"); 
 		RestClientTester restClientTester = new RestClientTester(store);
 		
-		// Test config.
-		String [] names = {"test01"};
-		TestPropertiesList testPropsList = new TestPropertiesList();
-		testPropsList.loadTestFileProps(names);
+		// Run tests.
+		restClientTester.test01(TestProperties.loadProps());
 		
-		// Test
-		restClientTester.runAllTests(testPropsList);
 	}
 }

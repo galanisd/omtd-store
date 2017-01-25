@@ -74,7 +74,23 @@ public class StoreRESTClient {
 		String response = restTemplate.getForObject(endpoint + "/store/createArchive/", String.class);
 		return response;
 	}
-	
+
+	/**
+	 * Deletes an archive.
+	 * @return the id of the archive.
+	 */
+	public String deleteArchive(String archiveID) {
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		map.add("archiveID", archiveID);
+
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
+		ResponseEntity<String> st = restTemplate.postForEntity(endpoint + "/store/deleteArchive/", requestEntity, String.class);
+		return st.getBody();
+	}
+			
 	/**
 	 * Creates an subarchive
 	 * @return the id of the subarchive.

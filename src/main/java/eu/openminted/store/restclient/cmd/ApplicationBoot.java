@@ -54,11 +54,21 @@ public class ApplicationBoot implements CommandLineRunner {
 					}
 				} else if (command.equals("printEndpoint")) {
 					this.printEndpoint();
-				} else if (command.equals("createArchive")) {
+				} else if (command.equals("createArch")) {
 					System.out.println(store.createArchive());
-				} else if (command.equals("listFiles")) {
+				}  else if (command.startsWith("deleteArch")) {
+					final String[] allCMDArgs = command.split(" ");
+					if (allCMDArgs.length != 2) {
+						checkCMDSyntax();
+						this.printHelp();
+					} else {						
+						String archiveID = allCMDArgs[1];						
+						System.out.println(store.deleteArchive(archiveID));
+					}	
+				} 				
+				else if (command.equals("listFiles")) {
 					System.out.println(store.listFiles());
-				} else if (command.startsWith("uploadFileToArchive")) {
+				} else if (command.startsWith("uploadFileToArch")) {
 					final String[] allCMDArgs = command.split(" ");
 					if (allCMDArgs.length != 3) {
 						checkCMDSyntax();
@@ -67,10 +77,9 @@ public class ApplicationBoot implements CommandLineRunner {
 						String fileName = allCMDArgs[1];
 						String archiveID = allCMDArgs[2];
 						File file = new File(fileName);
-
 						System.out.println(store.updload(file, archiveID, file.getName()));
-					}
-				} else if (command.startsWith("downloadArchive")) {
+					}															
+				} else if (command.startsWith("downloadArch")) {
 					final String[] allCMDArgs = command.split(" ");
 					if (allCMDArgs.length != 3) {
 						checkCMDSyntax();
@@ -82,7 +91,7 @@ public class ApplicationBoot implements CommandLineRunner {
 					}
 				} else if (command.equals("deleteAll")) {
 					System.out.println(store.deleteAll());
-				} else if (command.startsWith("finalizeArchive")) {
+				} else if (command.startsWith("finalizeArch")) {
 					final String[] allCMDArgs = command.split(" ");
 					if (allCMDArgs.length != 2) {
 						checkCMDSyntax();
@@ -100,7 +109,7 @@ public class ApplicationBoot implements CommandLineRunner {
 			} catch (Exception e) {
 				e.printStackTrace();
 				error();
-				printHelp();
+				//printHelp();
 			}
 		}//
 		
@@ -152,13 +161,14 @@ public class ApplicationBoot implements CommandLineRunner {
 		System.out.printf(format, "setEndpoint [endpoint] ", " => Set store endpoint. ");
 		System.out.printf(format, "printEndpoint ", " => Prints endpoint.");
 		// == ===
-		System.out.printf(format, "createArchive ", " => Creates archive and returns its id.");
+		System.out.printf(format, "createArch ", " => Creates archive and returns its id.");
+		System.out.printf(format, "deleteArch [archiveID] ", " => Deletes archive.");		
 		System.out.printf(format, "listFiles ", " => List all files in the store.");
 		System.out.printf(format, "deleteAll ", " => Delete all files in the store.");
 		System.out.printf(format, "uploadFileToArchive [filePath] [archiveID] ", " => Uploads a file to an archive");
-		System.out.printf(format, "downloadArchive [archiveID] [destinationPath]  ",
+		System.out.printf(format, "downloadArch [archiveID] [destinationPath]  ",
 				" => Downloads an archive zip to destinationPath");
-		System.out.printf(format, "finalizeArchive [archiveID]", " => Finalize Archive.");
+		System.out.printf(format, "finalizeArch [archiveID]", " => Finalize Archive.");
 
 	}
 

@@ -27,6 +27,7 @@ import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
 /**
+ * A client for OMTD Store.
  * @author galanisd
  *
  */

@@ -35,19 +35,19 @@ public class ApplicationBoot implements CommandLineRunner {
 		printHelp();
 
 		final Scanner console = new Scanner(System.in);
-
-		while (true) {
-			System.out.print("StoreClient\\> ");
+		boolean notQuiting = true;
+		while (notQuiting) {
+			System.out.print("\nStoreClient\\> ");
 
 			try {
-				final String command = console.nextLine();
+				final String command = console.nextLine().trim().replaceAll("\\s{2,}", " ");
 				if (command.equals("quit")) {
 					System.out.println("Bye!");
-					break;
+					notQuiting = false;
 				} else if (command.startsWith("setEndpoint")) {
 					final String[] allCMDArgs = command.split(" ");
 					if (allCMDArgs.length != 2) {
-						check();
+						checkCMDSyntax();
 						this.printHelp();
 					} else {
 						setEndpoint(allCMDArgs[1]);
@@ -61,7 +61,7 @@ public class ApplicationBoot implements CommandLineRunner {
 				} else if (command.startsWith("uploadFileToArchive")) {
 					final String[] allCMDArgs = command.split(" ");
 					if (allCMDArgs.length != 3) {
-						check();
+						checkCMDSyntax();
 						this.printHelp();
 					} else {
 						String fileName = allCMDArgs[1];
@@ -73,7 +73,7 @@ public class ApplicationBoot implements CommandLineRunner {
 				} else if (command.startsWith("downloadArchive")) {
 					final String[] allCMDArgs = command.split(" ");
 					if (allCMDArgs.length != 3) {
-						check();
+						checkCMDSyntax();
 						this.printHelp();
 					} else {
 						String archiveID = allCMDArgs[1];
@@ -85,7 +85,7 @@ public class ApplicationBoot implements CommandLineRunner {
 				} else if (command.startsWith("finalizeArchive")) {
 					final String[] allCMDArgs = command.split(" ");
 					if (allCMDArgs.length != 2) {
-						check();
+						checkCMDSyntax();
 						this.printHelp();
 					} else {
 						String archiveID = allCMDArgs[1];
@@ -102,32 +102,48 @@ public class ApplicationBoot implements CommandLineRunner {
 				error();
 				printHelp();
 			}
-		}
+		}//
+		
+		console.close();
 	}
 
-	private void setEndpoint(String enpoint) {
-		this.endpoint = enpoint;
+	/**
+	 * Sets endpoint and re-initiates the Store client.
+	 * @param endpoint
+	 */
+	private void setEndpoint(String endpoint) {
+		this.endpoint = endpoint;
 		buildRESTClient();
 	}
 
 	private void printEndpoint() {
-		System.out.println("endpoint: " + endpoint);
+		System.out.println("\nendpoint: " + endpoint);
 	}
 
-	private void check() {
-		System.out.println("Check the syntax of the command...");
+	private void checkCMDSyntax() {
+		System.out.println("\nCheck the syntax of the command...");
 	}
 
 	private void unknownCommand() {
-		System.out.println("Unknown command!");
+		System.out.println("\nUnknown command!");
 	}
 
 	private void error() {
-		System.out.println("ERR0R!");
+		System.out.println("\nERR0R!");
 	}
 
+	/**
+	 * Initiates a new instance of a {@link eu.openminted.store.restclient.StoreRESTClient}
+	 */
+	private void buildRESTClient() {
+		store = new StoreRESTClient(endpoint);
+	}
+	
+	/**
+	 * Prints all available commands.
+	 */
 	private void printHelp() {
-		System.out.println("Available commands:");
+		System.out.println("\nAvailable commands:");
 		final String format = "%-25s%s%n";
 		// == ===
 		System.out.printf(format, "help", " => Displays help.");
@@ -144,10 +160,6 @@ public class ApplicationBoot implements CommandLineRunner {
 				" => Downloads an archive zip to destinationPath");
 		System.out.printf(format, "finalizeArchive [archiveID]", " => Finalize Archive.");
 
-	}
-
-	private void buildRESTClient() {
-		store = new StoreRESTClient(endpoint);
 	}
 
 	// == === ==

@@ -20,8 +20,6 @@ public class ApplicationConfigurator {
 		if(applicationPropertiesFile == null){						
 			Properties props = new Properties();						
 			try{				
-				//ClassLoader classLoader = Starter.class.getClass().getClassLoader();
-				//props.load(ApplicationBoot.class.getResourceAsStream(applicationPropertiesDefaultHolder));
 				props.load(ApplicationConfigurator.class.getResourceAsStream(ApplicationConfigParams.storeApplicationCfgDefaultHolder));				
 				log.info("==> Loading default config:" + props.getProperty(ApplicationConfigParams.storeApplicationCfg));
 				System.setProperty(ApplicationConfigParams.storeApplicationCfg, props.getProperty(ApplicationConfigParams.storeApplicationCfg));				

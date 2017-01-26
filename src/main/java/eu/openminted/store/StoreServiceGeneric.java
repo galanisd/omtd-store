@@ -106,6 +106,7 @@ public class StoreServiceGeneric implements StoreService{
 	@Override
 	public boolean deleteArchive(String archiveId, boolean force) {
 		String destinationFolderAbsolutePath = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
+		// TO-DO: Also delete zip.
 		return connector.deleteFolder(destinationFolderAbsolutePath, force);
 		
 	}

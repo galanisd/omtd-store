@@ -9,7 +9,7 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Bean;
 
 import eu.openminted.store.restclient.StoreRESTClient;
 
@@ -41,10 +41,10 @@ public class ApplicationBoot implements CommandLineRunner {
 
 			try {
 				final String command = console.nextLine().trim().replaceAll("\\s{2,}", " ");
-				if (command.equals("quit")) {
+				if (command.equals(Commands.quit)) {
 					System.out.println("Bye!");
 					notQuiting = false;
-				} else if (command.startsWith("setEndpoint")) {
+				} else if (command.startsWith(Commands.setEndpoint)) {
 					final String[] allCMDArgs = command.split(" ");
 					if (allCMDArgs.length != 2) {
 						checkCMDSyntax();
@@ -52,11 +52,11 @@ public class ApplicationBoot implements CommandLineRunner {
 					} else {
 						setEndpoint(allCMDArgs[1]);
 					}
-				} else if (command.equals("printEndpoint")) {
+				} else if (command.equals(Commands.printEndpoint)) {
 					this.printEndpoint();
-				} else if (command.equals("createArch")) {
+				} else if (command.equals(Commands.createArch)) {
 					System.out.println(store.createArchive());
-				}  else if (command.startsWith("deleteArch")) {
+				}  else if (command.startsWith(Commands.deleteArch)) {
 					final String[] allCMDArgs = command.split(" ");
 					if (allCMDArgs.length != 2) {
 						checkCMDSyntax();
@@ -66,9 +66,9 @@ public class ApplicationBoot implements CommandLineRunner {
 						System.out.println(store.deleteArchive(archiveID));
 					}	
 				} 				
-				else if (command.equals("listFiles")) {
+				else if (command.equals(Commands.listFiles)) {
 					System.out.println(store.listFiles());
-				} else if (command.startsWith("uploadFileToArch")) {
+				} else if (command.startsWith(Commands.uploadFileToArch)) {
 					final String[] allCMDArgs = command.split(" ");
 					if (allCMDArgs.length != 3) {
 						checkCMDSyntax();
@@ -79,7 +79,7 @@ public class ApplicationBoot implements CommandLineRunner {
 						File file = new File(fileName);
 						System.out.println(store.updload(file, archiveID, file.getName()));
 					}															
-				} else if (command.startsWith("downloadArch")) {
+				} else if (command.startsWith(Commands.downloadArch)) {
 					final String[] allCMDArgs = command.split(" ");
 					if (allCMDArgs.length != 3) {
 						checkCMDSyntax();
@@ -89,9 +89,9 @@ public class ApplicationBoot implements CommandLineRunner {
 						String destination = allCMDArgs[2];
 						System.out.println(store.downloadArchive(archiveID, destination));
 					}
-				} else if (command.equals("deleteAll")) {
+				} else if (command.equals(Commands.deleteAll)) {
 					System.out.println(store.deleteAll());
-				} else if (command.startsWith("finalizeArch")) {
+				} else if (command.startsWith(Commands.finalizeArch)) {
 					final String[] allCMDArgs = command.split(" ");
 					if (allCMDArgs.length != 2) {
 						checkCMDSyntax();
@@ -100,7 +100,7 @@ public class ApplicationBoot implements CommandLineRunner {
 						String archiveID = allCMDArgs[1];
 						System.out.println(store.finalizeArchive(archiveID));
 					}
-				} else if (command.equals("help")) {
+				} else if (command.equals(Commands.help)) {
 					this.printHelp();
 				} else {
 					this.unknownCommand();
@@ -155,27 +155,29 @@ public class ApplicationBoot implements CommandLineRunner {
 		System.out.println("\nAvailable commands:");
 		final String format = "%-25s%s%n";
 		// == ===
-		System.out.printf(format, "help", " => Displays help.");
-		System.out.printf(format, "quit", " => Quit Store Client.");
+		System.out.printf(format, Commands.help, " => Displays help.");
+		System.out.printf(format, Commands.quit, " => Quit Store Client.");
 		// == ===
-		System.out.printf(format, "setEndpoint [endpoint] ", " => Set store endpoint. ");
-		System.out.printf(format, "printEndpoint ", " => Prints endpoint.");
+		System.out.printf(format, Commands.setEndpoint + " [endpoint] ", " => Set store endpoint. ");
+		System.out.printf(format, Commands.printEndpoint, " => Prints endpoint.");
 		// == ===
-		System.out.printf(format, "createArch ", " => Creates archive and returns its id.");
-		System.out.printf(format, "deleteArch [archiveID] ", " => Deletes archive.");		
-		System.out.printf(format, "listFiles ", " => List all files in the store.");
-		System.out.printf(format, "deleteAll ", " => Delete all files in the store.");
-		System.out.printf(format, "uploadFileToArchive [filePath] [archiveID] ", " => Uploads a file to an archive");
-		System.out.printf(format, "downloadArch [archiveID] [destinationPath]  ",
+		System.out.printf(format, Commands.createArch, " => Creates archive and returns its id.");
+		System.out.printf(format, Commands.deleteArch + " [archiveID] ", " => Deletes archive.");		
+		System.out.printf(format, Commands.listFiles, " => List all files in the store.");
+		System.out.printf(format, Commands.deleteAll , " => Delete all files in the store.");
+		System.out.printf(format, Commands.uploadFileToArch + " [filePath] [archiveID] ", " => Uploads a file to an archive");
+		System.out.printf(format, Commands.downloadArch + " [archiveID] [destinationPath]  ",
 				" => Downloads an archive zip to destinationPath");
-		System.out.printf(format, "finalizeArch [archiveID]", " => Finalize Archive.");
+		System.out.printf(format, Commands.finalizeArch+ " [archiveID]", " => Finalize Archive.");
 
 	}
 
 	// == === ==
 	public static void main(String args[]) {
+		log.info("...");
 		SpringApplication app = new SpringApplication(ApplicationBoot.class);
 		app.setBannerMode(Banner.Mode.OFF);
 		app.run(args);
+		log.info("DONE!");
 	}
 }

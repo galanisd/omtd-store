@@ -1,4 +1,4 @@
-package eu.openminted.store.restclient.cmd;
+package eu.openminted.store.restclient.test;
 
 import eu.openminted.store.restclient.StoreRESTClient;
 

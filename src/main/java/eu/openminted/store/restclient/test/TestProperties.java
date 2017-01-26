@@ -1,4 +1,4 @@
-package eu.openminted.store.restclient.cmd;
+package eu.openminted.store.restclient.test;
 
 import java.util.HashMap;
 import java.util.Properties;

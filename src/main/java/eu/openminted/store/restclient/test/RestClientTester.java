@@ -1,4 +1,4 @@
-package eu.openminted.store.restclient.cmd;
+package eu.openminted.store.restclient.test;
 
 import java.io.File;
 import java.util.Properties;
@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import eu.openminted.store.restclient.StoreRESTClient;
+import eu.openminted.store.restclient.cmd.ApplicationBoot;
 
 /**
  * @author galanisd

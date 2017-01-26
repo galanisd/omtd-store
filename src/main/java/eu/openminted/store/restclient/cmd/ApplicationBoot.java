@@ -5,11 +5,13 @@ import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 //import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 import eu.openminted.store.restclient.StoreRESTClient;
 
@@ -18,13 +20,16 @@ import eu.openminted.store.restclient.StoreRESTClient;
  *
  */
 @SpringBootApplication
+@ComponentScan(basePackages = {"eu.openminted.store.restclient"})
 public class ApplicationBoot implements CommandLineRunner {
 
 	private static final Logger log = LoggerFactory.getLogger(ApplicationBoot.class);
 
-	private StoreRESTClient store;
 	private String endpoint;
 	public final static String defaultEndpoint = "http://localhost:8080/";
+	
+	@Autowired
+	private StoreRESTClient store;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -121,8 +126,8 @@ public class ApplicationBoot implements CommandLineRunner {
 	 * @param endpoint
 	 */
 	private void setEndpoint(String endpoint) {
-		this.endpoint = endpoint;
-		buildRESTClient();
+		this.endpoint = endpoint;		
+		store.setEndpoint(endpoint);
 	}
 
 	private void printEndpoint() {
@@ -139,13 +144,6 @@ public class ApplicationBoot implements CommandLineRunner {
 
 	private void error() {
 		System.out.println("\nERR0R!");
-	}
-
-	/**
-	 * Initiates a new instance of a {@link eu.openminted.store.restclient.StoreRESTClient}
-	 */
-	private void buildRESTClient() {
-		store = new StoreRESTClient(endpoint);
 	}
 	
 	/**

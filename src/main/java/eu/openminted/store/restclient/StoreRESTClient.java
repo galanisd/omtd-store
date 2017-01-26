@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RequestCallback;
@@ -31,6 +32,7 @@ import org.springframework.web.client.RestTemplate;
  * @author galanisd
  *
  */
+@Component
 public class StoreRESTClient {
 
 	private static final Logger log = LoggerFactory.getLogger(StoreRESTClient.class);
@@ -45,6 +47,21 @@ public class StoreRESTClient {
 	public StoreRESTClient(String endpoint) {		
 		this.endpoint = endpoint;
 		this.restTemplate = new RestTemplate();	
+	}
+
+	/**
+	 * Constructor.
+	 */
+	public StoreRESTClient() {				
+		this.restTemplate = new RestTemplate();	
+	}
+	
+	public String getEndpoint() {
+		return endpoint;
+	}
+
+	public void setEndpoint(String endpoint) {
+		this.endpoint = endpoint;
 	}
 
 	/**

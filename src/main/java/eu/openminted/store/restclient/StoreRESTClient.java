@@ -44,8 +44,7 @@ public class StoreRESTClient {
 	 */
 	public StoreRESTClient(String endpoint) {		
 		this.endpoint = endpoint;
-		this.restTemplate = new RestTemplate();
-		
+		this.restTemplate = new RestTemplate();	
 	}
 
 	/**
@@ -82,13 +81,8 @@ public class StoreRESTClient {
 	public String deleteArchive(String archiveID) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add("archiveID", archiveID);
-
-		RestTemplate restTemplate = new RestTemplate();
-		HttpHeaders headers = new HttpHeaders();
 		
-		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
-		ResponseEntity<String> st = restTemplate.postForEntity(endpoint + "/store/deleteArchive/", requestEntity, String.class);
-		return st.getBody();
+		return post(endpoint + "/store/deleteArchive/", map);
 	}
 			
 	/**
@@ -99,13 +93,8 @@ public class StoreRESTClient {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add("archiveID", archiveID);
 		map.add("archiveName", archive);
-
-		RestTemplate restTemplate = new RestTemplate();
-		HttpHeaders headers = new HttpHeaders();
-		
-		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
-		ResponseEntity<String> st = restTemplate.postForEntity(endpoint + "/store/createSubArchive/", requestEntity, String.class);
-		return st.getBody();
+				
+		return post(endpoint + "/store/createSubArchive/", map);
 	}
 	
 	/**
@@ -115,12 +104,22 @@ public class StoreRESTClient {
 	public String finalizeArchive(String archiveID) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add("archiveID", archiveID);
-
+		
+		return post(endpoint + "/store/finalizeArchive/", map);
+	}
+	
+	/**
+	 * Create a post message to {@code serviceEndpoint}.
+	 * @param serviceEndpoint
+	 * @param map
+	 * @return
+	 */
+	private String post(String serviceEndpoint, MultiValueMap<String, Object> map){
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
-		ResponseEntity<String> st = restTemplate.postForEntity(endpoint + "/store/finalizeArchive/", requestEntity, String.class);
+		ResponseEntity<String> st = restTemplate.postForEntity(serviceEndpoint, requestEntity, String.class);
 		return st.getBody();
 	}
 	
@@ -157,8 +156,7 @@ public class StoreRESTClient {
 	 * @param destination
 	 * @return
 	 */
-	public boolean downloadFile(String fileName, String destination) {
-		
+	public boolean downloadFile(String fileName, String destination) {		
 		// Parameters
 		MultiValueMap<String, Object> callParameters = new LinkedMultiValueMap<String, Object>();
 		callParameters.add("fileName", fileName);
@@ -172,8 +170,7 @@ public class StoreRESTClient {
 	 * @param destination
 	 * @return
 	 */
-	public boolean downloadArchive(String archiveID, String destination) {
-		
+	public boolean downloadArchive(String archiveID, String destination) {		
 		// Parameters
 		MultiValueMap<String, Object> callParameters = new LinkedMultiValueMap<String, Object>();
 		callParameters.add("archiveID", archiveID);
@@ -190,21 +187,17 @@ public class StoreRESTClient {
 	 * @return
 	 */
 	private boolean downloadFromServer(MultiValueMap<String, Object> parameters, String service, String fileName, String destination){
-		try{
-			
+		try{			
 			// Callback
 			RequestCallback requestCallback = new DataRequestCallback(parameters);			
-
 			// Streams the response.
 			ResponseExtractor<Void> responseExtractor = response -> {
 			    // Write the response to a file.
 			    Path path = Paths.get(destination);
 			    Files.copy(response.getBody(), path, StandardCopyOption.REPLACE_EXISTING);
 			    return null;
-			};
-			
-			restTemplate.execute(endpoint + service, HttpMethod.POST, requestCallback, responseExtractor);
-	
+			};			
+			restTemplate.execute(endpoint + service, HttpMethod.POST, requestCallback, responseExtractor);	
 		}catch(Exception e){
 			log.debug("ERROR", e);
 			return false;
@@ -214,7 +207,6 @@ public class StoreRESTClient {
 	}
 	
 	// == === ==
-	
     private class DataRequestCallback<T> implements RequestCallback {
     	 
         private List<MediaType> mediaTypes = Arrays.asList(MediaType.APPLICATION_OCTET_STREAM, MediaType.ALL);

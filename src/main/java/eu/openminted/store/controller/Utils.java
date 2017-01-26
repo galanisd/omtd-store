@@ -9,6 +9,10 @@ import org.springframework.http.ResponseEntity;
 
 import eu.openminted.store.StoreException;
 
+/**
+ * @author galanisd
+ *
+ */
 public class Utils {
 	
 	public static ResponseEntity<Resource> download(InputStream fileInputStream, String fname){

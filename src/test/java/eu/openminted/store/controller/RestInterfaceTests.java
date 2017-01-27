@@ -68,7 +68,11 @@ public class RestInterfaceTests {
 		log.info("endpoint was set to:" + store.getEndpoint());
 	}
 	
-	// === == === == === ==  
+	/*
+	 * Execute the following tests in the order ascending order.
+	 * (See @FixMethodOrder).
+	 */
+	
     @Test
     public void test01deleteAll() throws Exception {
     	assertTrue (store.deleteAll().equalsIgnoreCase("true"));    	
@@ -91,6 +95,11 @@ public class RestInterfaceTests {
     	String archId = store.createArchive();
     	String subArchId = store.createSubArchive(archId, "anArchive");
     	assertTrue(archId != null && subArchId != null);
+    }
+    
+    @Test
+    public void test99deleteAll() throws Exception {
+    	assertTrue (store.deleteAll().equalsIgnoreCase("true"));    	
     }
     
     /*
@@ -121,6 +130,5 @@ public class RestInterfaceTests {
         assertThat(response.getBody()).isEqualTo("Spring Framework");
     }
 	*/
-
 }
 

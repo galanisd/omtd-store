@@ -42,17 +42,14 @@ import eu.openminted.store.test.Store_API_Tester;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = {ApplicationBoot.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RestInterfaceTests {
 
 	private static final Logger log = LoggerFactory.getLogger(RestInterfaceTests.class);
 	
-    //@MockBean
-    //ApplicationConfig config;
-
-    //@MockBean
-    StoreRESTClient store;
+    private StoreRESTClient store;
     
     @LocalServerPort
     private int randomServerPort;
@@ -65,12 +62,13 @@ public class RestInterfaceTests {
 	
 	@Before
 	public void beforeTests() {
+		// Create Store Client.
 		store = new StoreRESTClient();
-		log.info("endpoint:" + store.getEndpoint() + " " + randomServerPort);
-		store.setEndpoint("http://localhost:" + randomServerPort);
+		store.setEndpoint("http://localhost:" + randomServerPort);		
 		log.info("endpoint was set to:" + store.getEndpoint());
 	}
 	
+	// === == === == === ==  
     @Test
     public void test01deleteAll() throws Exception {
     	assertTrue (store.deleteAll().equalsIgnoreCase("true"));    	
@@ -78,10 +76,23 @@ public class RestInterfaceTests {
 
     @Test
     public void test02CreateArch() throws Exception {
-    	assertNotNull(store.createArchive());    	
+    	String archId = store.createArchive();
+    	assertNotNull(archId);    	
+    }
+
+    @Test
+    public void test03DeleteArch() throws Exception {
+    	String archId = store.createArchive();
+    	assertTrue(archId != null && store.deleteArchive(archId).equalsIgnoreCase("true"));
+    }
+
+    @Test
+    public void test04CreateSubArchive() throws Exception {
+    	String archId = store.createArchive();
+    	String subArchId = store.createSubArchive(archId, "anArchive");
+    	assertTrue(archId != null && subArchId != null);
     }
     
-        
     /*
     @Test
     public void shouldUploadFile() throws Exception {

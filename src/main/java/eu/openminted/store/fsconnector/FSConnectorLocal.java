@@ -148,8 +148,7 @@ public class FSConnectorLocal implements FSConnector{
 	public boolean compressDir(String dir, String zipFile) {		
 		try{			
 			DirCompressor compressor = new DirCompressor(localRoot);
-			compressor.zipDir(zipFile, dir);
-			return true;
+			return compressor.zipDir(zipFile, dir);			
 		}catch(Exception e){
 			log.debug("ERROR", e);
 			return false;	

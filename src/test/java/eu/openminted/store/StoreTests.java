@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -23,7 +24,7 @@ import eu.openminted.store.test.Store_API_Tester;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class, loader = AnnotationConfigContextLoader.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class StoreTests {
 
 	private static final Logger log = LoggerFactory.getLogger(StoreTests.class);
@@ -50,27 +51,36 @@ public class StoreTests {
 	}
 	
 	@Test
-	public void test00() throws Exception{
+	public void clearStore() throws Exception{
 		appTester.listAllFilesAndThenDeleteAll();		
 		String fileList = store.listAllFiles();		
 		assertTrue(fileList.isEmpty());		
 	}
 
 	@Test
-	public void test01() throws Exception{
+	public void createAHierarchyOfArchivesAndStoreAFileInTheLastOne() throws Exception{
 		boolean status = appTester.createAHierarchyOfArchivesAndStoreAFileInTheLastOne(sampleAnnotatedFile);		
 		assertTrue(status);		
 	}
 	
 	@Test
-	public void test02() throws Exception{
+	public void createArchiveWithAFolderThatContainsAPDFFile() throws Exception{
 		boolean status = appTester.createArchiveWithAFolderThatContainsAPDFFile(samplePDFFile);		
 		assertTrue(status);		
 	}	
 	
 	@Test
-	public void test03() throws Exception{
+	public void createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile() throws Exception{
 		boolean status = appTester.createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(sampleAnnotatedFile);		
 		assertTrue(status);		
+	}
+	
+	@After 
+	public void tearDown(){
+		try{
+			appTester.listAllFilesAndThenDeleteAll();
+		}catch(Exception e){
+			log.info("ERROR:", e);
+		}
 	}
 }

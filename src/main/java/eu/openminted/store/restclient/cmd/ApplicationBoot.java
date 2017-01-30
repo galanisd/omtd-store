@@ -122,7 +122,7 @@ public class ApplicationBoot implements CommandLineRunner {
 	}
 
 	/**
-	 * Sets endpoint and re-initiates the Store client.
+	 * Sets endpoint.
 	 * @param endpoint
 	 */
 	private void setEndpoint(String endpoint) {

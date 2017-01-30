@@ -8,6 +8,7 @@ import static org.mockito.Matchers.any;
 
 import java.io.File;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -44,7 +45,7 @@ import eu.openminted.store.test.Store_API_Tester;
 @RunWith(SpringRunner.class)
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @SpringBootTest(classes = {ApplicationBoot.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RestInterfaceTests {
 
 	private static final Logger log = LoggerFactory.getLogger(RestInterfaceTests.class);
@@ -67,40 +68,69 @@ public class RestInterfaceTests {
 		store.setEndpoint("http://localhost:" + randomServerPort);		
 		log.info("endpoint was set to:" + store.getEndpoint());
 	}
-	
-	/*
-	 * Execute the following tests in the order ascending order.
-	 * (See @FixMethodOrder).
-	 */
-	
+		
+    /**
+     * Delete all files in the store.
+     * @throws Exception
+     */
     @Test
-    public void test01deleteAll() throws Exception {
+    public void deleteAll() throws Exception {
     	assertTrue (store.deleteAll().equalsIgnoreCase("true"));    	
     }
 
+    /**
+     * Creates an archive.
+     * @throws Exception
+     */
     @Test
-    public void test02CreateArch() throws Exception {
+    public void createArch() throws Exception {
     	String archId = store.createArchive();
     	assertNotNull(archId);    	
     }
 
+    /**
+     * Creates and deletes an archive.
+     * @throws Exception
+     */
     @Test
-    public void test03DeleteArch() throws Exception {
+    public void deleteArch() throws Exception {
     	String archId = store.createArchive();
     	assertTrue(archId != null && store.deleteArchive(archId).equalsIgnoreCase("true"));
     }
 
+    /**
+     * Creates a subarchive.
+     * @throws Exception
+     */
     @Test
-    public void test04CreateSubArchive() throws Exception {
+    public void createSubArchive() throws Exception {
     	String archId = store.createArchive();
     	String subArchId = store.createSubArchive(archId, "anArchive");
     	assertTrue(archId != null && subArchId != null);
     }
     
+    /**
+     * Uploads a file in an archive.
+     * @throws Exception
+     */
     @Test
-    public void test99deleteAll() throws Exception {
+    public void uploadFile() throws Exception {
+        ClassPathResource resource = new ClassPathResource("test.txt", getClass());
+        String archiveID = store.createArchive();        
+        String status = store.updload(resource.getFile(), archiveID, resource.getFile().getName());
+        assertTrue(archiveID != null && status.equalsIgnoreCase("true"));
+    }
+    
+    /**
+     * Deletes all files in the store.
+     * @throws Exception
+     */
+    @After
+    public void tearDown() throws Exception {
     	assertTrue (store.deleteAll().equalsIgnoreCase("true"));    	
     }
+    
+    // == === ==
     
     /*
     @Test
@@ -130,5 +160,7 @@ public class RestInterfaceTests {
         assertThat(response.getBody()).isEqualTo("Spring Framework");
     }
 	*/
+    
+
 }
 

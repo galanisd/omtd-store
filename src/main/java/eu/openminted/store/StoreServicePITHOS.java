@@ -15,6 +15,12 @@ import eu.openminted.store.metadata.StoreMetadata;
  */
 public class StoreServicePITHOS extends StoreServiceGeneric{
 				
+	/**
+	 * Constructor.
+	 * @param storageProperties
+	 * @param idGen
+	 * @param storageIndex
+	 */
 	@Autowired
 	public StoreServicePITHOS(StorePropertiesPITHOS storageProperties, IdGenerator idGen, StoreMetadata storageIndex){		
 		super(Store.PITHOS, storageProperties, idGen, storageIndex);

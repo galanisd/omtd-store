@@ -1,5 +1,7 @@
 package eu.openminted.store.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,15 +20,18 @@ import eu.openminted.store.metadata.StoreMetadataDefault;
 @PropertySource("${storeApplicationCfg}")
 public class ApplicationConfig {
 			
+	private final static Logger log = LoggerFactory.getLogger(ApplicationConfig.class);
+	
 	@Autowired
 	private Environment environment;
 	
 	@Bean
-	public StoreServiceGeneric getStorageService(){		
-		
+	public StoreServiceGeneric getStorageService(){						
 		StoreServiceGeneric storageService = null;		
 		String type = environment.getProperty("storage.type");
-				
+		
+		log.info("storage.type:" + type);
+		
 		if(type.equalsIgnoreCase(Store.PITHOS)){
 			// Read PITHOS Storage properties.
 			StorePropertiesPITHOS sp = new StorePropertiesPITHOS(); 				

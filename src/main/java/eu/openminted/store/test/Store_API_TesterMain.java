@@ -4,6 +4,10 @@ import java.util.Scanner;
 
 import eu.openminted.store.config.Store;
 
+/**
+ * @author galanisd
+ *
+ */
 public class Store_API_TesterMain {
 	
 	// == = == = == == = == = == = == = == = == = == = == = ==
@@ -28,6 +32,8 @@ public class Store_API_TesterMain {
 		}
 		
 		Store_API_Tester runner = new Store_API_Tester(storeType);
-		runner.executeTests();					 			 
+		runner.executeTests();		
+		
+		console.close();
 	}
 }

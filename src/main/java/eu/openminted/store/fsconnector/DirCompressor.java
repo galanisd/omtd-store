@@ -8,20 +8,46 @@ import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import eu.openminted.store.StoreServiceGeneric;
+
 public class DirCompressor {
 
+	private static final Logger log = LoggerFactory.getLogger(DirCompressor.class);
+	
 	private String rootStore;
 	
 	public DirCompressor(String rootStore){
 		this.rootStore = rootStore;		
 	}
 	
-	public void zipDir(String zipFileName, String dir) throws Exception {
+	/**
+	 * Zips directory.
+	 * @param zipFileName
+	 * @param dir
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean zipDir(String zipFileName, String dir) {
 		File dirObj = new File(dir);
-		ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName));
-		System.out.println("Creating : " + zipFileName);
-		addDir(dirObj, out);
-		out.close();
+		
+		if(dirObj.exists()){
+			try{
+				ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName));
+				log.info("Creating : " + zipFileName);
+				addDir(dirObj, out);
+				out.close();
+			} catch (Exception e){
+				log.debug("ERROR" , e);
+				return false;
+			}
+		}else{
+			return false;
+		}
+		
+		return true;
 	}
 
 	private void addDir(File dirObj, ZipOutputStream out) throws IOException {
@@ -34,7 +60,7 @@ public class DirCompressor {
 				continue;
 			}
 			FileInputStream in = new FileInputStream(files[i].getAbsolutePath());
-			System.out.println(" Adding: " + files[i].getAbsolutePath());
+			log.debug(" Adding: " + files[i].getAbsolutePath());
 			
 			String rel = files[i].getAbsolutePath().substring(rootStore.length() + 1);
 			

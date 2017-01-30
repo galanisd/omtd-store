@@ -1,5 +1,9 @@
 package eu.openminted.store.config;
 
+/**
+ * @author galanisd
+ *
+ */
 public class ApplicationConfigTestParams {
 
 	/** Test files location property file */

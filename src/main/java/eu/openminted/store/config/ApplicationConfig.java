@@ -16,6 +16,10 @@ import eu.openminted.store.idgenerator.SimpleIdGenerator;
 import eu.openminted.store.metadata.StoreMetadata;
 import eu.openminted.store.metadata.StoreMetadataDefault;
 
+/**
+ * @author galanisd
+ *
+ */
 @Configuration
 @PropertySource("${storeApplicationCfg}")
 public class ApplicationConfig {

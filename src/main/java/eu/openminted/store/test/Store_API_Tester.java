@@ -63,7 +63,7 @@ public class Store_API_Tester {
 	 */
 	public Store_API_Tester(StoreService store) {
 		this.store = store;
-		init();
+		//init();
 	}
 	
 	/**

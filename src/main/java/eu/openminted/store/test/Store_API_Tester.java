@@ -45,7 +45,7 @@ public class Store_API_Tester {
 	public Store_API_Tester(String storeType) {
 		
 		if (storeType.equalsIgnoreCase(Store.LOCAL)) {
-			System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configLocal.properties");
+			System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configLocalDefault.properties");
 			ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 			store = (StoreService) ctx.getBean(StoreServiceLocalDisk.class);
 		} else if (storeType.equalsIgnoreCase(Store.PITHOS)) {

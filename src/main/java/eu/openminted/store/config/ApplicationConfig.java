@@ -1,5 +1,7 @@
 package eu.openminted.store.config;
 
+import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +41,7 @@ public class ApplicationConfig {
 		if(type.equalsIgnoreCase(Store.PITHOS)){
 			// Read PITHOS Storage properties.
 			StorePropertiesPITHOS sp = new StorePropertiesPITHOS(); 				
-			sp.setStorageRoot(environment.getProperty(ApplicationConfigParams.storageRoot));
+			sp.setStorageRoot(getStorageRoot());
 			sp.setPithosURL(environment.getProperty(ApplicationConfigParams.pithosURL));		
 			sp.setPithosToken(environment.getProperty(ApplicationConfigParams.pithosToken));
 			sp.setPithosUUID(environment.getProperty(ApplicationConfigParams.pithosUUID));
@@ -48,7 +50,7 @@ public class ApplicationConfig {
 		}else if(type.equalsIgnoreCase(Store.LOCAL)){
 			// Read Local Storage properties.
 			StorePropertiesLocal sp = new StorePropertiesLocal();			
-			sp.setStorageRoot(environment.getProperty(ApplicationConfigParams.storageRoot));
+			sp.setStorageRoot(getStorageRoot());
 			// Init storageService
 			storageService = new StoreServiceLocalDisk(sp, getIdGenerator(), getStoreMetadata());
 		}
@@ -66,4 +68,17 @@ public class ApplicationConfig {
 		return new StoreMetadataDefault();
 	}
 	
+	private String getStorageRoot(){
+		String p = environment.getProperty(ApplicationConfigParams.storageRoot);
+		if(p != null){
+			return p;
+		}else{
+			String homeDir = System.getProperty("user.home");
+			String OMTDStoreRoot =  homeDir + "/" + "OMTD/";
+			File fStore = new File(OMTDStoreRoot);
+			fStore.mkdir();
+			log.info("Use home dir as storage root:" + fStore.getAbsolutePath());			
+			return fStore.getAbsolutePath();
+		}
+	}
 }

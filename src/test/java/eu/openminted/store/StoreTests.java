@@ -77,7 +77,7 @@ public class StoreTests {
 	
 	@After 
 	public void tearDown(){
-		try{
+		try{			
 			appTester.listAllFilesAndThenDeleteAll();
 		}catch(Exception e){
 			log.info("ERROR:", e);

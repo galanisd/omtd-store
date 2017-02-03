@@ -32,6 +32,7 @@ public class Store_API_TesterMain {
 		}
 		
 		Store_API_Tester runner = new Store_API_Tester(storeType);
+		runner.init();
 		runner.executeTests();		
 		
 		console.close();

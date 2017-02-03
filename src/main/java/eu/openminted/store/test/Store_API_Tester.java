@@ -54,7 +54,7 @@ public class Store_API_Tester {
 			store = (StoreService) ctx.getBean(StoreServicePITHOS.class);
 		}
 		
-		init();
+		
 	}
 	
 	/**

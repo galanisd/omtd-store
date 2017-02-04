@@ -15,7 +15,6 @@
 	</properties>
 
 	<modules>
-		<!-- <module>../interoperability-mapping-conversion</module> -->
 		<module>../omtd-store-api</module>
 		<module>../omtd-store-rest-client</module>
 		<module>../omtd-store-rest</module>

@@ -68,7 +68,7 @@ public class ApplicationBoot implements CommandLineRunner {
 						this.printHelp();
 					} else {						
 						String archiveID = allCMDArgs[1];						
-						System.out.println(store.deleteArchive(archiveID));
+						messageGenerator(store.deleteArchive(archiveID));
 					}	
 				} 				
 				else if (command.equals(Commands.listFiles)) {
@@ -82,7 +82,7 @@ public class ApplicationBoot implements CommandLineRunner {
 						String fileName = allCMDArgs[1];
 						String archiveID = allCMDArgs[2];
 						File file = new File(fileName);
-						System.out.println(store.updload(file, archiveID, file.getName()));
+						messageGenerator(store.updload(file, archiveID, file.getName()));
 					}															
 				} else if (command.startsWith(Commands.downloadArch)) {
 					final String[] allCMDArgs = command.split(" ");
@@ -92,7 +92,7 @@ public class ApplicationBoot implements CommandLineRunner {
 					} else {
 						String archiveID = allCMDArgs[1];
 						String destination = allCMDArgs[2];
-						System.out.println(store.downloadArchive(archiveID, destination));
+						messageGenerator(store.downloadArchive(archiveID, destination));
 					}
 				} else if (command.equals(Commands.deleteAll)) {
 					System.out.println(store.deleteAll());
@@ -103,7 +103,7 @@ public class ApplicationBoot implements CommandLineRunner {
 						this.printHelp();
 					} else {
 						String archiveID = allCMDArgs[1];
-						System.out.println(store.finalizeArchive(archiveID));
+						messageGenerator(store.finalizeArchive(archiveID));
 					}
 				} else if (command.equals(Commands.help)) {
 					this.printHelp();
@@ -150,7 +150,7 @@ public class ApplicationBoot implements CommandLineRunner {
 	 * Prints all available commands.
 	 */
 	private void printHelp() {
-		System.out.println("\nAvailable commands:");
+		System.out.println("\nAvailable commands:\n-- --- -- --- -- --- -- ---");
 		final String format = "%-25s%s%n";
 		// == ===
 		System.out.printf(format, Commands.help, " => Displays help.");
@@ -170,6 +170,28 @@ public class ApplicationBoot implements CommandLineRunner {
 
 	}
 
+	private void messageGenerator(boolean serviceResponse){
+		if(serviceResponse){
+			System.out.println("DONE!");
+		}else{
+			System.out.println("ERROR :-(");
+		}
+	}
+	
+	private void messageGenerator(String serviceResponse){
+		String msg = "";
+		if(serviceResponse != null){
+			if(serviceResponse.startsWith("true")){
+				msg = "DONE!";
+			}else{
+				msg = "ERROR :-(";
+			}
+		}else{
+			msg = "ERROR :-(";
+		}
+		
+		System.out.print(msg);
+	}	
 	// == === ==
 	public static void main(String args[]) {
 		log.info("...");

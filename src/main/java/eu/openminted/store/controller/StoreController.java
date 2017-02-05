@@ -67,8 +67,8 @@ public class StoreController {
      */
     @RequestMapping(value="/store/finalizeArchive", method=RequestMethod.POST)
     @ResponseBody
-    public boolean finalizeArchive(@RequestParam("archiveID") String archiveId){
-    	return storeService.finalizeArchive(archiveId);
+    public String finalizeArchive(@RequestParam("archiveID") String archiveId){
+    	return storeService.finalizeArchive(archiveId) + "";
     }
    
     	
@@ -110,7 +110,7 @@ public class StoreController {
     @RequestMapping(value="/store/deleteArchive", method=RequestMethod.POST)
     @ResponseBody
     public String deleteArhive(@RequestParam("archiveID") String archiveId){
-    	return storeService.deleteArchive(archiveId, true) + "";    
+    	return "" + storeService.deleteArchive(archiveId, true);    
     }    
     
     /**
@@ -128,6 +128,7 @@ public class StoreController {
     		result = "" + storeService.storeFile(archiveId, file.getInputStream(), fileName);
     	}catch(Exception e){
     		log.debug("ERROR", e);
+    		result = "false";
     	}
     	
     	return result;

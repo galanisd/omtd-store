@@ -216,7 +216,7 @@ public class Store_API_Tester {
 
 	/**
 	 * Creating an archive with many files.
-	 * Then each of them is downloaded in the local folder.
+	 * Then each of them is downloaded in a local folder.
 	 * @throws Exception
 	 */
 	public boolean createArchiveWithManyFilesAndDownloadEachOfThem() throws Exception{

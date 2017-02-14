@@ -76,9 +76,10 @@ public class ApplicationConfig {
 			String homeDir = System.getProperty("user.home");
 			String OMTDStoreRoot =  homeDir + "/" + "OMTD/";
 			File fStore = new File(OMTDStoreRoot);
-			fStore.mkdir();
-			log.info("Use home dir as storage root:" + fStore.getAbsolutePath());			
-			return fStore.getAbsolutePath();
+			fStore.mkdir();			
+			String path = fStore.getAbsolutePath() + "/";
+			log.info("Use home dir as storage root:" + path);			
+			return path;
 		}
 	}
 }

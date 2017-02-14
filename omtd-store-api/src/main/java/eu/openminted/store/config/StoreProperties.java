@@ -7,13 +7,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author galanisd
  *
  */
-public class StoreProperties {
+public abstract class StoreProperties {
 	
     /** Root folder for Storage */
     private String storageRoot;
 
     /** Storage type */
     private String storageType;
+    
+
     
     public String getStorageRoot() {
         return storageRoot;

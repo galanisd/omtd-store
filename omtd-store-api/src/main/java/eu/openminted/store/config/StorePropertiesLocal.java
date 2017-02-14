@@ -5,5 +5,7 @@ package eu.openminted.store.config;
  *
  */
 public class StorePropertiesLocal extends StoreProperties{
-
+    public StorePropertiesLocal(){
+    	this.setStorageType(Store.LOCAL);
+    }
 }

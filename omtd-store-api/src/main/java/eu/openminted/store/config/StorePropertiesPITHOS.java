@@ -11,7 +11,10 @@ public class StorePropertiesPITHOS extends StoreProperties{
 	private String pithosUUID;
 	private String pithosURL;
 	
-	
+    public StorePropertiesPITHOS(){
+    	this.setStorageType(Store.PITHOS);
+    }
+    
 	public String getPithosToken() {
 		return pithosToken;
 	}

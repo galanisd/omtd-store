@@ -20,7 +20,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import eu.openminted.store.config.ApplicationConfig;
 import eu.openminted.store.config.ApplicationConfigurator;
-import eu.openminted.store.test.Store_API_Tester;
+import eu.openminted.store.test.StoreAPITester;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class, loader = AnnotationConfigContextLoader.class)
@@ -29,7 +29,7 @@ public class StoreTests {
 
 	private static final Logger log = LoggerFactory.getLogger(StoreTests.class);
 
-	private Store_API_Tester appTester;
+	private StoreAPITester appTester;
 	private File sampleAnnotatedFile;
 	private File samplePDFFile;
 	
@@ -44,10 +44,10 @@ public class StoreTests {
 	@Before
 	public void beforeTests() {
 		log.info("Load everything I need before running tests.");		
-		appTester = new Store_API_Tester(store);		
+		appTester = new StoreAPITester(store);		
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-		sampleAnnotatedFile = new File(classLoader.getResource(Store_API_Tester.gateDoc).getFile());
-		samplePDFFile = new File(classLoader.getResource(Store_API_Tester.pdfDoc).getFile());
+		sampleAnnotatedFile = new File(classLoader.getResource(StoreAPITester.gateDoc).getFile());
+		samplePDFFile = new File(classLoader.getResource(StoreAPITester.pdfDoc).getFile());
 	}
 	
 	@Test

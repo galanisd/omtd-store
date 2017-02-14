@@ -25,9 +25,9 @@ import eu.openminted.store.config.Store;
  * A simple tester for the omtd-store-api. 
  * 
  */
-public class Store_API_Tester {
+public class StoreAPITester {
 
-	private static final Logger log = LoggerFactory.getLogger(Store_API_Tester.class);
+	private static final Logger log = LoggerFactory.getLogger(StoreAPITester.class);
 	
 	public static final String gateDoc = "eu/openminted/store/rizospastis_AVVd-4ehg3d853ySFFif.xml.gate";
 	public static final String pdfDoc = "eu/openminted/store/2016_Kathaa_NAACL.pdf";
@@ -42,7 +42,7 @@ public class Store_API_Tester {
 	 * Constructor. Creates a store service using a config file (LOCAL OR PITHOS).
 	 * @param storeType
 	 */
-	public Store_API_Tester(String storeType) {		
+	public StoreAPITester(String storeType) {		
 		if (storeType.equalsIgnoreCase(Store.LOCAL)) {
 			System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configLocalDefault.properties");
 			ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
@@ -58,7 +58,7 @@ public class Store_API_Tester {
 	 * Constructor.
 	 * @param storeType
 	 */
-	public Store_API_Tester(StoreService store) {
+	public StoreAPITester(StoreService store) {
 		this.store = store;
 		//init();
 	}
@@ -73,7 +73,7 @@ public class Store_API_Tester {
 			String testFileLocationsFile = System.getProperty(ApplicationConfigTestParams.testFilesCfg);		
 			// If is not provided load default applications properties (based on applicationPropertiesDefaultHolder).
 			if(testFileLocationsFile == null){																			
-				testFiles.load(Store_API_Tester.class.getResourceAsStream(ApplicationConfigTestParams.testFilesDefault));
+				testFiles.load(StoreAPITester.class.getResourceAsStream(ApplicationConfigTestParams.testFilesDefault));
 			}else{
 				testFiles.load(new FileInputStream(testFileLocationsFile));
 			}
@@ -201,7 +201,7 @@ public class Store_API_Tester {
 		log.info(" uploaded:" + successUpload + " " + bigFile.getAbsolutePath());	
 		InputStream is = store.downloadFile(archId + "/" + bigFile.getName());
 		FileOutputStream fos = new FileOutputStream(testFiles.getProperty(ApplicationConfigTestParams.downloadFolder) + bigFile.getName());
-		boolean down = Store_API_Tester.store(is, fos);
+		boolean down = StoreAPITester.store(is, fos);
 		fos.close();
 		
 		if(archId != null & successUpload && down){ 
@@ -253,7 +253,7 @@ public class Store_API_Tester {
 				InputStream is = store.downloadFile(archId + "/" + dest);	
 				
 				FileOutputStream fos = new FileOutputStream(testFiles.getProperty(ApplicationConfigTestParams.downloadFolder) + fileForUpload.getName() + ".txt");
-				boolean statusDown = Store_API_Tester.store(is, fos);
+				boolean statusDown = StoreAPITester.store(is, fos);
 				if(!statusDown)
 					status = false;
 				fos.close();					

@@ -8,7 +8,7 @@ import eu.openminted.store.config.Store;
  * @author galanisd
  *
  */
-public class Store_API_TesterMain {
+public class StoreAPITesterMain {
 	
 	// == = == = == == = == = == = == = == = == = == = == = ==
 	public static void main(String args[]){
@@ -31,7 +31,7 @@ public class Store_API_TesterMain {
 			return;
 		}
 		
-		Store_API_Tester runner = new Store_API_Tester(storeType);
+		StoreAPITester runner = new StoreAPITester(storeType);
 		runner.init();
 		runner.executeTests();		
 		

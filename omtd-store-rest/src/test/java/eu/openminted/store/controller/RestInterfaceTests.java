@@ -38,7 +38,7 @@ import eu.openminted.store.StoreService;
 import eu.openminted.store.config.ApplicationConfig;
 import eu.openminted.store.config.ApplicationConfigurator;
 import eu.openminted.store.restclient.StoreRESTClient;
-import eu.openminted.store.test.Store_API_Tester;
+import eu.openminted.store.test.StoreAPITester;
 
 
 

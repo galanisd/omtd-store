@@ -31,21 +31,21 @@ public class RestClientTester {
 	 * @param props
 	 */
 	public void test01(Properties props){					
-		String result = store.deleteAll();
+		String result = store.deleteAll().getResponse();
 		log.info("Delete all" + result);		
-		String archiveID = store.createArchive();
+		String archiveID = store.createArchive().getResponse();
 		log.info("Create Archive:" + archiveID);		
-		String subArchiveId = store.createSubArchive(archiveID, props.getProperty("client.subarchiveid"));
+		String subArchiveId = store.createSubArchive(archiveID, props.getProperty("client.subarchiveid")).getResponse();
 		log.info("Create SubArchive:" + subArchiveId);		
 		File fileForUploading = new File(props.getProperty("client.bigFile"));		
-		store.updload(fileForUploading, subArchiveId, fileForUploading.getName());
-		log.info("Upload to SubArchive:" + subArchiveId);			
+		String status1 = store.updload(fileForUploading, subArchiveId, fileForUploading.getName()).getResponse();
+		log.info("Upload to SubArchive:" + status1);			
 		log.info("List Files");
-		log.info(store.listFiles());		
+		log.info(store.listFiles().getResponse());		
 		log.info("Download " + subArchiveId + "/" + fileForUploading.getName());
-		boolean status = store.downloadFile(subArchiveId + "/" + fileForUploading.getName(), props.getProperty("client.downloadFolder") + fileForUploading.getName());
-		log.info("Download status " + status);		
-		log.info("Finalize archive " + archiveID + " " + store.finalizeArchive(archiveID));
+		boolean status2 = store.downloadFile(subArchiveId + "/" + fileForUploading.getName(), props.getProperty("client.downloadFolder") + fileForUploading.getName());
+		log.info("Download status " + status2);		
+		log.info("Finalize archive " + archiveID + " " + store.finalizeArchive(archiveID).getResponse());
 		log.info("Download archive " + store.downloadArchive(archiveID, props.getProperty("client.downloadFolder") + archiveID + ".zip"));
 	}
 			

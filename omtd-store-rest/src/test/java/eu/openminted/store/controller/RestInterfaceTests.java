@@ -75,7 +75,7 @@ public class RestInterfaceTests {
      */
     @Test
     public void deleteAll() throws Exception {
-    	assertTrue (store.deleteAll().equalsIgnoreCase("true"));    	
+    	assertTrue (store.deleteAll().getResponse().equalsIgnoreCase("true"));    	
     }
 
     /**
@@ -84,7 +84,7 @@ public class RestInterfaceTests {
      */
     @Test
     public void createArch() throws Exception {
-    	String archId = store.createArchive();
+    	String archId = store.createArchive().getResponse();
     	assertNotNull(archId);    	
     }
 
@@ -94,8 +94,8 @@ public class RestInterfaceTests {
      */
     @Test
     public void deleteArch() throws Exception {
-    	String archId = store.createArchive();
-    	assertTrue(archId != null && store.deleteArchive(archId).equalsIgnoreCase("true"));
+    	String archId = store.createArchive().getResponse();
+    	assertTrue(archId != null && store.deleteArchive(archId).getResponse().equalsIgnoreCase("true"));
     }
 
     /**
@@ -104,8 +104,8 @@ public class RestInterfaceTests {
      */
     @Test
     public void createSubArchive() throws Exception {
-    	String archId = store.createArchive();
-    	String subArchId = store.createSubArchive(archId, "anArchive");
+    	String archId = store.createArchive().getResponse();
+    	String subArchId = store.createSubArchive(archId, "anArchive").getResponse();
     	assertTrue(archId != null && subArchId != null);
     }
     
@@ -116,8 +116,8 @@ public class RestInterfaceTests {
     @Test
     public void uploadFile() throws Exception {
         ClassPathResource resource = new ClassPathResource("test.txt", getClass());
-        String archiveID = store.createArchive();        
-        String status = store.updload(resource.getFile(), archiveID, resource.getFile().getName());
+        String archiveID = store.createArchive().getResponse();        
+        String status = store.updload(resource.getFile(), archiveID, resource.getFile().getName()).getResponse();
         assertTrue(archiveID != null && status.equalsIgnoreCase("true"));
     }
     
@@ -127,7 +127,7 @@ public class RestInterfaceTests {
      */
     @After
     public void tearDown() throws Exception {
-    	assertTrue (store.deleteAll().equalsIgnoreCase("true"));    	
+    	assertTrue (store.deleteAll().getResponse().equalsIgnoreCase("true"));    	
     }
     
     // == === ==

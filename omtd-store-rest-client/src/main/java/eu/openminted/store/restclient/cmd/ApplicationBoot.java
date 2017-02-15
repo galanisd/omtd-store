@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
+import eu.openminted.store.common.StoreResponse;
 import eu.openminted.store.restclient.StoreRESTClient;
 
 /**
@@ -170,6 +171,10 @@ public class ApplicationBoot implements CommandLineRunner {
 
 	}
 
+	private void messageGenerator(StoreResponse storeResponse){
+		messageGenerator(storeResponse.getResponse(), storeResponse.getReport());
+	}
+	
 	private void messageGenerator(boolean serviceResponse){
 		if(serviceResponse){
 			System.out.println("DONE!");
@@ -178,7 +183,7 @@ public class ApplicationBoot implements CommandLineRunner {
 		}
 	}
 	
-	private void messageGenerator(String serviceResponse){
+	private void messageGenerator(String serviceResponse, String report){
 		String msg = "";
 		if(serviceResponse != null){
 			if(serviceResponse.startsWith("true")){

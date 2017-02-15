@@ -16,6 +16,7 @@
 
 	<modules>
 		<module>./omtd-store-api</module>
+		<module>./omtd-store-common</module>
 		<module>./omtd-store-rest-client</module>
 		<module>./omtd-store-rest</module>
 	</modules>

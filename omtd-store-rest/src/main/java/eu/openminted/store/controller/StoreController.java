@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import eu.openminted.store.StoreException;
 import eu.openminted.store.StoreService;
+import eu.openminted.store.common.StoreREST;
+import eu.openminted.store.common.StoreResponse;
 
 /**
  * A Spring Controller for the Store Service.
@@ -45,30 +47,33 @@ public class StoreController {
      * Creates an archive.
      * @return
      */
-    @RequestMapping(value="/store/createArchive", method=RequestMethod.GET)
+    @RequestMapping(value=StoreREST.createArchive, method=RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public String createArchive(){
-    	return storeService.createArchive() + "";    
+    public StoreResponse createArchive(){
+    	String response = String.valueOf(storeService.createArchive()); 
+    	return new StoreResponse(response, "");    
     }
 
     /**
      * Creates a subArchive under a given archive.
      * @return
      */
-    @RequestMapping(value="/store/createSubArchive", method=RequestMethod.POST)
+    @RequestMapping(value=StoreREST.createSubArchive, method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public String createSubArchive(@RequestParam("archiveID") String archiveId, @RequestParam("archiveName") String archiveName){
-    	return storeService.createArchive(archiveId, archiveName) + "";    
+    public StoreResponse createSubArchive(@RequestParam(StoreREST.archiveID) String archiveId, @RequestParam("archiveName") String archiveName){
+    	String response = storeService.createArchive(archiveId, archiveName);
+    	return new StoreResponse(response, "");
     }
 
     /**
      * Finalize archive
      * @return
      */
-    @RequestMapping(value="/store/finalizeArchive", method=RequestMethod.POST)
+    @RequestMapping(value=StoreREST.finalizeArchive, method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public String finalizeArchive(@RequestParam("archiveID") String archiveId){
-    	return storeService.finalizeArchive(archiveId) + "";
+    public StoreResponse finalizeArchive(@RequestParam(StoreREST.archiveID) String archiveId){
+    	String response = String.valueOf(storeService.finalizeArchive(archiveId));
+    	return new StoreResponse(response, "");
     }
    
     	
@@ -76,9 +81,9 @@ public class StoreController {
      * Download archive
      * @return
      */
-    @RequestMapping(value="/store/downloadArchive", method=RequestMethod.POST)
+    @RequestMapping(value=StoreREST.downloadArchive, method=RequestMethod.POST)
     @ResponseBody
-    public  ResponseEntity<Resource> downloadArchive(@RequestParam("archiveID") String archiveId){
+    public  ResponseEntity<Resource> downloadArchive(@RequestParam(StoreREST.archiveID) String archiveId){
         InputStream fileInputStream = storeService.downloadArchive(archiveId);
         return Utils.download(fileInputStream, archiveId);
     }
@@ -87,30 +92,33 @@ public class StoreController {
      * List files
      * @return a list of files.
      */
-    @RequestMapping(value="/store/listFiles", method=RequestMethod.GET)
+    @RequestMapping(value=StoreREST.listFiles, method=RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public String listFiles(){
-    	return storeService.listAllFiles();     
+    public StoreResponse listFiles(){
+    	String response = storeService.listAllFiles();  
+    	return new StoreResponse(response, "");    	   
     }
     
     /**
      * Delete all files.
      * @return action status
      */
-    @RequestMapping(value="/store/deleteAll", method=RequestMethod.GET)
+    @RequestMapping(value=StoreREST.deleteAll, method=RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public String deleteAll(){
-    	return storeService.deleteAll() + "";    
+    public StoreResponse deleteAll(){
+    	String response = String.valueOf(storeService.deleteAll());
+    	return new StoreResponse(response, "");  
     }
     
     /**
      * Delete archive.
      * @return action status
      */
-    @RequestMapping(value="/store/deleteArchive", method=RequestMethod.POST)
+    @RequestMapping(value=StoreREST.deleteArchive, method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public String deleteArhive(@RequestParam("archiveID") String archiveId){
-    	return "" + storeService.deleteArchive(archiveId, true);    
+    public StoreResponse deleteArhive(@RequestParam(StoreREST.archiveID) String archiveId){
+    	String response = String.valueOf(storeService.deleteArchive(archiveId, true));
+    	return new StoreResponse(response, "");
     }    
     
     /**
@@ -120,18 +128,22 @@ public class StoreController {
      * @param file
      * @return action status.
      */
-    @RequestMapping(value="/store/uploadFile", method=RequestMethod.POST)
+    @RequestMapping(value=StoreREST.uploadFile, method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public String uploadFile(@RequestParam("archiveID") String archiveId, @RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
-    	String result = "";
+    public StoreResponse uploadFile(@RequestParam(StoreREST.archiveID) String archiveId, @RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+    	StoreResponse resp = new StoreResponse();
+    	String response = ""; 
+    	
     	try{
-    		result = "" + storeService.storeFile(archiveId, file.getInputStream(), fileName);
+    		response = String.valueOf(storeService.storeFile(archiveId, file.getInputStream(), fileName));
+    		resp.setResponse(response);
     	}catch(Exception e){
     		log.debug("ERROR", e);
-    		result = "false";
+    		resp.setResponse(String.valueOf(Boolean.FALSE));
+    		resp.setReport(e.getMessage());
     	}
     	
-    	return result;
+    	return resp;
     }
     
     /** 
@@ -139,7 +151,7 @@ public class StoreController {
      * @param fname
      * @return
      */
-    @RequestMapping(value="/store/downloadFile", method=RequestMethod.POST)
+    @RequestMapping(value=StoreREST.downloadFile, method=RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Resource> downloadFile(@RequestParam("fileName") String fname){
        	    	

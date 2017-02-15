@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,12 +21,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
+
+import eu.openminted.store.common.StoreREST;
+import eu.openminted.store.common.StoreResponse;
 
 /**
  * A client for OMTD Store.
@@ -47,13 +52,22 @@ public class StoreRESTClient {
 	public StoreRESTClient(String endpoint) {		
 		this.endpoint = endpoint;
 		this.restTemplate = new RestTemplate();	
+		
+		init();
 	}
 
 	/**
 	 * Constructor.
 	 */
 	public StoreRESTClient() {				
-		this.restTemplate = new RestTemplate();	
+		this.restTemplate = new RestTemplate();
+		init();
+	}
+	
+	private void init(){
+		//List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+		//messageConverters.add(new MappingJackson2HttpMessageConverter());
+		//this.restTemplate.setMessageConverters(messageConverters);
 	}
 	
 	public String getEndpoint() {
@@ -68,8 +82,8 @@ public class StoreRESTClient {
 	 * List all files of the Store.
 	 * @return
 	 */
-	public String listFiles() {
-		String response = restTemplate.getForObject(endpoint + "/store/listFiles/", String.class);
+	public StoreResponse listFiles() {		
+		StoreResponse response = restTemplate.getForObject(destination(endpoint, StoreREST.listFiles), StoreResponse.class);
 		return response;
 	}
 
@@ -77,8 +91,8 @@ public class StoreRESTClient {
 	 * Delete all files in the Store.
 	 * @return
 	 */
-	public String deleteAll() {
-		String response = restTemplate.getForObject(endpoint + "/store/deleteAll/", String.class);
+	public StoreResponse deleteAll() {
+		StoreResponse response = restTemplate.getForObject(destination(endpoint, StoreREST.deleteAll), StoreResponse.class);
 		return response;
 	}
 	
@@ -86,8 +100,8 @@ public class StoreRESTClient {
 	 * Creates an archive
 	 * @return the id of the archive.
 	 */
-	public String createArchive() {
-		String response = restTemplate.getForObject(endpoint + "/store/createArchive/", String.class);
+	public StoreResponse createArchive() {
+		StoreResponse response = restTemplate.getForObject(destination(endpoint, StoreREST.createArchive), StoreResponse.class);
 		return response;
 	}
 
@@ -95,34 +109,34 @@ public class StoreRESTClient {
 	 * Deletes an archive.
 	 * @return the id of the archive.
 	 */
-	public String deleteArchive(String archiveID) {
+	public StoreResponse deleteArchive(String archiveID) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		map.add("archiveID", archiveID);
+		map.add(StoreREST.archiveID, archiveID);
 		
-		return post(endpoint + "/store/deleteArchive/", map);
+		return post(destination(endpoint, StoreREST.deleteArchive), map);
 	}
 			
 	/**
 	 * Creates an subarchive
 	 * @return the id of the subarchive.
 	 */
-	public String createSubArchive(String archiveID, String archive) {
+	public StoreResponse createSubArchive(String archiveID, String archive) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		map.add("archiveID", archiveID);
+		map.add(StoreREST.archiveID, archiveID);
 		map.add("archiveName", archive);
 				
-		return post(endpoint + "/store/createSubArchive/", map);
+		return post(destination(endpoint, StoreREST.createSubArchive), map);
 	}
 	
 	/**
 	 * Finalize archive.
 	 * @return the id of the archive.
 	 */
-	public String finalizeArchive(String archiveID) {
+	public StoreResponse finalizeArchive(String archiveID) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add("archiveID", archiveID);
 		
-		return post(endpoint + "/store/finalizeArchive/", map);
+		return post(destination(endpoint, StoreREST.finalizeArchive), map);
 	}
 	
 	/**
@@ -131,12 +145,12 @@ public class StoreRESTClient {
 	 * @param map
 	 * @return
 	 */
-	private String post(String serviceEndpoint, MultiValueMap<String, Object> map){
+	private StoreResponse post(String serviceEndpoint, MultiValueMap<String, Object> map){
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
-		ResponseEntity<String> st = restTemplate.postForEntity(serviceEndpoint, requestEntity, String.class);
+		ResponseEntity<StoreResponse> st = restTemplate.postForEntity(serviceEndpoint, requestEntity, StoreResponse.class);
 		return st.getBody();
 	}
 	
@@ -147,11 +161,11 @@ public class StoreRESTClient {
 	 * @param fileName
 	 * @return
 	 */
-	public String updload(File file, String archiveID, String fileName) {
+	public StoreResponse updload(File file, String archiveID, String fileName) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add("file", new FileSystemResource(file));
 		map.add("fileName", fileName);
-		map.add("archiveID", archiveID);
+		map.add(StoreREST.archiveID, archiveID);
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -162,7 +176,7 @@ public class StoreRESTClient {
 		restTemplate.setRequestFactory(requestFactory);
 		
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
-		ResponseEntity<String> st = restTemplate.postForEntity(endpoint + "/store/uploadFile/", requestEntity, String.class);
+		ResponseEntity<StoreResponse> st = restTemplate.postForEntity(destination(endpoint, StoreREST.uploadFile), requestEntity, StoreResponse.class);
 		
 		return st.getBody();
 	}	
@@ -178,21 +192,21 @@ public class StoreRESTClient {
 		MultiValueMap<String, Object> callParameters = new LinkedMultiValueMap<String, Object>();
 		callParameters.add("fileName", fileName);
 		
-		return downloadFromServer(callParameters, "/store/downloadFile/", fileName, destination); 		
+		return downloadFromServer(callParameters, StoreREST.downloadFile, fileName, destination); 		
 	}
 	
 	/**
 	 * Downloads a file.
 	 * @param fileName
-	 * @param destination
+	 * @param localDestination
 	 * @return
 	 */
-	public boolean downloadArchive(String archiveID, String destination) {		
+	public boolean downloadArchive(String archiveID, String localDestination) {		
 		// Parameters
 		MultiValueMap<String, Object> callParameters = new LinkedMultiValueMap<String, Object>();
-		callParameters.add("archiveID", archiveID);
+		callParameters.add(StoreREST.archiveID, archiveID);
 		
-		return downloadFromServer(callParameters, "/store/downloadArchive/", archiveID, destination);		
+		return downloadFromServer(callParameters, StoreREST.downloadArchive, archiveID, localDestination);		
 	}
 	
 	/**
@@ -214,7 +228,7 @@ public class StoreRESTClient {
 			    Files.copy(response.getBody(), path, StandardCopyOption.REPLACE_EXISTING);
 			    return null;
 			};			
-			restTemplate.execute(endpoint + service, HttpMethod.POST, requestCallback, responseExtractor);	
+			restTemplate.execute(destination(endpoint, service), HttpMethod.POST, requestCallback, responseExtractor);	
 		}catch(Exception e){
 			log.debug("ERROR", e);
 			return false;
@@ -223,11 +237,16 @@ public class StoreRESTClient {
 		return true;
 	}
 	
+	private String destination(String endpoint, String service){
+		return endpoint + service;
+	}
+	
 	// == === ==
     private class DataRequestCallback<T> implements RequestCallback {
     	 
         private List<MediaType> mediaTypes = Arrays.asList(MediaType.APPLICATION_OCTET_STREAM, MediaType.ALL);
- 
+    	//private List<MediaType> mediaTypes = Arrays.asList(MediaType.APPLICATION_OCTET_STREAM, MediaType.APPLICATION_JSON, MediaType.ALL);
+    	
         private HttpEntity<T> requestEntity;
  
         public DataRequestCallback(T entity) {

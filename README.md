@@ -2,8 +2,7 @@
 
 ### Overview ###
 
-omtd-store-all is the Store Service of OpenMinTeD.
-It includes the following projects.
+omtd-store-all is the Store Service of OpenMinTeD. It includes the following projects.
 
 * omtd-store-api which defines the API of the service. Two implementations are provided; one that is based on local hard drive and one that uses GRNET's [PITHOS](https://okeanos.grnet.gr/services/pithos/) cloud service.
   
@@ -15,7 +14,8 @@ It includes the following projects.
 
 ### Installation ###
 
-* PITHOS...
-
+* The PITHOS implementation of the service is based on a JAVA REST-client of the cloud storage that
+is available at GitHub (https://github.com/grnet/e-science/tree/master/pithosfs).
+   
 * Etc.
 

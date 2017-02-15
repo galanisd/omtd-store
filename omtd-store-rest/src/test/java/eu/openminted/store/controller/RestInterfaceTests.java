@@ -61,6 +61,9 @@ public class RestInterfaceTests {
 		ApplicationConfigurator.configure();		
 	}
 	
+	/**
+	 * Prepares the test, i.e., initiates the Store Client. 
+	 */
 	@Before
 	public void beforeTests() {
 		// Create Store Client.
@@ -68,7 +71,9 @@ public class RestInterfaceTests {
 		store.setEndpoint("http://localhost:" + randomServerPort);		
 		log.info("endpoint was set to:" + store.getEndpoint());
 	}
-		
+	
+	// All tests are below.
+	// === == === == === ==    
     /**
      * Delete all files in the store.
      * @throws Exception
@@ -120,14 +125,18 @@ public class RestInterfaceTests {
         String status = store.updload(resource.getFile(), archiveID, resource.getFile().getName()).getResponse();
         assertTrue(archiveID != null && status.equalsIgnoreCase("true"));
     }
+    // === == === == === ==  
     
     /**
-     * Deletes all files in the store.
+     * Tear down/clean up after test. 
      * @throws Exception
      */
     @After
     public void tearDown() throws Exception {
-    	assertTrue (store.deleteAll().getResponse().equalsIgnoreCase("true"));    	
+    	log.info("Tear down .");
+    	//assertTrue (store.deleteAll().getResponse().equalsIgnoreCase("true"));
+    	store.deleteAll();
+    	store = null;
     }
     
     // == === ==

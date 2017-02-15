@@ -61,7 +61,7 @@ public class ApplicationBoot implements CommandLineRunner {
 				} else if (command.equals(Commands.printEndpoint)) {
 					this.printEndpoint();
 				} else if (command.equals(Commands.createArch)) {
-					System.out.println(store.createArchive());
+					responsePrinterRaw(store.createArchive());
 				}  else if (command.startsWith(Commands.deleteArch)) {
 					final String[] allCMDArgs = command.split(" ");
 					if (allCMDArgs.length != 2) {
@@ -69,11 +69,11 @@ public class ApplicationBoot implements CommandLineRunner {
 						this.printHelp();
 					} else {						
 						String archiveID = allCMDArgs[1];						
-						messageGenerator(store.deleteArchive(archiveID));
+						responsePrinter(store.deleteArchive(archiveID));
 					}	
 				} 				
 				else if (command.equals(Commands.listFiles)) {
-					System.out.println(store.listFiles());
+					responsePrinterRaw(store.listFiles());
 				} else if (command.startsWith(Commands.uploadFileToArch)) {
 					final String[] allCMDArgs = command.split(" ");
 					if (allCMDArgs.length != 3) {
@@ -83,7 +83,7 @@ public class ApplicationBoot implements CommandLineRunner {
 						String fileName = allCMDArgs[1];
 						String archiveID = allCMDArgs[2];
 						File file = new File(fileName);
-						messageGenerator(store.updload(file, archiveID, file.getName()));
+						responsePrinter(store.updload(file, archiveID, file.getName()));
 					}															
 				} else if (command.startsWith(Commands.downloadArch)) {
 					final String[] allCMDArgs = command.split(" ");
@@ -93,7 +93,7 @@ public class ApplicationBoot implements CommandLineRunner {
 					} else {
 						String archiveID = allCMDArgs[1];
 						String destination = allCMDArgs[2];
-						messageGenerator(store.downloadArchive(archiveID, destination));
+						responsePrinter(store.downloadArchive(archiveID, destination));
 					}
 				} else if (command.equals(Commands.deleteAll)) {
 					System.out.println(store.deleteAll());
@@ -104,7 +104,7 @@ public class ApplicationBoot implements CommandLineRunner {
 						this.printHelp();
 					} else {
 						String archiveID = allCMDArgs[1];
-						messageGenerator(store.finalizeArchive(archiveID));
+						responsePrinter(store.finalizeArchive(archiveID));
 					}
 				} else if (command.equals(Commands.help)) {
 					this.printHelp();
@@ -171,11 +171,15 @@ public class ApplicationBoot implements CommandLineRunner {
 
 	}
 
-	private void messageGenerator(StoreResponse storeResponse){
-		messageGenerator(storeResponse.getResponse(), storeResponse.getReport());
+	private void responsePrinterRaw(StoreResponse storeResponse){
+		System.out.println(storeResponse.getResponse());
 	}
 	
-	private void messageGenerator(boolean serviceResponse){
+	private void responsePrinter(StoreResponse storeResponse){
+		responsePrinter(storeResponse.getResponse(), storeResponse.getReport());
+	}
+	
+	private void responsePrinter(boolean serviceResponse){
 		if(serviceResponse){
 			System.out.println("DONE!");
 		}else{
@@ -183,7 +187,7 @@ public class ApplicationBoot implements CommandLineRunner {
 		}
 	}
 	
-	private void messageGenerator(String serviceResponse, String report){
+	private void responsePrinter(String serviceResponse, String report){
 		String msg = "";
 		if(serviceResponse != null){
 			if(serviceResponse.startsWith("true")){

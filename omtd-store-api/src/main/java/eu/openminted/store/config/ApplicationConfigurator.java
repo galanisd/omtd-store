@@ -1,5 +1,6 @@
 package eu.openminted.store.config;
 
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -25,9 +26,16 @@ public class ApplicationConfigurator {
 			Properties props = new Properties();						
 			try{
 				log.info("==> Scanning "  + ApplicationConfigParams.storeApplicationCfgDefaultHolder + " for default config");
-				props.load(ApplicationConfigurator.class.getResourceAsStream(ApplicationConfigParams.storeApplicationCfgDefaultHolder));				
-				log.info("==> Loading default app config from " + props.getProperty(ApplicationConfigParams.storeApplicationCfg));
-				System.setProperty(ApplicationConfigParams.storeApplicationCfg, props.getProperty(ApplicationConfigParams.storeApplicationCfg));				
+				
+				InputStream is = ApplicationConfigurator.class.getResourceAsStream(ApplicationConfigParams.storeApplicationCfgDefaultHolder);
+				
+				if(is != null){	
+					props.load(is);				
+					log.info("==> Loading default app config from " + props.getProperty(ApplicationConfigParams.storeApplicationCfg));
+					System.setProperty(ApplicationConfigParams.storeApplicationCfg, props.getProperty(ApplicationConfigParams.storeApplicationCfg));
+				}else{
+					new Exception("Stream for " + ApplicationConfigParams.storeApplicationCfgDefaultHolder + " is null");
+				}
 			}catch(Exception e){
 				log.info("ERROR:", e);
 			}								

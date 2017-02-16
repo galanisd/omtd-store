@@ -22,7 +22,8 @@ public class Starter {
 		System.setProperty("spring.devtools.restart.enabled", "false");
 		
 		// Configure app.
-		ApplicationConfigurator.configure();
+		ApplicationConfigurator appConfigtr = new ApplicationConfigurator();
+		appConfigtr.configure();
 		
 		// Run app within a Spring Context.
 		SpringApplication springApplication = new SpringApplication(ApplicationBoot.class);

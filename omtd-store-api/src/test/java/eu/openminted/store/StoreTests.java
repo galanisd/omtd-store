@@ -38,7 +38,8 @@ public class StoreTests {
 	
 	@BeforeClass
 	public static void beforeClass() {
-		ApplicationConfigurator.configure();
+		ApplicationConfigurator appConfigtr = new ApplicationConfigurator();
+		appConfigtr.configure();
 	}
 	
 	@Before

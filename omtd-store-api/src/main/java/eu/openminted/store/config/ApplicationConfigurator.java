@@ -17,7 +17,7 @@ public class ApplicationConfigurator {
 	/**
 	 * Configure the app, i.e., locate and set the {@link ApplicationConfigParams#storeApplicationCfg} file.
 	 */
-	public static void configure(){
+	public void configure(){
 		// Retrieve applicationPropertiesFile location.		
 		String applicationPropertiesFile = System.getProperty(ApplicationConfigParams.storeApplicationCfg);		
 		// If is not provided load default applications properties (based on applicationPropertiesDefaultHolder).
@@ -25,7 +25,7 @@ public class ApplicationConfigurator {
 			Properties props = new Properties();						
 			try{
 				log.info("==> Scanning "  + ApplicationConfigParams.storeApplicationCfgDefaultHolder + " for default config");
-				props.load(ApplicationConfigurator.class.getClass().getResourceAsStream(ApplicationConfigParams.storeApplicationCfgDefaultHolder));				
+				props.load(ApplicationConfigurator.class.getResourceAsStream(ApplicationConfigParams.storeApplicationCfgDefaultHolder));				
 				log.info("==> Loading default app config from " + props.getProperty(ApplicationConfigParams.storeApplicationCfg));
 				System.setProperty(ApplicationConfigParams.storeApplicationCfg, props.getProperty(ApplicationConfigParams.storeApplicationCfg));				
 			}catch(Exception e){

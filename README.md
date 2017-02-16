@@ -16,7 +16,7 @@ omtd-store-all is the Store Service of OpenMinTeD. It includes the following (Ma
 
 * The implementation of the service for PITHOS cloud storage is based on the respective JAVA REST-client; the latter  is available at GitHub (https://github.com/grnet/e-science/tree/master/pithosfs) as a part of "pithosFS Connector for Hadoop" project. (TO-DO: Add info on how to install the respective JAR).
    
-* Clone omtd-store-all by typing "git clone <repo url>.
+* Clone omtd-store-all by typing ```git clone repoURL```.
 
 ### Run ###
 

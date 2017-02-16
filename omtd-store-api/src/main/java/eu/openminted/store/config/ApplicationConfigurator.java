@@ -23,9 +23,10 @@ public class ApplicationConfigurator {
 		// If is not provided load default applications properties (based on applicationPropertiesDefaultHolder).
 		if(applicationPropertiesFile == null){						
 			Properties props = new Properties();						
-			try{				
+			try{
+				log.info("==> Scanning "  + ApplicationConfigParams.storeApplicationCfgDefaultHolder + " for default config");
 				props.load(ApplicationConfigurator.class.getResourceAsStream(ApplicationConfigParams.storeApplicationCfgDefaultHolder));				
-				log.info("==> Loading default config:" + props.getProperty(ApplicationConfigParams.storeApplicationCfg));
+				log.info("==> Loading default app config from " + props.getProperty(ApplicationConfigParams.storeApplicationCfg));
 				System.setProperty(ApplicationConfigParams.storeApplicationCfg, props.getProperty(ApplicationConfigParams.storeApplicationCfg));				
 			}catch(Exception e){
 				log.info("ERROR:", e);

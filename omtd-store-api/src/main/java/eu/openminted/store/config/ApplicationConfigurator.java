@@ -34,7 +34,7 @@ public class ApplicationConfigurator {
 					log.info("==> Loading default app config from " + props.getProperty(ApplicationConfigParams.storeApplicationCfg));
 					System.setProperty(ApplicationConfigParams.storeApplicationCfg, props.getProperty(ApplicationConfigParams.storeApplicationCfg));
 				}else{
-					new Exception("Stream for " + ApplicationConfigParams.storeApplicationCfgDefaultHolder + " is null");
+					throw new Exception("Stream for " + ApplicationConfigParams.storeApplicationCfgDefaultHolder + " is null");
 				}
 			}catch(Exception e){
 				log.info("ERROR:", e);

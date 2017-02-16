@@ -25,7 +25,7 @@ public class ApplicationConfigurator {
 			Properties props = new Properties();						
 			try{
 				log.info("==> Scanning "  + ApplicationConfigParams.storeApplicationCfgDefaultHolder + " for default config");
-				props.load(ApplicationConfigurator.class.getResourceAsStream(ApplicationConfigParams.storeApplicationCfgDefaultHolder));				
+				props.load(ApplicationConfigurator.class.getClass().getResourceAsStream(ApplicationConfigParams.storeApplicationCfgDefaultHolder));				
 				log.info("==> Loading default app config from " + props.getProperty(ApplicationConfigParams.storeApplicationCfg));
 				System.setProperty(ApplicationConfigParams.storeApplicationCfg, props.getProperty(ApplicationConfigParams.storeApplicationCfg));				
 			}catch(Exception e){

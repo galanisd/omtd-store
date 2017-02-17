@@ -7,10 +7,8 @@ import java.io.File;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +21,7 @@ import eu.openminted.store.config.ApplicationConfigurator;
 import eu.openminted.store.test.StoreAPITester;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = ApplicationConfig.class, loader = AnnotationConfigContextLoader.class)
-//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ContextConfiguration(classes = ApplicationConfig.class/*, loader = AnnotationConfigContextLoader.class*/)
 public class StoreTests {
 
 	private static final Logger log = LoggerFactory.getLogger(StoreTests.class);

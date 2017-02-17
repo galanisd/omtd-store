@@ -21,7 +21,8 @@ import eu.openminted.store.config.ApplicationConfigurator;
 import eu.openminted.store.test.StoreAPITester;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = ApplicationConfig.class/*, loader = AnnotationConfigContextLoader.class*/)
+//@ContextConfiguration(classes = ApplicationConfig.class/*, loader = AnnotationConfigContextLoader.class*/)
+@ContextConfiguration(initializers = TestApplicationContextInitializer.class, classes = ApplicationConfig.class/*, loader = AnnotationConfigContextLoader.class*/)
 public class StoreTests {
 
 	private static final Logger log = LoggerFactory.getLogger(StoreTests.class);
@@ -35,8 +36,8 @@ public class StoreTests {
 	
 	@BeforeClass
 	public static void beforeClass() {
-		ApplicationConfigurator appConfigtr = new ApplicationConfigurator();
-		appConfigtr.configure();
+		//ApplicationConfigurator appConfigtr = new ApplicationConfigurator();
+		//appConfigtr.configure();
 	}
 	
 	@Before

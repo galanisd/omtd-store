@@ -16,9 +16,14 @@ public class ApplicationConfigurator {
 	private final static Logger log = LoggerFactory.getLogger(ApplicationConfigurator.class);
 	
 	/**
-	 * Configure the app, i.e., locate and set the {@link ApplicationConfigParams#storeApplicationCfg} file.
+	 * Configure the app, i.e., locate and set the required properties.
+	 * (I.e., {@link ApplicationConfigParams#storeApplicationCfg}).
 	 */
 	public void configure(){
+		
+		// Disable restarts.
+		System.setProperty("spring.devtools.restart.enabled", "false");
+				
 		// Retrieve applicationPropertiesFile location.		
 		String applicationPropertiesFile = System.getProperty(ApplicationConfigParams.storeApplicationCfg);		
 		// If is not provided load default applications properties (based on applicationPropertiesDefaultHolder).

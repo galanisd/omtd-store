@@ -63,14 +63,14 @@ public class RestInterfaceTests {
 	}
 	
 	/**
-	 * Prepares the test, i.e., initiates the Store Client. 
+	 * Runs before each test. 
 	 */
 	@Before
-	public void beforeTests() {
+	public void beforeEachTest() {				
 		// Create Store Client.
 		store = new StoreRESTClient();
 		store.setEndpoint("http://localhost:" + randomServerPort);		
-		log.info("endpoint was set to:" + store.getEndpoint());
+		log.info("endpoint was set to:" + store.getEndpoint());		
 	}
 	
 	// All tests are below.
@@ -133,11 +133,9 @@ public class RestInterfaceTests {
      * @throws Exception
      */
     @After
-    public void tearDown() throws Exception {
-    	log.info("Tear down .");
-    	//assertTrue (store.deleteAll().getResponse().equalsIgnoreCase("true"));
-    	store.deleteAll();
-    	store = null;
+    public void afterEachTest() throws Exception {
+    	log.info("Clean Up.");
+    	store.deleteAll();    	
     }
     
     // == === ==

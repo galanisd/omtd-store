@@ -15,12 +15,9 @@ public class Starter {
 	
 	private final static Logger log = LoggerFactory.getLogger(Starter.class);	
 			
-	public static void main(String[] args) {
-		
+	public static void main(String[] args) {		
 		log.info("Starting OMTD STORE SERVICE.");
-		// Disable restarts.
-		System.setProperty("spring.devtools.restart.enabled", "false");
-		
+				
 		// Configure app.
 		ApplicationConfigurator appConfigtr = new ApplicationConfigurator();
 		appConfigtr.configure();

@@ -31,7 +31,7 @@ public class StoreTests {
 
 	private StoreAPITester appTester;
 	private File sampleAnnotatedFile;
-	private File samplePDFFile;
+	private File samplePDFFile;		
 	
 	@Autowired
 	private StoreServiceGeneric store;
@@ -43,12 +43,12 @@ public class StoreTests {
 	}
 	
 	@Before
-	public void beforeTests() {
-		log.info("Load everything I need before running tests.");		
+	public void beforeEachTest() {		
+		log.info("Load everything I need before running test.");		
 		appTester = new StoreAPITester(store);		
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 		sampleAnnotatedFile = new File(classLoader.getResource(StoreAPITester.gateDoc).getFile());
-		samplePDFFile = new File(classLoader.getResource(StoreAPITester.pdfDoc).getFile());
+		samplePDFFile = new File(classLoader.getResource(StoreAPITester.pdfDoc).getFile());				
 	}
 	
 	@Test
@@ -77,9 +77,9 @@ public class StoreTests {
 	}
 	
 	@After 
-	public void tearDown(){
+	public void afterEachTest(){
 		try{
-			log.info("tear down");
+			log.info("Clean up.");
 			appTester.listAllFilesAndThenDeleteAll();
 		}catch(Exception e){
 			log.info("ERROR:", e);

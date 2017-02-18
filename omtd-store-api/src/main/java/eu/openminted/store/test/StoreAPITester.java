@@ -74,6 +74,7 @@ public class StoreAPITester {
 			// If is not provided load default applications properties (based on applicationPropertiesDefaultHolder).
 			if(testFileLocationsFile == null){																			
 				testFiles.load(StoreAPITester.class.getResourceAsStream(ApplicationConfigTestParams.testFilesDefault));
+				log.info("Laoded default test properties:" + ApplicationConfigTestParams.testFilesDefault);
 			}else{
 				testFiles.load(new FileInputStream(testFileLocationsFile));
 			}

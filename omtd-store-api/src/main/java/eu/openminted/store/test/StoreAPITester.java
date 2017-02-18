@@ -8,8 +8,11 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 import eu.openminted.store.StoreService;
 import eu.openminted.store.StoreServiceLocalDisk;
@@ -25,16 +28,19 @@ import eu.openminted.store.config.Store;
  * A simple tester for the omtd-store-api. 
  * 
  */
-public class StoreAPITester {
-
+//@SpringBootApplication
+//@ComponentScan(basePackages = {"eu.openminted.store.config", "eu.openminted.store"})
+public class StoreAPITester
+//implements CommandLineRunner
+{
 	private static final Logger log = LoggerFactory.getLogger(StoreAPITester.class);
 	
 	public static final String gateDoc = "eu/openminted/store/rizospastis_AVVd-4ehg3d853ySFFif.xml.gate";
-	public static final String pdfDoc = "eu/openminted/store/2016_Kathaa_NAACL.pdf";
-		
+	public static final String pdfDoc = "eu/openminted/store/2016_Kathaa_NAACL.pdf";		
 	
 	private int scenario = -1;
 	private long start = 0;
+	
 	private StoreService store = null;
 	private Properties testFiles;
 	
@@ -60,13 +66,18 @@ public class StoreAPITester {
 	 */
 	public StoreAPITester(StoreService store) {
 		this.store = store;
-		//init();
 	}
+	
+	//@Override
+	//public void run(String... args) throws Exception {
+	//	//just call tests.
+	//	executeTests();
+	//}
 	
 	/**
 	 * Initialize test files locations.
 	 */
-	public void init(){		
+	private void init(){		
 		testFiles = new Properties();
 		
 		try{
@@ -74,7 +85,7 @@ public class StoreAPITester {
 			// If is not provided load default applications properties (based on applicationPropertiesDefaultHolder).
 			if(testFileLocationsFile == null){																			
 				testFiles.load(StoreAPITester.class.getResourceAsStream(ApplicationConfigTestParams.testFilesDefault));
-				log.info("Laoded default test properties:" + ApplicationConfigTestParams.testFilesDefault);
+				log.info("Loaded default test properties:" + ApplicationConfigTestParams.testFilesDefault);
 			}else{
 				testFiles.load(new FileInputStream(testFileLocationsFile));
 			}
@@ -88,6 +99,7 @@ public class StoreAPITester {
 	 */
 	public void executeTests() {
 		try {
+			init();
 			// Load Test Files.
 			ClassLoader classLoader = ClassLoader.getSystemClassLoader();			
 			File sampleAnnotatedFile = new File(classLoader.getResource(gateDoc).getFile());			
@@ -122,6 +134,8 @@ public class StoreAPITester {
 			log.error("ERROR:", e);
 		}
 	}
+	
+	// == = == All tests below. 
 	
 	/**
 	 * List All Files And Then Delete Them.
@@ -275,6 +289,7 @@ public class StoreAPITester {
 		log.info(store.listAllFiles());
 	}
 	
+	// == = ==  End of tests.	
 	public static boolean store(InputStream is, FileOutputStream fos){
 		try{
 			int read = 0;
@@ -290,6 +305,4 @@ public class StoreAPITester {
 			return false;
 		}
 	}
-	
-
 }

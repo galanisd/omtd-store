@@ -19,6 +19,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import eu.openminted.store.config.ApplicationConfig;
 import eu.openminted.store.config.ApplicationConfigurator;
+import eu.openminted.store.core.StoreServiceGeneric;
 import eu.openminted.store.test.StoreAPITester;
 import eu.openminted.store.test.TestFiles;
 

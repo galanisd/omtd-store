@@ -8,35 +8,39 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 
-import eu.openminted.store.StoreService;
-import eu.openminted.store.StoreServiceLocalDisk;
-import eu.openminted.store.StoreServicePITHOS;
 import eu.openminted.store.config.ApplicationConfig;
 import eu.openminted.store.config.ApplicationConfigParams;
 import eu.openminted.store.config.ApplicationConfigTestParams;
 import eu.openminted.store.config.ApplicationConfigurator;
 import eu.openminted.store.config.Store;
+import eu.openminted.store.core.StoreService;
+import eu.openminted.store.core.StoreServiceGeneric;
+import eu.openminted.store.core.StoreServiceLocalDisk;
+import eu.openminted.store.core.StoreServicePITHOS;
 
 /**
  * @author galanisd
  * A tester for the omtd-store-api. 
  * 
  */
-@SpringBootApplication
-@ComponentScan(basePackages = {"eu.openminted.store.config", "eu.openminted.store"})
-public class StoreAPITester implements CommandLineRunner{
+@Component
+public class StoreAPITester{
 	private static final Logger log = LoggerFactory.getLogger(StoreAPITester.class);
 				
 	private int scenario = -1;
 	private long start = 0;
 	
-	private StoreService store = null;
+	@Autowired
+	private StoreServiceGeneric store;
+	
 	private Properties testFiles;	
 	
 	/**
@@ -61,17 +65,10 @@ public class StoreAPITester implements CommandLineRunner{
 	 * Constructor.
 	 * @param storeType
 	 */
-	public StoreAPITester(StoreService store) {
+	public StoreAPITester(StoreServiceGeneric store) {
 		this.store = store;		
 	}
-	
-	@Override
-	public void run(String... args) throws Exception {
-		//just call tests.
-		executeTests();
-		log.info("FINISHED");
-	}
-	
+		
 	/**
 	 * Initialize test files locations.
 	 */
@@ -138,7 +135,6 @@ public class StoreAPITester implements CommandLineRunner{
 	 * @throws Exception
 	 */
 	public void listAllFilesAndThenDeleteAll() throws Exception{
-		//log.info("Scenario:" + (++scenario));
 		log.info("\n\n\n" + "FILE LIST");
 		log.info(store.listAllFiles());			
 		store.deleteAll();
@@ -150,7 +146,6 @@ public class StoreAPITester implements CommandLineRunner{
 	 * @throws Exception
 	 */
 	public boolean createAHierarchyOfArchivesAndStoreAFileInTheLastOne(File sampleAnnotatedFile) throws Exception{
-		//log.info("Scenario:" + (++scenario));
 		// Creating a hierarchy of archives.
 		String level0ArchId = store.createArchive();
 		log.info("Created archive level 0:" + level0ArchId);
@@ -169,7 +164,6 @@ public class StoreAPITester implements CommandLineRunner{
 	 * @throws Exception
 	 */
 	public boolean createArchiveWithAFolderThatContainsAPDFFile(File samplePDFFile) throws Exception{
-		//log.info("Scenario:" + (++scenario));
 		// Creating an archive.
 		String archId = store.createArchive();
 		// Store a PDF
@@ -230,7 +224,6 @@ public class StoreAPITester implements CommandLineRunner{
 	public boolean createArchiveWithManyFilesAndDownloadEachOfThem() throws Exception{
 		boolean status = true;
 		
-		//log.info("Scenario:" + (++scenario));
 		// Creating an archive with many files.
 		String archId = store.createArchive();
 		if(archId == null){

@@ -1,4 +1,4 @@
-package eu.openminted.store;
+package eu.openminted.store.core;
 
 import java.io.InputStream;
 

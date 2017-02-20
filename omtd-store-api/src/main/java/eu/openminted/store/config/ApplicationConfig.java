@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
-import eu.openminted.store.StoreServiceGeneric;
-import eu.openminted.store.StoreServiceLocalDisk;
-import eu.openminted.store.StoreServicePITHOS;
+import eu.openminted.store.core.StoreServiceGeneric;
+import eu.openminted.store.core.StoreServiceLocalDisk;
+import eu.openminted.store.core.StoreServicePITHOS;
 import eu.openminted.store.idgenerator.IdGenerator;
 import eu.openminted.store.idgenerator.SimpleIdGenerator;
 import eu.openminted.store.metadata.StoreMetadata;

@@ -1,4 +1,4 @@
-package eu.openminted.store;
+package eu.openminted.store.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -9,7 +9,7 @@ import eu.openminted.store.metadata.StoreMetadata;
 
 
 /**
- * An {@link eu.openminted.store.StoreService} implementation for PITHOS storage.
+ * An {@link eu.openminted.store.core.StoreService} implementation for PITHOS storage.
  * @author galanisd
  *
  */

@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import eu.openminted.store.StoreException;
-import eu.openminted.store.StoreService;
 import eu.openminted.store.common.StoreREST;
 import eu.openminted.store.common.StoreResponse;
+import eu.openminted.store.core.StoreException;
+import eu.openminted.store.core.StoreService;
 
 /**
  * A Spring Controller for the Store Service.

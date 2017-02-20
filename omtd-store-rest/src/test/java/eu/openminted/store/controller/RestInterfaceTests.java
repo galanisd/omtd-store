@@ -34,9 +34,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
-import eu.openminted.store.StoreService;
 import eu.openminted.store.config.ApplicationConfig;
 import eu.openminted.store.config.ApplicationConfigurator;
+import eu.openminted.store.core.StoreService;
 import eu.openminted.store.restclient.StoreRESTClient;
 import eu.openminted.store.test.StoreAPITester;
 
@@ -45,7 +45,6 @@ import eu.openminted.store.test.StoreAPITester;
 @RunWith(SpringRunner.class)
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @SpringBootTest(classes = {ApplicationBoot.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RestInterfaceTests {
 
 	private static final Logger log = LoggerFactory.getLogger(RestInterfaceTests.class);

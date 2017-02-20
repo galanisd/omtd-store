@@ -11,7 +11,7 @@ import java.util.zip.ZipOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.openminted.store.StoreServiceGeneric;
+import eu.openminted.store.core.StoreServiceGeneric;
 
 public class DirCompressor {
 

@@ -1,4 +1,4 @@
-package eu.openminted.store;
+package eu.openminted.store.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.InputStream;

@@ -7,7 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
-import eu.openminted.store.StoreException;
+import eu.openminted.store.core.StoreException;
 
 /**
  * @author galanisd

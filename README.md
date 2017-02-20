@@ -20,9 +20,7 @@ omtd-store-all is the Store Service of OpenMinTeD. It includes the following (Ma
 
 ### Run ###
 
-* Start REST server (omtd-store-rest): TO-DO.
-
-* Start REST command line client (omtd-store-rest-client): TO-DO.
+Examples on how to start the REST Server & Client are provided in ```scripts``` folder (Windows and Linux).
 
 
-### Installation ###
+ 

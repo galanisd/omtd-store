@@ -25,14 +25,12 @@ import eu.openminted.store.config.Store;
 
 /**
  * @author galanisd
- * A simple tester for the omtd-store-api. 
+ * A tester for the omtd-store-api. 
  * 
  */
-//@SpringBootApplication
-//@ComponentScan(basePackages = {"eu.openminted.store.config", "eu.openminted.store"})
-public class StoreAPITester
-//implements CommandLineRunner
-{
+@SpringBootApplication
+@ComponentScan(basePackages = {"eu.openminted.store.config", "eu.openminted.store"})
+public class StoreAPITester implements CommandLineRunner{
 	private static final Logger log = LoggerFactory.getLogger(StoreAPITester.class);
 	
 	public static final String gateDoc = "eu/openminted/store/rizospastis_AVVd-4ehg3d853ySFFif.xml.gate";
@@ -42,12 +40,13 @@ public class StoreAPITester
 	private long start = 0;
 	
 	private StoreService store = null;
-	private Properties testFiles;
+	private Properties testFiles;	
 	
 	/**
 	 * Constructor. Creates a store service using a config file (LOCAL OR PITHOS).
 	 * @param storeType
 	 */
+	/*
 	public StoreAPITester(String storeType) {		
 		if (storeType.equalsIgnoreCase(Store.LOCAL)) {
 			System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configLocalDefault.properties");
@@ -59,6 +58,7 @@ public class StoreAPITester
 			store = (StoreService) ctx.getBean(StoreServicePITHOS.class);
 		}		
 	}
+	*/
 	
 	/**
 	 * Constructor.
@@ -68,11 +68,12 @@ public class StoreAPITester
 		this.store = store;
 	}
 	
-	//@Override
-	//public void run(String... args) throws Exception {
-	//	//just call tests.
-	//	executeTests();
-	//}
+	@Override
+	public void run(String... args) throws Exception {
+		//just call tests.
+		executeTests();
+		log.info("FINISHED");
+	}
 	
 	/**
 	 * Initialize test files locations.
@@ -117,7 +118,7 @@ public class StoreAPITester
 			log.info("Scenario:" + (++scenario));
 			createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(sampleAnnotatedFile);
 			log.info("Scenario:" + (++scenario));
-			createArchiveWithLargeFileAndDownloadTheFile();
+			createArchiveWithAFileAndDownloadTheFile();
 			log.info("Scenario:" + (++scenario));
 			createArchiveWithManyFilesAndDownloadEachOfThem();
 			log.info("Scenario:" + (++scenario));
@@ -204,14 +205,14 @@ public class StoreAPITester
 	}
 	
 	/**
-	 * Create Archive With LargeFile And Download The File.
+	 * Create Archive With A File And Download The File.
 	 * @throws Exception
 	 */
-	public boolean createArchiveWithLargeFileAndDownloadTheFile() throws Exception{
+	public boolean createArchiveWithAFileAndDownloadTheFile() throws Exception{
 		//log.info("Scenario:" + (++scenario));
 		// Creating an archive with a big file.
 		String archId = store.createArchive();
-		File bigFile = new File(testFiles.getProperty(ApplicationConfigTestParams.bigFile));				
+		File bigFile = new File(testFiles.getProperty(ApplicationConfigTestParams.fileForStore));				
 		boolean successUpload = store.storeFile(archId, new FileInputStream(bigFile), bigFile.getName());
 		log.info(" uploaded:" + successUpload + " " + bigFile.getAbsolutePath());	
 		InputStream is = store.downloadFile(archId + "/" + bigFile.getName());

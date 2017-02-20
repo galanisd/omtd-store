@@ -13,10 +13,12 @@ import eu.openminted.store.config.Store;
  * @author galanisd
  *
  */
-public class StoreAPITesterMain {
+public class StoreAPITesterCmd {
 	
 	// == = == = == == = == = == = == = == = == = == = == = ==
 	public static void main(String args[]){
+		// Disable restarts.
+		System.setProperty("spring.devtools.restart.enabled", "false");
 		
 		String storeType = "";
 				
@@ -29,24 +31,24 @@ public class StoreAPITesterMain {
 		
 		if(command.equals("1")){
 			storeType = Store.LOCAL;
-			//System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configLocalDefault.properties");
+			System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configLocalDefault.properties");
 		}else if(command.equals("2")){
 			storeType = Store.PITHOS;
-			//System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configPITHOS.properties");
+			System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configPITHOS.properties");
 		} else{
 			System.out.println("Not a valid selection of FS.");
 			return;
 		}		
 		console.close();
 				
-		StoreAPITester runner = new StoreAPITester(storeType);		
-		runner.executeTests();
+		//StoreAPITester runner = new StoreAPITester(storeType);		
+		//runner.executeTests();		
 		
-		// TO-DO: Replace the above block with this.
-		// Run app within a Spring Context.
-		//SpringApplication springApplication = new SpringApplication(StoreAPITester.class);
-		//springApplication.setBannerMode(Banner.Mode.OFF);
-		//springApplication.run();
-		
+		//Run app within a Spring Context.
+		SpringApplication springApplication = new SpringApplication(StoreAPITester.class);
+		springApplication.setBannerMode(Banner.Mode.OFF);
+		springApplication.setWebEnvironment(false);
+		springApplication.run(args);	
+		System.out.println(".");
 	}
 }

@@ -14,7 +14,7 @@ public class ApplicationConfigTestParams {
 	
 	// == === ==
 	
-	public final static String bigFile = "bigFile";
+	public final static String fileForStore = "fileForStore";
 	public final static String downloadFolder = "downloadFolder";
 	
 	public final static String folderWithManyFiles = "folderWithManyFiles";

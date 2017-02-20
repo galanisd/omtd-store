@@ -7,6 +7,7 @@ import java.io.File;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import eu.openminted.store.config.ApplicationConfig;
 import eu.openminted.store.config.ApplicationConfigurator;
 import eu.openminted.store.test.StoreAPITester;
+import eu.openminted.store.test.TestFiles;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(classes = ApplicationConfig.class/*, loader = AnnotationConfigContextLoader.class*/)
@@ -27,9 +29,8 @@ public class StoreTests {
 
 	private static final Logger log = LoggerFactory.getLogger(StoreTests.class);
 
-	private StoreAPITester appTester;
-	private File sampleAnnotatedFile;
-	private File samplePDFFile;		
+	public TestFiles filesForTests = new TestFiles();
+	private StoreAPITester appTester;		
 	
 	@Autowired
 	private StoreServiceGeneric store;
@@ -43,10 +44,7 @@ public class StoreTests {
 	@Before
 	public void beforeEachTest() {		
 		log.info("Load everything I need before running test.");		
-		appTester = new StoreAPITester(store);		
-		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-		sampleAnnotatedFile = new File(classLoader.getResource(StoreAPITester.gateDoc).getFile());
-		samplePDFFile = new File(classLoader.getResource(StoreAPITester.pdfDoc).getFile());				
+		appTester = new StoreAPITester(store);					
 	}
 	
 	@Test
@@ -58,19 +56,19 @@ public class StoreTests {
 
 	@Test
 	public void createAHierarchyOfArchivesAndStoreAFileInTheLastOne() throws Exception{
-		boolean status = appTester.createAHierarchyOfArchivesAndStoreAFileInTheLastOne(sampleAnnotatedFile);		
+		boolean status = appTester.createAHierarchyOfArchivesAndStoreAFileInTheLastOne(filesForTests.getSampleAnnotatedFile());		
 		assertTrue(status);		
 	}
 	
 	@Test
 	public void createArchiveWithAFolderThatContainsAPDFFile() throws Exception{
-		boolean status = appTester.createArchiveWithAFolderThatContainsAPDFFile(samplePDFFile);		
+		boolean status = appTester.createArchiveWithAFolderThatContainsAPDFFile(filesForTests.getSamplePDFFile());		
 		assertTrue(status);		
 	}	
 	
 	@Test
 	public void createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile() throws Exception{
-		boolean status = appTester.createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(sampleAnnotatedFile);		
+		boolean status = appTester.createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(filesForTests.getSampleAnnotatedFile());		
 		assertTrue(status);		
 	}
 	

@@ -32,10 +32,7 @@ import eu.openminted.store.config.Store;
 @ComponentScan(basePackages = {"eu.openminted.store.config", "eu.openminted.store"})
 public class StoreAPITester implements CommandLineRunner{
 	private static final Logger log = LoggerFactory.getLogger(StoreAPITester.class);
-	
-	public static final String gateDoc = "eu/openminted/store/rizospastis_AVVd-4ehg3d853ySFFif.xml.gate";
-	public static final String pdfDoc = "eu/openminted/store/2016_Kathaa_NAACL.pdf";		
-	
+				
 	private int scenario = -1;
 	private long start = 0;
 	
@@ -65,7 +62,7 @@ public class StoreAPITester implements CommandLineRunner{
 	 * @param storeType
 	 */
 	public StoreAPITester(StoreService store) {
-		this.store = store;
+		this.store = store;		
 	}
 	
 	@Override
@@ -100,23 +97,21 @@ public class StoreAPITester implements CommandLineRunner{
 	 */
 	public void executeTests() {
 		try {
-			init();
-			// Load Test Files.
-			ClassLoader classLoader = ClassLoader.getSystemClassLoader();			
-			File sampleAnnotatedFile = new File(classLoader.getResource(gateDoc).getFile());			
-			File samplePDFFile = new File(classLoader.getResource(pdfDoc).getFile());
-
+			// Load Test files
+			TestFiles fileForTests = new TestFiles();;			
+			// Init
+			init();						
 			// Start clock.
 			start = System.currentTimeMillis();
-			// Tests.
+			// Run Tests.
 			log.info("Scenario:" + (++scenario));
 			listAllFilesAndThenDeleteAll();		
 			log.info("Scenario:" + (++scenario));
-			createAHierarchyOfArchivesAndStoreAFileInTheLastOne(sampleAnnotatedFile);
+			createAHierarchyOfArchivesAndStoreAFileInTheLastOne(fileForTests.getSampleAnnotatedFile());
 			log.info("Scenario:" + (++scenario));
-			createArchiveWithAFolderThatContainsAPDFFile(samplePDFFile);
+			createArchiveWithAFolderThatContainsAPDFFile(fileForTests.getSamplePDFFile());
 			log.info("Scenario:" + (++scenario));
-			createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(sampleAnnotatedFile);
+			createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(fileForTests.getSampleAnnotatedFile());
 			log.info("Scenario:" + (++scenario));
 			createArchiveWithAFileAndDownloadTheFile();
 			log.info("Scenario:" + (++scenario));

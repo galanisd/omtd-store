@@ -42,25 +42,7 @@ public class StoreAPITester{
 	private StoreServiceGeneric store;
 	
 	private Properties testFiles;	
-	
-	/**
-	 * Constructor. Creates a store service using a config file (LOCAL OR PITHOS).
-	 * @param storeType
-	 */
-	/*
-	public StoreAPITester(String storeType) {		
-		if (storeType.equalsIgnoreCase(Store.LOCAL)) {
-			System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configLocalDefault.properties");
-			ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
-			store = (StoreService) ctx.getBean(StoreServiceLocalDisk.class);
-		} else if (storeType.equalsIgnoreCase(Store.PITHOS)) {
-			System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configPITHOS.properties");
-			ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
-			store = (StoreService) ctx.getBean(StoreServicePITHOS.class);
-		}		
-	}
-	*/
-	
+		
 	/**
 	 * Constructor.
 	 * @param storeType
@@ -95,7 +77,7 @@ public class StoreAPITester{
 	public void executeTests() {
 		try {
 			// Load Test files
-			TestFiles fileForTests = new TestFiles();;			
+			TestFiles fileForTests = new TestFiles();			
 			// Init
 			init();						
 			// Start clock.
@@ -258,8 +240,9 @@ public class StoreAPITester{
 				
 				FileOutputStream fos = new FileOutputStream(testFiles.getProperty(ApplicationConfigTestParams.downloadFolder) + fileForUpload.getName() + ".txt");
 				boolean statusDown = StoreAPITester.store(is, fos);
-				if(!statusDown)
+				if(!statusDown){
 					status = false;
+				}
 				fos.close();					
 			}
 			fileIndex++;

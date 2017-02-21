@@ -32,19 +32,19 @@ public class StoreAPITesterCmd {
 		final Scanner console = new Scanner(System.in);		
 		final String command = console.nextLine().trim();
 		
-		if(command.equals("1")){			
-			System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configLocalDefault.properties");
-		}else if(command.equals("2")){
-			System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configPITHOS.properties");
-		} else{
-			System.out.println("Not a valid selection of FS.");
-			return;
-		}		
-		console.close();
-				
-		//StoreAPITester runner = new StoreAPITester(storeType);		
-		//runner.executeTests();		
-		
+		String applicationPropertiesFile = System.getProperty(ApplicationConfigParams.storeApplicationCfg);	
+		if(applicationPropertiesFile == null){ // If not set...ask...		
+			if(command.equals("1")){			
+				System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configLocalDefault.properties");
+			}else if(command.equals("2")){
+				System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configPITHOS.properties");
+			} else{
+				System.out.println("Not a valid selection of FS.");
+				return;
+			}		
+			console.close();
+		}
+						
 		//Run app within a Spring Context.
 		SpringApplication springApplication = new SpringApplication(StoreAPITesterBoot.class);
 		springApplication.setBannerMode(Banner.Mode.OFF);

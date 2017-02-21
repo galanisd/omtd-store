@@ -10,7 +10,7 @@ omtd-store is the Store Service of OpenMinTeD. The project includes the followin
 
   * omtd-store-common that includes some classes that are used in omtd-store-rest and omtd-store-rest-client.   
 
-#### Installation ####
+## Installation ##
 
 The implementation of the service for PITHOS cloud storage is based on the respective JAVA REST-client; the latter  is available at GitHub (https://github.com/grnet/e-science/tree/master/pithosfs) as a part of "pithosFS Connector for Hadoop" project. (TO-DO: Add info on how to install the respective JAR).
    

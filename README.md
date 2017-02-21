@@ -44,7 +44,7 @@ mvn clean install -DskipTests=true.
 
 ## Run ##
 
-Examples on how to start the REST Server & Client (in Windows and Linux) are provided in omtd-store/scripts folder. For example CD to scripts folder and type the following command to start the REST server uses the local
+Examples on how to start the REST Server & Client (in Windows and Linux) are provided in omtd-store/scripts folder. For example CD to scripts folder and type the following command to start the REST server that uses the local
 hard drive.  
 
 ```

@@ -1,4 +1,4 @@
-# omtd-store-all #
+# omtd-store #
 
 ### Overview ###
 

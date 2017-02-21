@@ -105,6 +105,9 @@ public class FSConnectorLocal implements FSConnector{
 				}
 			}else{
 				status = file.delete();
+				if(!status){
+					log.info("failed deleting:" + file.getAbsolutePath());
+				}
 			}
 		}
 		

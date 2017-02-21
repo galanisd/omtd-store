@@ -76,6 +76,7 @@ public class StoreAPITester{
 	 */
 	public void executeTests() {
 		try {
+			boolean status = false;
 			// Load Test files
 			TestFiles fileForTests = new TestFiles();			
 			// Init
@@ -83,20 +84,22 @@ public class StoreAPITester{
 			// Start clock.
 			start = System.currentTimeMillis();
 			// Run Tests.
+			
+			status = listAllFilesAndThenDeleteAll();		
+			log.info("Scenario:" + (++scenario) + " " + status);
+			status = createAHierarchyOfArchivesAndStoreAFileInTheLastOne(fileForTests.getSampleAnnotatedFile());
+			log.info("Scenario:" + (++scenario) + " " + status);						
+			status = createArchiveWithAFolderThatContainsAPDFFile(fileForTests.getSamplePDFFile());
+			log.info("Scenario:" + (++scenario) + " " + status);		
+			status = createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(fileForTests.getSampleAnnotatedFile());
+			log.info("Scenario:" + (++scenario) + " " + status) ;			
+			status = createArchiveWithAFileAndDownloadTheFile();
+			log.info("Scenario:" + (++scenario) + " " + status);			
+			status = createArchiveWithManyFilesAndDownloadEachOfThem();
+			log.info("Scenario:" + (++scenario) + " " + status);			
+			listFiles();
 			log.info("Scenario:" + (++scenario));
-			listAllFilesAndThenDeleteAll();		
-			log.info("Scenario:" + (++scenario));
-			createAHierarchyOfArchivesAndStoreAFileInTheLastOne(fileForTests.getSampleAnnotatedFile());
-			log.info("Scenario:" + (++scenario));
-			createArchiveWithAFolderThatContainsAPDFFile(fileForTests.getSamplePDFFile());
-			log.info("Scenario:" + (++scenario));
-			createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(fileForTests.getSampleAnnotatedFile());
-			log.info("Scenario:" + (++scenario));
-			createArchiveWithAFileAndDownloadTheFile();
-			log.info("Scenario:" + (++scenario));
-			createArchiveWithManyFilesAndDownloadEachOfThem();
-			log.info("Scenario:" + (++scenario));
-			listFiles();					
+			
 			// Done.
 			long end = System.currentTimeMillis();
 			
@@ -116,10 +119,10 @@ public class StoreAPITester{
 	 * List All Files And Then Delete Them.
 	 * @throws Exception
 	 */
-	public void listAllFilesAndThenDeleteAll() throws Exception{
+	public boolean listAllFilesAndThenDeleteAll() throws Exception{
 		log.info("\n\n\n" + "FILE LIST");
 		log.info(store.listAllFiles());			
-		store.deleteAll();
+		return store.deleteAll();
 	}
 	
 	/**

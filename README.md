@@ -25,4 +25,7 @@ omtd-store is the Store Service of OpenMinTeD. It includes the following (Maven)
 Examples on how to start the REST Server & Client (in Windows and Linux) are provided in omtd-store/scripts folder.
 
 
+
+
+
  

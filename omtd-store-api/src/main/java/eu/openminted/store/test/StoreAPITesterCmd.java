@@ -32,8 +32,12 @@ public class StoreAPITesterCmd {
 		final Scanner console = new Scanner(System.in);		
 		final String command = console.nextLine().trim();
 		
-		String applicationPropertiesFile = System.getProperty(ApplicationConfigParams.storeApplicationCfg);	
-		if(applicationPropertiesFile == null){ // If not set...ask...		
+		// Check whether a config file is provided.
+		String applicationPropertiesFile = System.getProperty(ApplicationConfigParams.storeApplicationCfg);
+		
+		// If not provided...ask...which 
+		// and use the respective default config.
+		if(applicationPropertiesFile == null){ 		
 			if(command.equals("1")){			
 				System.setProperty(ApplicationConfigParams.storeApplicationCfg, "classpath:/eu/openminted/store/config/configLocalDefault.properties");
 			}else if(command.equals("2")){

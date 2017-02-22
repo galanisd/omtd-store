@@ -2,9 +2,9 @@
 
 omtd-store is the Store Service of OpenMinTeD; it includes the following (Maven) projects.	
 
-  * omtd-store-api: It contains the API of the service (`eu.openminted.store.core.StoreService`) and two implementations of it; one that is based on local hard drive and one that uses GRNET's [PITHOS](https://okeanos.grnet.gr/services/pithos/) cloud service.
+  * omtd-store-api: It contains the API definition of the service (`eu.openminted.store.core.StoreService`) and two implementations of it; one that is based on local hard drive and one that uses GRNET's [PITHOS](https://okeanos.grnet.gr/services/pithos/) cloud service.
   
-  * omtd-store-rest: A a REST API for the Store Service.
+  * omtd-store-rest: A REST API for the Store Service.
 
   * omtd-store-rest-client: A REST client for omtd-store-rest.
 

@@ -12,16 +12,25 @@ omtd-store is the Store Service of OpenMinTeD; it includes the following (Maven)
 
 ## Installation ##
 
-Step 1: The implementation of the service for PITHOS cloud storage is based on the respective JAVA REST-client; the latter  is available at GitHub (https://github.com/grnet/e-science/tree/master/pithosfs) as a part of "pithosFS Connector for Hadoop" project. (TO-DO: Add info on how to install the respective JAR).
+**Step 1**: The implementation of the service for PITHOS cloud storage is based on the respective JAVA REST-client; the latter  is available at GitHub (https://github.com/grnet/e-science/tree/master/pithosfs) as a part of "pithosFS Connector for Hadoop" project. Install the respective artifact
+as follows 
+
+TO-DO: Download from...
+
+TO-DO: Type
+
+```
+...
+``` 
    
-Step 2: Clone omtd-store by typing
+**Step 2**: Clone omtd-store by typing
   
 ```
 git clone <repoURL>
 ```
 
 
-Step 3: CD to omtd-store directory that has been created. For building the projects type
+**Step 3**: CD to omtd-store directory that has been created. For building the projects type
 
 ```
 mvn clean install -DstoreApplicationCfg=<applicationConfigFilePath>

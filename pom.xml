@@ -7,7 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>omtd-store-all</name>
+	<name>omtd-store</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>

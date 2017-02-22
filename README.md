@@ -1,12 +1,12 @@
 # OMTD-STORE #
 
-omtd-store is the Store Service of OpenMinTeD. The project includes the following (Maven) projects.	
+omtd-store is the Store Service of OpenMinTeD; it includes the following (Maven) projects.	
 
-  * omtd-store-api which defines the API of the service. Two implementations are provided; one that is based on local hard drive and one that uses GRNET's [PITHOS](https://okeanos.grnet.gr/services/pithos/) cloud service.
+  * omtd-store-api: It contains the API of the service (`eu.openminted.store.core.StoreService`) and two implementations of it; one that is based on local hard drive and one that uses GRNET's [PITHOS](https://okeanos.grnet.gr/services/pithos/) cloud service.
   
-  * omtd-store-rest which is a REST API for the Store Service.
+  * omtd-store-rest: A a REST API for the Store Service.
 
-  * omtd-store-rest-client is a REST client for omtd-store-rest.
+  * omtd-store-rest-client: A REST client for omtd-store-rest.
 
   * omtd-store-common that includes some classes that are used in omtd-store-rest and omtd-store-rest-client.   
 
@@ -44,8 +44,8 @@ mvn clean install -DskipTests=true.
 
 ## Run ##
 
-Examples on how to start the REST Server & Client (in Windows and Linux) are provided in omtd-store/scripts folder. For example CD to scripts folder and type the following command to start the REST server that uses the local
-hard drive.  
+Scripts for starting the REST Server & Client in Windows and Linux)are provided in omtd-store/scripts folder. 
+For example CD to scripts folder and type the following command to start the REST server that uses the local hard drive.  
 
 ```
 LinuxStartOMTDStoreService.sh configLocal.properties

@@ -60,7 +60,7 @@ For example CD to scripts folder and type the following command to start the RES
 LinuxStartOMTDStoreService.sh configLocal.properties
 ```
 
-Then type  
+Then open a new terminal and type  
 
 ```
 LinuxStartOMTDStoreClient.sh

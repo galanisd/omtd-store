@@ -41,7 +41,10 @@ public class StoreAPITester{
 	@Autowired
 	private StoreServiceGeneric store;
 	
-	private Properties testFiles;	
+	private Properties testFiles;
+	
+	private String testName;
+
 		
 	/**
 	 * Constructor.
@@ -83,26 +86,23 @@ public class StoreAPITester{
 			init();						
 			// Start clock.
 			start = System.currentTimeMillis();
-			// Run Tests.
-			
+			// Run Tests.			
 			status = listAllFilesAndThenDeleteAll();		
-			log.info("Scenario:" + (++scenario) + " " + status);
+			printStatus(status);
 			status = createAHierarchyOfArchivesAndStoreAFileInTheLastOne(fileForTests.getSampleAnnotatedFile());
-			log.info("Scenario:" + (++scenario) + " " + status);						
+			printStatus(status);						
 			status = createArchiveWithAFolderThatContainsAPDFFile(fileForTests.getSamplePDFFile());
-			log.info("Scenario:" + (++scenario) + " " + status);		
+			printStatus(status);		
 			status = createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(fileForTests.getSampleAnnotatedFile());
-			log.info("Scenario:" + (++scenario) + " " + status) ;			
+			printStatus(status);			
 			status = createArchiveWithAFileAndDownloadTheFile();
-			log.info("Scenario:" + (++scenario) + " " + status);			
+			printStatus(status);			
 			status = createArchiveWithManyFilesAndDownloadEachOfThem();
-			log.info("Scenario:" + (++scenario) + " " + status);			
-			listFiles();
-			log.info("Scenario:" + (++scenario));
-			
-			// Done.
+			printStatus(status);			
+			listFiles();						
+			// Done. Stop Clock.
 			long end = System.currentTimeMillis();
-			
+			// Print summary.
 			log.info("===Summary===");
 			log.info("Duration");
 			log.info("Milliseconds:" + (end - start));
@@ -116,21 +116,23 @@ public class StoreAPITester{
 	// == = == All tests below. 
 	
 	/**
-	 * List All Files And Then Delete Them.
+	 * List all files and then delete them.
 	 * @throws Exception
 	 */
 	public boolean listAllFilesAndThenDeleteAll() throws Exception{
+		this.testName = Thread.currentThread().getStackTrace()[1].getMethodName();
 		log.info("\n\n\n" + "FILE LIST");
 		log.info(store.listAllFiles());			
 		return store.deleteAll();
 	}
 	
 	/**
-	 * Create A Hierarchy Of Archives And Store A File In The Last One.
+	 * Create a hierarchy of archives and store a file in the last one.
 	 * @param sampleAnnotatedFile
 	 * @throws Exception
 	 */
 	public boolean createAHierarchyOfArchivesAndStoreAFileInTheLastOne(File sampleAnnotatedFile) throws Exception{
+		this.testName = Thread.currentThread().getStackTrace()[1].getMethodName();
 		// Creating a hierarchy of archives.
 		String level0ArchId = store.createArchive();
 		log.info("Created archive level 0:" + level0ArchId);
@@ -144,11 +146,12 @@ public class StoreAPITester{
 	}
 	
 	/**
-	 * Create Archive With A Folder That Contains A PDF File.
+	 * Create archive with a folder that contains a PDF file.
 	 * @param samplePDFFile
 	 * @throws Exception
 	 */
 	public boolean createArchiveWithAFolderThatContainsAPDFFile(File samplePDFFile) throws Exception{
+		this.testName = Thread.currentThread().getStackTrace()[1].getMethodName();
 		// Creating an archive.
 		String archId = store.createArchive();
 		// Store a PDF
@@ -158,12 +161,12 @@ public class StoreAPITester{
 	}
 	
 	/**
-	 * Create Archive With A Folder That Contains An Annotation File. Then Delete The Annotation File.
+	 * Create archive with a folder that contains an annotation file. Then delete the annotation file.
 	 * @param sampleAnnotatedFile
 	 * @throws Exception
 	 */
 	public boolean createArchiveWithAFolderThatContainsAnAnnotationFileThenDeleteTheAnnotationFile(File sampleAnnotatedFile) throws Exception{
-		//log.info("Scenario:" + (++scenario));
+		this.testName = Thread.currentThread().getStackTrace()[1].getMethodName();
 		// Creating an archive.
 		String archId = store.createArchive();
 		// Store an annotation file.
@@ -179,11 +182,11 @@ public class StoreAPITester{
 	}
 	
 	/**
-	 * Create Archive With A File And Download The File.
+	 * Create archive with a file and download the file.
 	 * @throws Exception
 	 */
 	public boolean createArchiveWithAFileAndDownloadTheFile() throws Exception{
-		//log.info("Scenario:" + (++scenario));
+		this.testName = Thread.currentThread().getStackTrace()[1].getMethodName();
 		// Creating an archive with a big file.
 		String archId = store.createArchive();
 		File bigFile = new File(testFiles.getProperty(ApplicationConfigTestParams.fileForStore));				
@@ -207,6 +210,7 @@ public class StoreAPITester{
 	 * @throws Exception
 	 */
 	public boolean createArchiveWithManyFilesAndDownloadEachOfThem() throws Exception{
+		this.testName = Thread.currentThread().getStackTrace()[1].getMethodName();
 		boolean status = true;
 		
 		// Creating an archive with many files.
@@ -259,12 +263,32 @@ public class StoreAPITester{
 	 * @throws Exception
 	 */
 	public void listFiles() throws Exception{
-		//log.info("Scenario:" + (++scenario));
 		log.info("\n\n\n" + "FILE LIST");
 		log.info(store.listAllFiles());
 	}
 	
 	// == = ==  End of tests.	
+		
+	/**
+	 * Print status of the test.
+	 * @param status
+	 */
+	private void printStatus(boolean status){
+		String msg = "";
+		if(status){
+			msg =  this.testName + " *********** SUCCEEDED ";
+		}else{
+			msg = this.testName + "  *********** FAILED ";
+		}
+		
+		log.info("\nScenario:" + (++scenario) + " --> " + msg + "\n"); 
+	}
+	
+	/**
+	 * @param is
+	 * @param fos
+	 * @return
+	 */
 	public static boolean store(InputStream is, FileOutputStream fos){
 		try{
 			int read = 0;

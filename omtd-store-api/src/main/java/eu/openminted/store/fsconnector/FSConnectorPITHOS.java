@@ -41,7 +41,7 @@ public class FSConnectorPITHOS implements FSConnector {
 		try {
 			this.pithosRoot = pithosRoot;
 			this.workingContainer = pithosRoot.substring(PITHOSURI.length(), pithosRoot.length()-1);
-			log.debug("workingContainer:" + workingContainer);
+			log.debug("workingContainer->" + workingContainer);
 			connector = new HadoopPithosConnector(pithosUrl, pithosToken, uuid);
 			// workaround.
 			PithosFileSystem.setHadoopPithosConnector(connector);
@@ -53,12 +53,12 @@ public class FSConnectorPITHOS implements FSConnector {
 
 	public boolean makeFolder(String fileName) {
 		String resultCode = "-1";
-		log.info("uploading:" + fileName);
+		log.debug("makeFolder->" + fileName);
 		String relativePath = fileName.substring(pithosRoot.length(), fileName.length()-1);
-		log.info("final:" + relativePath);		
+		log.debug("final->" + relativePath);		
 		resultCode = connector.uploadFileToPithos(workingContainer, relativePath, true);
 
-		log.debug("resultCode:" + resultCode);
+		log.debug("resultCode->" + resultCode);
 		if (resultCode != null && resultCode.equals("201")) {
 			return true;
 		} else {
@@ -109,8 +109,6 @@ public class FSConnectorPITHOS implements FSConnector {
 		return result;
 	}
 
-
-
 	@Override
 	public boolean deleteAll() {
 		String result = connector.getFileList(workingContainer);
@@ -118,7 +116,7 @@ public class FSConnectorPITHOS implements FSConnector {
 		String[] filePaths = result.split("\\s+");
 		for (String file : filePaths) {
 			result = result + file + "\n";			
-			log.debug("DELETE:" + file + " " + deleteFile(file));
+			log.debug("DELETE->" + file + " " + deleteFile(file));
 		}
 
 		return true;
@@ -132,9 +130,9 @@ public class FSConnectorPITHOS implements FSConnector {
 
 	@Override
 	public boolean deleteFile(String fileName) {
-		log.debug("deleting:" + fileName);
+		log.debug("deleting->" + fileName);
 		String resultCode = connector.deletePithosObject(workingContainer, fileName);
-		log.debug("resultCode:" + resultCode);
+		log.debug("resultCode->" + resultCode);
 
 		if (resultCode.contains("204")) {
 			return true;
@@ -145,9 +143,9 @@ public class FSConnectorPITHOS implements FSConnector {
 	@Override
 	public InputStream download(String targetFileName) {
 		String target = targetFileName.substring(pithosRoot.length());
-		log.debug("target:" + target);
+		log.debug("target->" + target);
 		PithosPath pithosPath = new PithosPath(workingContainer, target);
-		log.info("parent:" + pithosPath.getParent());
+		log.info("parent->" + pithosPath.getParent());
 		String pathEsc = null;
 
 		try {

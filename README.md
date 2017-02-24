@@ -79,13 +79,13 @@ installAsInit.dService.sh
 Then start service by running  
 
 ```
-service start omtdstore
+service omtdstore start 
 ```
 
 For stopping, restarting and getting the status of the service similar commands are also available.
 
 ```
-service {stop|restart|status} omtdstore
+service omtdstore {stop|restart|status} 
 ```
 
 

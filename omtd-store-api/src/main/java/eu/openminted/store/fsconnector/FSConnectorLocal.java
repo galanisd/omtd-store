@@ -52,6 +52,7 @@ public class FSConnectorLocal implements FSConnector{
 	@Override
 	public boolean deleteFile(String fileName) {
 		try{			
+			log.debug("deleting->" + fileName);
 			Path path = Paths.get(fileName);
 			return path.toFile().delete();
 		}catch(Exception e){

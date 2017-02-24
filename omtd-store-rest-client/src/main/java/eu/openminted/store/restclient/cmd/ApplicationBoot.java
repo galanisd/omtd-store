@@ -21,7 +21,8 @@ import eu.openminted.store.restclient.StoreRESTClient;
  *
  */
 @SpringBootApplication
-@ComponentScan(basePackages = {"eu.openminted.store.restclient"})
+//@ComponentScan(basePackages = {"eu.openminted.store.restclient"})
+@ComponentScan(basePackageClasses = {StoreRESTClient.class})
 public class ApplicationBoot implements CommandLineRunner {
 
 	private static final Logger log = LoggerFactory.getLogger(ApplicationBoot.class);
@@ -96,7 +97,7 @@ public class ApplicationBoot implements CommandLineRunner {
 						responsePrinter(store.downloadArchive(archiveID, destination));
 					}
 				} else if (command.equals(Commands.deleteAll)) {
-					System.out.println(store.deleteAll());
+					responsePrinter(store.deleteAll());
 				} else if (command.startsWith(Commands.finalizeArch)) {
 					final String[] allCMDArgs = command.split(" ");
 					if (allCMDArgs.length != 2) {

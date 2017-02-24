@@ -50,11 +50,10 @@ In order to skip JUnit tests just type
 mvn clean install -DskipTests=true.
 ```
 
-
 ## Run ##
 
-Scripts for starting the REST Server & Client in Windows and Linux)are provided in omtd-store/scripts folder. 
-For example CD to scripts folder and type the following command to start the REST server that uses the local hard drive.  
+Scripts for starting the REST Server & Client in Windows and Linux are provided in omtd-store/scripts folder. 
+For example in a Linux machine CD to scripts folder and type the following command to start the REST server that uses the local hard drive.  
 
 ```
 LinuxStartOMTDStoreService.sh configLocal.properties
@@ -67,5 +66,29 @@ LinuxStartOMTDStoreClient.sh
 ```
 
 to start the command line client of the service.
+
+  
+## Install it as a service ##
+
+CD omtd-store/scripts folder. Run 
+
+```
+installAsInit.dService.sh
+```
+ 
+Then start service by running  
+
+```
+service start omtdstore
+```
+
+For stopping, restarting and getting the status of the service similar commands are also available.
+
+```
+service {stop|restart|status} omtdstore
+```
+
+
+
  
  

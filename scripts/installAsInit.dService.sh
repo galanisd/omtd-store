@@ -18,5 +18,7 @@ echo "Copied JAR to $INSTALLEDJAR"
 ln -s  $INSTALLEDJAR $TARGET
 echo "Created symbolic link"
 
-echo "RUN_ARGS=\"-DstoreApplicationCfg=file:$(pwd)/../scripts/configLocal.properties""" >> $INSTALLEDJARCONFIG
+cat "$INSTALLEDJARCONFIG.orig" > $INSTALLEDJARCONFIG
+# this is for specifying the storeApplicationCfg of the app. 
+echo "RUN_ARGS=\"-DstoreApplicationCfg=file:$(pwd)/../scripts/configLocal.properties\"" >> $INSTALLEDJARCONFIG
 	

@@ -10,15 +10,19 @@ TARGET="/etc/init.d/omtdstore"
 
 if [ -f $TARGET ]
 then
+echo "Cleaning up before installation."
 rm -rf $TARGET
-echo "Cleanup"
 fi
-cp $RESTSERVERJAR $INSTALLEDJAR
-echo "Copied JAR to $INSTALLEDJAR"
-ln -s  $INSTALLEDJAR $TARGET
-echo "Created symbolic link"
 
+cp $RESTSERVERJAR $INSTALLEDJAR
+echo "Copied JAR to $INSTALLEDJAR."
+
+ln -s  $INSTALLEDJAR $TARGET
+echo "Created symbolic link."
+
+# Create the INSTALLEDJARCONFIG.
+# Step 1: Copy the template
 cat "$INSTALLEDJARCONFIG.orig" > $INSTALLEDJARCONFIG
-# this is for specifying the storeApplicationCfg of the app. 
+# Step 2: Add this for specifying the storeApplicationCfg of the app. 
 echo "RUN_ARGS=\"-DstoreApplicationCfg=file:$(pwd)/../scripts/configLocal.properties\"" >> $INSTALLEDJARCONFIG
 	

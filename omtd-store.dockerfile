@@ -20,5 +20,5 @@ RUN ./installAsInit.dService.sh
 
 # -- -- --- - -- -- -- --- - -- 
 # Ready. Start it!
-RUN service omtdstore start
-
+#RUN service omtdstore start
+#CMD ["service", "omtdstore", "start"]

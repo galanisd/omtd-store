@@ -68,7 +68,7 @@ LinuxStartOMTDStoreClient.sh
 to start the command line client of the service.
 
   
-## Install it as a service ##
+## Install it as an init.d service ##
 
 CD omtd-store/scripts folder and run 
 
@@ -76,7 +76,7 @@ CD omtd-store/scripts folder and run
 installAsInit.dService.sh <configFileName>
 ```
 
-Choose one of the configuration files that are available in scripts folder and adapt them
+Choose one of the configuration files that are available in scripts folder and adapt it
 if required.
 
 

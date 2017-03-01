@@ -70,16 +70,27 @@ to start the command line client of the service.
   
 ## Install it as a service ##
 
-CD omtd-store/scripts folder. Run 
+CD omtd-store/scripts folder and run 
 
 ```
-installAsInit.dService.sh
+installAsInit.dService.sh <configFileName>
+```
+
+Choose one of the configuration files that are available in scripts folder and adapt them
+if required.
+
+
+```
+e.g
+installAsInit.dService.sh configLocal.properties
+OR
+installAsInit.dService.sh configPITHOS.properties
 ```
  
 Then start service by running  
 
 ```
-service omtdstore start 
+service omtdstore start
 ```
 
 For stopping, restarting and getting the status of the service similar commands are also available.
@@ -88,7 +99,3 @@ For stopping, restarting and getting the status of the service similar commands 
 service omtdstore {stop|restart|status} 
 ```
 
-
-
- 
- 

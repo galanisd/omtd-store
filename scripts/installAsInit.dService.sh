@@ -2,6 +2,7 @@
 
 RESTSERVERJAR="$(pwd)/../omtd-store-rest/target/omtd-store-rest-0.0.1-SNAPSHOT.jar"
 
+CONFIG=$1
 APP="omtd-store-rest"
 INSTALLEDJAR="$(pwd)/../bin/$APP.jar"
 INSTALLEDJARCONFIG="$(pwd)/../bin/$APP.conf"
@@ -24,5 +25,5 @@ echo "Created symbolic link."
 # Step 1: Copy the template
 cat "$INSTALLEDJARCONFIG.orig" > $INSTALLEDJARCONFIG
 # Step 2: Add this for specifying the storeApplicationCfg of the app. 
-echo "RUN_ARGS=\"-DstoreApplicationCfg=file:$(pwd)/../scripts/configLocal.properties\"" >> $INSTALLEDJARCONFIG
+echo "RUN_ARGS=\"-DstoreApplicationCfg=file:$(pwd)/../scripts/$CONFIG\"" >> $INSTALLEDJARCONFIG
 	

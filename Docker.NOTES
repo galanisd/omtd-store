@@ -1,0 +1,19 @@
+# Delete container
+sudo docker rm myomtdstore
+
+# Create and start a container named myomtdstore based on  omtd-store-docker image.
+# Also map ports
+sudo docker run --name myomtdstore -d -p 8080:8080 -t omtd-store-docker
+
+# Create and start a container named myomtdstore
+# Also get a shell
+sudo docker run --name myomtdstore -i -t omtd-store-docker
+
+# List containers
+sudo docker ps
+
+# Stop 
+sudo docker stop CONTAINER ID (Use sudo docker ps to find it). 
+
+# Restart
+sudo docker restart myomtdstore

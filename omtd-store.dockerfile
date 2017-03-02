@@ -13,7 +13,7 @@ ENV PATH $JAVA_HOME/bin:$PATH
 RUN mkdir /opt/omtd-store
 # Copy everything to target dir.
 COPY . /opt/omtd-store/
-# "CD" to the respective dir, run installation script. 
+# Set working dir and prepare installation. 
 WORKDIR /opt/omtd-store/scripts/
 RUN chmod 755 installAsInit.dService.sh 
 #RUN ./installAsInit.dService.sh

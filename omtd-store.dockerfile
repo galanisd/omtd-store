@@ -21,3 +21,4 @@ RUN chmod 755 installAsInit.dService.sh
 # -- -- --- - -- -- -- --- - -- 
 # Ready. Start it!
 ENTRYPOINT pwd && ./installAsInit.dService.sh config.properties && service omtdstore start && /bin/bash
+

@@ -1,3 +1,7 @@
+# Update config of the Store Service in the application.
+omtd-store-updateConfigOfStoreAppInDockerContainer.sh ./scripts/configLocal.properties 
+
+
 # Delete container
 sudo docker rm myomtdstore
 

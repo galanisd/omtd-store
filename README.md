@@ -70,7 +70,7 @@ to start the command line client of the service.
   
 ## Install it as an init.d service ##
 
-CD omtd-store/scripts folder and run 
+CD to omtd-store/scripts folder and run 
 
 ```
 installAsInit.dService.sh <configFileName>

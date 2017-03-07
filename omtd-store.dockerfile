@@ -7,7 +7,7 @@ RUN (echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 ENV PATH $JAVA_HOME/bin:$PATH
 
-# Prepare omtdstore installation. 
+# Install omtdstore. 
 # -- -- --- - -- -- -- --- - -- 
 # Create target dir.
 RUN mkdir /opt/omtd-store
@@ -16,9 +16,10 @@ COPY . /opt/omtd-store/
 # Set working dir and prepare installation. 
 WORKDIR /opt/omtd-store/scripts/
 RUN chmod 755 installAsInit.dService.sh 
+# Install as init.d service.
 RUN ./installAsInit.dService.sh config.properties
 
 # -- -- --- - -- -- -- --- - -- 
-# Ready. Start it!
+# omtdstore is installed. Start it!
 ENTRYPOINT service omtdstore start && /bin/bash
 

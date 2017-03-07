@@ -16,8 +16,9 @@ COPY . /opt/omtd-store/
 # Set working dir and prepare installation. 
 WORKDIR /opt/omtd-store/scripts/
 RUN chmod 755 installAsInit.dService.sh 
+RUN ./installAsInit.dService.sh config.properties
 
 # -- -- --- - -- -- -- --- - -- 
 # Ready. Start it!
-ENTRYPOINT pwd && ./installAsInit.dService.sh config.properties && service omtdstore start && /bin/bash
+ENTRYPOINT service omtdstore start && /bin/bash
 

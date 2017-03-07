@@ -18,7 +18,7 @@ fi
 cp $RESTSERVERJAR $INSTALLEDJAR
 echo "Copied JAR to $INSTALLEDJAR."
 
-ln -s  $INSTALLEDJAR $TARGET
+ln -s $INSTALLEDJAR $TARGET
 echo "Created symbolic link."
 
 # Create the INSTALLEDJARCONFIG.

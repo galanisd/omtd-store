@@ -7,5 +7,3 @@ goto :eof
 :defaultRun
 REM Start rest server with default config file.
 java -jar %CD%/../omtd-store-rest/target/omtd-store-rest-0.0.1-SNAPSHOT.jar 
- 
-pause;

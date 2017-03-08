@@ -14,15 +14,15 @@ TARGET="/etc/init.d/omtdstore"
 if [ -f $TARGET ]
 then
 echo "Cleaning up before installation."
-rm -rf $TARGET
+rm -f $TARGET
 fi
 
 # Update/Create JAR,
-rm -rf $INSTALLEDJAR
+rm -f $INSTALLEDJAR
 cp $RESTSERVERJAR $INSTALLEDJAR
 echo "Copied JAR to $INSTALLEDJAR."
 
-# Create symbolink link to JAR.
+# Create symbolic link to JAR.
 ln -s $INSTALLEDJAR $TARGET
 echo "Created symbolic link."
 

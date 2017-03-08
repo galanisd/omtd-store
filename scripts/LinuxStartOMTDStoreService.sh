@@ -1,6 +1,9 @@
 #!/bin/bash
 
-JARPATH=$(pwd)"/../omtd-store-rest/target/omtd-store-rest-0.0.1-SNAPSHOT.jar"
+CURRENTVERSION=$( cat ../VERSION)
+echo "Version: $CURRENTVERSION"
+
+JARPATH=$(pwd)"/../omtd-store-rest/target/omtd-store-rest-$CURRENTVERSION.jar"
 
 if [ "$#" -eq  "0" ]
 then

@@ -1,3 +1,5 @@
 #!/bin/bash
 
-java -jar $(pwd)"/../omtd-store-rest-client/target/omtd-store-rest-client-0.0.1-SNAPSHOT-exec.jar" 
+CURRENTVERSION=$( cat ../VERSION)
+echo "Version: $CURRENTVERSION"
+java -jar $(pwd)"/../omtd-store-rest-client/target/omtd-store-rest-client-"$CURRENTVERSION"-exec.jar" 

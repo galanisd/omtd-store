@@ -1,6 +1,7 @@
 @echo off
 
-SET JARPATH=%CD%/../omtd-store-rest/target/omtd-store-rest-0.0.1-SNAPSHOT.jar
+SET /p CURRENTVERSION=<../VERSION
+SET JARPATH=%CD%/../omtd-store-rest/target/omtd-store-rest-%CURRENTVERSION%.jar
 
 if [%1]==[] goto defaultRun
 REM Start REST server with the provided config file.

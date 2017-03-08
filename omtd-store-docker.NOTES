@@ -1,10 +1,3 @@
-# Update config of the Store Service in the application.
-omtd-store-updateConfigOfStoreAppInDockerContainer.sh ./scripts/configLocal.properties 
-
-
-# Delete container
-sudo docker rm myomtdstore
-
 # Create a container named myomtdstore based on  omtd-store-docker image.
 # Also map ports
 sudo docker create --name myomtdstore -p 8080:8080 -t omtd-store-docker
@@ -13,9 +6,18 @@ sudo docker create --name myomtdstore -p 8080:8080 -t omtd-store-docker
 # Also map ports
 sudo docker run --name myomtdstore -d -p 8080:8080 -t omtd-store-docker
 
-# Create and start a container named myomtdstore
+# Create and start a container named myomtdstore.
 # Also get a shell
 sudo docker run --name myomtdstore -i -t omtd-store-docker
+
+# Start
+sudo docker start myomtdstore
+
+# Stop 
+sudo docker stop myomtdstore 
+
+# Restart
+sudo docker restart myomtdstore
 
 # List all containers
 sudo docker ps -a
@@ -23,14 +25,11 @@ sudo docker ps -a
 # List running containers
 sudo docker ps
 
-# Stop 
-sudo docker stop myomtdstore 
-
-# Start
-sudo docker start myomtdstore
-
-# Restart
-sudo docker restart myomtdstore
-
 # Get a shell in a running container.
 sudo docker exec -i -t myomtdstore /bin/bash
+
+# Update config of the Store Service in the container.
+omtd-store-updateConfigOfStoreAppInDockerContainer.sh ./scripts/configLocal.properties 
+
+# Delete container
+sudo docker rm myomtdstore

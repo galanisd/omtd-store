@@ -17,7 +17,8 @@ echo "Cleaning up before installation."
 rm -f $TARGET
 fi
 
-# Update/Create JAR,
+# Update/Create JAR.
+# It assumes that $RESTSERVERJAR already exists.
 rm -f $INSTALLEDJAR
 cp $RESTSERVERJAR $INSTALLEDJAR
 echo "Copied JAR to $INSTALLEDJAR."

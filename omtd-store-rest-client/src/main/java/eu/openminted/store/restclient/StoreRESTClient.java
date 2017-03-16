@@ -29,6 +29,7 @@ import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
+import eu.openminted.store.common.OMTDStoreHandler;
 import eu.openminted.store.common.StoreREST;
 import eu.openminted.store.common.StoreResponse;
 
@@ -38,7 +39,7 @@ import eu.openminted.store.common.StoreResponse;
  *
  */
 @Component
-public class StoreRESTClient {
+public class StoreRESTClient implements OMTDStoreHandler{
 
 	private static final Logger log = LoggerFactory.getLogger(StoreRESTClient.class);
 
@@ -77,38 +78,30 @@ public class StoreRESTClient {
 	public void setEndpoint(String endpoint) {
 		this.endpoint = endpoint;
 	}
-
-	/**
-	 * List all files of the Store.
-	 * @return
-	 */
+	
+	// == === ==
+	// Implementation for StoreHandler
+	// == === ==
+	
+	@Override
 	public StoreResponse listFiles() {		
 		StoreResponse response = restTemplate.getForObject(destination(endpoint, StoreREST.listFiles), StoreResponse.class);
 		return response;
 	}
 
-	/**
-	 * Delete all files in the Store.
-	 * @return
-	 */
+	@Override
 	public StoreResponse deleteAll() {
 		StoreResponse response = restTemplate.getForObject(destination(endpoint, StoreREST.deleteAll), StoreResponse.class);
 		return response;
 	}
 	
-	/**
-	 * Creates an archive
-	 * @return the id of the archive.
-	 */
+	@Override
 	public StoreResponse createArchive() {
 		StoreResponse response = restTemplate.getForObject(destination(endpoint, StoreREST.createArchive), StoreResponse.class);
 		return response;
 	}
 
-	/**
-	 * Deletes an archive.
-	 * @return the id of the archive.
-	 */
+	@Override
 	public StoreResponse deleteArchive(String archiveID) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add(StoreREST.archiveID, archiveID);
@@ -116,10 +109,7 @@ public class StoreRESTClient {
 		return post(destination(endpoint, StoreREST.deleteArchive), map);
 	}
 			
-	/**
-	 * Creates an subarchive
-	 * @return the id of the subarchive.
-	 */
+	@Override
 	public StoreResponse createSubArchive(String archiveID, String archive) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add(StoreREST.archiveID, archiveID);
@@ -128,39 +118,15 @@ public class StoreRESTClient {
 		return post(destination(endpoint, StoreREST.createSubArchive), map);
 	}
 	
-	/**
-	 * Finalize archive.
-	 * @return the id of the archive.
-	 */
+	@Override
 	public StoreResponse finalizeArchive(String archiveID) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add("archiveID", archiveID);
 		
 		return post(destination(endpoint, StoreREST.finalizeArchive), map);
 	}
-	
-	/**
-	 * Create a post message to {@code serviceEndpoint}.
-	 * @param serviceEndpoint
-	 * @param map
-	 * @return
-	 */
-	private StoreResponse post(String serviceEndpoint, MultiValueMap<String, Object> map){
-		RestTemplate restTemplate = new RestTemplate();
-		HttpHeaders headers = new HttpHeaders();
 		
-		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
-		ResponseEntity<StoreResponse> st = restTemplate.postForEntity(serviceEndpoint, requestEntity, StoreResponse.class);
-		return st.getBody();
-	}
-	
-	/**
-	 * Uploads a file in a archive.
-	 * @param file
-	 * @param archiveID
-	 * @param fileName
-	 * @return
-	 */
+	@Override
 	public StoreResponse updload(File file, String archiveID, String fileName) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add("file", new FileSystemResource(file));
@@ -181,33 +147,29 @@ public class StoreRESTClient {
 		return st.getBody();
 	}	
 	
-	/**
-	 * Downloads a file.
-	 * @param fileName
-	 * @param destination
-	 * @return
-	 */
-	public boolean downloadFile(String fileName, String destination) {		
+	@Override
+	public StoreResponse downloadFile(String fileName, String destination) {		
 		// Parameters
 		MultiValueMap<String, Object> callParameters = new LinkedMultiValueMap<String, Object>();
 		callParameters.add("fileName", fileName);
 		
-		return downloadFromServer(callParameters, StoreREST.downloadFile, fileName, destination); 		
+		boolean resp = downloadFromServer(callParameters, StoreREST.downloadFile, fileName, destination);
+		
+		return new StoreResponse(String.valueOf(resp), "");
 	}
 	
-	/**
-	 * Downloads a file.
-	 * @param fileName
-	 * @param localDestination
-	 * @return
-	 */
-	public boolean downloadArchive(String archiveID, String localDestination) {		
+	@Override
+	public StoreResponse downloadArchive(String archiveID, String localDestination) {		
 		// Parameters
 		MultiValueMap<String, Object> callParameters = new LinkedMultiValueMap<String, Object>();
 		callParameters.add(StoreREST.archiveID, archiveID);
 		
-		return downloadFromServer(callParameters, StoreREST.downloadArchive, archiveID, localDestination);		
+		boolean resp = downloadFromServer(callParameters, StoreREST.downloadArchive, archiveID, localDestination);
+		
+		return new StoreResponse(String.valueOf(resp), "");
 	}
+			
+	// == === ==
 	
 	/**
 	 * Downloads from server.
@@ -241,7 +203,21 @@ public class StoreRESTClient {
 		return endpoint + service;
 	}
 	
-	// == === ==
+	/**
+	 * Create a post message to {@code serviceEndpoint}.
+	 * @param serviceEndpoint
+	 * @param map
+	 * @return
+	 */
+	private StoreResponse post(String serviceEndpoint, MultiValueMap<String, Object> map){
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
+		ResponseEntity<StoreResponse> st = restTemplate.postForEntity(serviceEndpoint, requestEntity, StoreResponse.class);
+		return st.getBody();
+	}
+	
     private class DataRequestCallback<T> implements RequestCallback {
     	 
         private List<MediaType> mediaTypes = Arrays.asList(MediaType.APPLICATION_OCTET_STREAM, MediaType.ALL);

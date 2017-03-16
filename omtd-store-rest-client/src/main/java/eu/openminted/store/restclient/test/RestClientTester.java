@@ -43,7 +43,7 @@ public class RestClientTester {
 		log.info("List Files");
 		log.info(store.listFiles().getResponse());		
 		log.info("Download " + subArchiveId + "/" + fileForUploading.getName());
-		boolean status2 = store.downloadFile(subArchiveId + "/" + fileForUploading.getName(), props.getProperty("client.downloadFolder") + fileForUploading.getName());
+		String status2 = store.downloadFile(subArchiveId + "/" + fileForUploading.getName(), props.getProperty("client.downloadFolder") + fileForUploading.getName()).getResponse();
 		log.info("Download status " + status2);		
 		log.info("Finalize archive " + archiveID + " " + store.finalizeArchive(archiveID).getResponse());
 		log.info("Download archive " + store.downloadArchive(archiveID, props.getProperty("client.downloadFolder") + archiveID + ".zip"));

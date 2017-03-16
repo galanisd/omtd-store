@@ -83,7 +83,7 @@ public class StoreController {
      */
     @RequestMapping(value=StoreREST.downloadArchive, method=RequestMethod.POST)
     @ResponseBody
-    public  ResponseEntity<Resource> downloadArchive(@RequestParam(StoreREST.archiveID) String archiveId){
+    public ResponseEntity<Resource> downloadArchive(@RequestParam(StoreREST.archiveID) String archiveId){
         InputStream fileInputStream = storeService.downloadArchive(archiveId);
         return Utils.download(fileInputStream, archiveId);
     }

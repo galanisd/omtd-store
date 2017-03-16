@@ -99,3 +99,29 @@ For stopping, restarting and getting the status of the service similar commands 
 service omtdstore {stop|restart|status} 
 ```
 
+## Dockerization ##
+
+The REST server of omtd-store has been dockerized so that it can be easily deployed and managed.
+The `omtd-store-createDockerImgForStoreApp.sh` script that is provided takes as input the required 
+docker file (`omtd-store.dockerfile`) and generates the image of the store (named `omtd-store-docker`) that will run in a docker container.
+The docker image contains all the required software dependencies and installs the REST server as an init.d service.
+The implementation that will be used (Local HD or PITHOS) and the required settings are specified in the respective configuration file (as described above).
+In order to update this configuration file (before starting the container) use the following command from the host that runs the docker deamon.
+
+```
+omtd-store-updateConfigOfStoreAppInDockerContainer.sh <configFilePath>
+```
+e.g.
+
+```
+omtd-store-updateConfigOfStoreAppInDockerContainer.sh ./scripts/configLocal.properties
+```
+
+For more information on managing the store service image and container please consult the `omtd-store-docker.NOTES` file.  
+
+
+
+
+ 
+
+

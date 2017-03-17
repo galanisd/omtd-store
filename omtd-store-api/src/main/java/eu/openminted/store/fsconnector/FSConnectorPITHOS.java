@@ -165,4 +165,16 @@ public class FSConnectorPITHOS implements FSConnector {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public boolean isDir(String path) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean exists(String path) {
+		PithosPath pithosPath = new PithosPath(workingContainer, path);
+		return false;
+	}
 }

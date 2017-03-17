@@ -159,6 +159,26 @@ public class FSConnectorLocal implements FSConnector{
 		}
 		
 	}
+
+	@Override
+	public boolean isDir(String path) {
+		File f = new File(path);
+		if(f.exists() && f.isDirectory()){
+			return true;
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean exists(String path) {
+		File f = new File(path);
+		if(f.exists() ){
+			return true;
+		}
+		
+		return false;
+	}
 	
 	
 }

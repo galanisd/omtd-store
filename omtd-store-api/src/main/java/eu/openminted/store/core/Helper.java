@@ -42,7 +42,12 @@ public class Helper {
 			rootLocation = storageRoot;			
 		}		
 		
-		destinationFolderAbsolutePath = appendDirToPath(rootLocation, archiveId);
+		if(archiveId != null && !archiveId.isEmpty()){
+			destinationFolderAbsolutePath = appendDirToPath(rootLocation, archiveId);
+		}else{
+			destinationFolderAbsolutePath = rootLocation;
+		}
+			
 		
 		return destinationFolderAbsolutePath;
 	}

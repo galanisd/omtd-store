@@ -77,11 +77,10 @@ installAsInit.dService.sh <configFileName>
 ```
 
 Choose one of the configuration files that are available in scripts folder and adapt it
-if required.
+if required. 
 
-
-```
 e.g
+```
 installAsInit.dService.sh configLocal.properties
 OR
 installAsInit.dService.sh configPITHOS.properties

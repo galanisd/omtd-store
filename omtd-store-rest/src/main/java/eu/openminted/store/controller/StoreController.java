@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import eu.openminted.store.common.StoreREST;
 import eu.openminted.store.common.StoreResponse;
 import eu.openminted.store.core.StoreException;
@@ -54,6 +52,27 @@ public class StoreController {
     	return new StoreResponse(response, "");    
     }
 
+    @RequestMapping(value=StoreREST.createArchive, method=RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public StoreResponse createArchive(@RequestParam(StoreREST.archiveID) String archiveId){
+    	String response = String.valueOf(storeService.createArchive(archiveId)); 
+    	return new StoreResponse(response, "");        	
+    }
+
+    @RequestMapping(value=StoreREST.archiveExists, method=RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public StoreResponse archiveExists(@RequestParam(StoreREST.archiveID) String archiveId){
+    	String response = String.valueOf(storeService.archiveExists(archiveId));
+    	return new StoreResponse(response, "");
+    }
+
+    @RequestMapping(value=StoreREST.fileExistsInArchive, method=RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public StoreResponse fileExistsInArchive(@RequestParam(StoreREST.archiveID)String archiveId, @RequestParam("fileName") String fileName){
+    	String response = String.valueOf(storeService.fileExistsInArchive(archiveId, fileName));
+    	return new StoreResponse(response, "");
+    }
+    
     /**
      * Creates a subArchive under a given archive.
      * @return

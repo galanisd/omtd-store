@@ -38,7 +38,7 @@ public class RestClientTester {
 		String subArchiveId = store.createSubArchive(archiveID, props.getProperty("client.subarchiveid")).getResponse();
 		log.info("Create SubArchive:" + subArchiveId);		
 		File fileForUploading = new File(props.getProperty("client.bigFile"));		
-		String status1 = store.updload(fileForUploading, subArchiveId, fileForUploading.getName()).getResponse();
+		String status1 = store.storeFile(fileForUploading, subArchiveId, fileForUploading.getName()).getResponse();
 		log.info("Upload to SubArchive:" + status1);			
 		log.info("List Files");
 		log.info(store.listFiles().getResponse());		

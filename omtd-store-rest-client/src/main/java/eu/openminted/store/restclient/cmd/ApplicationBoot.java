@@ -84,7 +84,7 @@ public class ApplicationBoot implements CommandLineRunner {
 						String fileName = allCMDArgs[1];
 						String archiveID = allCMDArgs[2];
 						File file = new File(fileName);
-						responsePrinter(store.updload(file, archiveID, file.getName()));
+						responsePrinter(store.storeFile(file, archiveID, file.getName()));
 					}															
 				} else if (command.startsWith(Commands.downloadArch)) {
 					final String[] allCMDArgs = command.split(" ");

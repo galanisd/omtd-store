@@ -8,6 +8,13 @@ import java.io.InputStream;
  */
 public interface StoreService {
 
+	/**
+     * Initializes a new empty archive with archiveId as name.
+     * 
+     * @return the identifier of the archive
+     */
+    boolean createArchive(String archiveId);
+    
     /**
      * Initializes a new empty archive
      * 
@@ -66,7 +73,17 @@ public interface StoreService {
      * @return true if the files was stored.
      */    
     boolean storeFile(String archiveId, InputStream is, String fileName);
-        
+
+    /**
+     * Stores the contents of the input stream to the root of the storage.
+     * 
+     * @param is the contents of the file
+     * @param fileName (optional) the name of the file. Random UUID, if not specified.
+     *           
+     * @return true if the files was stored.
+     */    
+    boolean storeFile(InputStream is, String fileName);
+    
     /**
      * Downloads file. 
      * @param fileName is the path of the file.
@@ -91,6 +108,17 @@ public interface StoreService {
      * @param fileName
      */
     public String listAllFiles();
-      
+
+    /**
+     * Archive exists
+     * @param archiveId
+     */
+    public boolean archiveExists(String archiveId);
+    
+    /**
+     * File exists in archive.
+     * @param archiveId
+     */
+    public boolean fileExistsInArchive(String archiveId, String fileName);
 }
 

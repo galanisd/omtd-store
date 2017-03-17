@@ -62,4 +62,16 @@ public interface FSConnector {
 	 * @return
 	 */
 	public boolean compressDir(String dir, String zipFile);
+	
+	/**
+	 * @param path
+	 * @return
+	 */
+	public boolean isDir(String path);
+	
+	/**
+	 * @param path
+	 * @return
+	 */
+	public boolean exists(String path);
 }

@@ -66,15 +66,22 @@ public class StoreServiceGeneric implements StoreService{
 	}
 	
 	@Override
+	public boolean createArchive(String archiveId) {
+		// Create Folder.
+		String destinationFolderAbsolutePath = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
+		log.info(destinationFolderAbsolutePath.toString());
+		boolean creationStatus = connector.makeFolder(destinationFolderAbsolutePath);
+		
+		return creationStatus; 
+	}
+	
+	@Override
 	public String createArchive() {
 		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
 		
 		// Get new archive id.
 		String archiveId = idGen.generateId();
-		// Create Folder.
-		String destinationFolderAbsolutePath = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
-		log.info(destinationFolderAbsolutePath.toString());
-		boolean creationStatus = connector.makeFolder(destinationFolderAbsolutePath);
+		boolean creationStatus = createArchive(archiveId);		
 		// Return archiveId.
     	if(creationStatus){    		
     		return archiveId;
@@ -128,10 +135,16 @@ public class StoreServiceGeneric implements StoreService{
 		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
 		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
 		String destinationFile = Helper.appendFileToPath(destinationFolderAbsolutePathForParent, fileName);
+			
 		return connector.storeFile(destinationFile, is);
 		
 	}
 
+	@Override
+	public boolean storeFile(InputStream is, String fileName) {		
+		return storeFile(null, is, fileName) ;
+	}
+	
 	@Override
 	public boolean deleteFile(String archiveId, String fileName) {
 		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
@@ -165,5 +178,17 @@ public class StoreServiceGeneric implements StoreService{
 		return connector.compressDir(storeProperties.getStorageRoot() + archiveId + "/", destinationZip);
 	}
 
+	@Override
+	public boolean archiveExists(String archiveId) {
+		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
+		return connector.isDir(destinationFolderAbsolutePathForParent);
+	}
+
+	@Override
+	public boolean fileExistsInArchive(String archiveId, String fileName) {
+		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
+		String destinationFile = Helper.appendFileToPath(destinationFolderAbsolutePathForParent, fileName);		
+		return connector.exists(destinationFile);
+	}
 
 }

@@ -122,7 +122,7 @@ public class RestInterfaceTests {
     public void uploadFile() throws Exception {
         ClassPathResource resource = new ClassPathResource("test.txt", getClass());
         String archiveID = store.createArchive().getResponse();        
-        String status = store.updload(resource.getFile(), archiveID, resource.getFile().getName()).getResponse();
+        String status = store.storeFile(resource.getFile(), archiveID, resource.getFile().getName()).getResponse();
         assertTrue(archiveID != null && status.equalsIgnoreCase("true"));
     }
     // === == === == === ==  

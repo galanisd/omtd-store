@@ -80,8 +80,31 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	}
 	
 	// == === ==
-	// Implementation for StoreHandler
+	// Implementation for OMTDStoreHandler
 	// == === ==
+	// == === ==
+	// == === ==	
+	// == === ==
+	
+	@Override
+	public StoreResponse createArchive(String archiveId) {
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		map.add(StoreREST.archiveID, archiveId);
+		
+		return post(destination(endpoint, StoreREST.createArchive), map);
+	}
+
+	@Override
+	public StoreResponse archiveExists(String archiveId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public StoreResponse fileExistsInArchive(String archiveId, String fileName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	@Override
 	public StoreResponse listFiles() {		
@@ -127,7 +150,7 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	}
 		
 	@Override
-	public StoreResponse updload(File file, String archiveID, String fileName) {
+	public StoreResponse storeFile(File file, String archiveID, String fileName) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add("file", new FileSystemResource(file));
 		map.add("fileName", fileName);
@@ -144,7 +167,8 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
 		ResponseEntity<StoreResponse> st = restTemplate.postForEntity(destination(endpoint, StoreREST.uploadFile), requestEntity, StoreResponse.class);
 		
-		return st.getBody();
+		StoreResponse resp = st.getBody(); 
+		return resp;
 	}	
 	
 	@Override
@@ -168,7 +192,9 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		
 		return new StoreResponse(String.valueOf(resp), "");
 	}
-			
+
+	// == === ==
+	// == === ==	
 	// == === ==
 	
 	/**

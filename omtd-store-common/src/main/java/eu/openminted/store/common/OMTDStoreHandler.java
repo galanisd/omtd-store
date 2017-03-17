@@ -18,6 +18,12 @@ public interface OMTDStoreHandler {
 	public StoreResponse deleteAll();
 	
 	/**
+	 * @param archiveId
+	 * @return
+	 */
+	public StoreResponse createArchive(String archiveId);
+	
+	/**
 	 * Creates an archive
 	 * @return the id of the archive.
 	 */
@@ -48,7 +54,7 @@ public interface OMTDStoreHandler {
 	 * @param fileName
 	 * @return
 	 */
-	public StoreResponse updload(File file, String archiveID, String fileName);
+	public StoreResponse storeFile(File file, String archiveID, String fileName);
 	
 	/**
 	 * Downloads a file.
@@ -64,5 +70,18 @@ public interface OMTDStoreHandler {
 	 * @param localDestination
 	 * @return
 	 */
-	public StoreResponse downloadArchive(String archiveID, String localDestination);
+	public StoreResponse downloadArchive(String archiveID, String localDestination);	
+    
+	/**
+	 * @param archiveId
+	 * @return
+	 */
+	public StoreResponse archiveExists(String archiveId);
+	    
+	/**
+	 * @param archiveId
+	 * @param fileName
+	 * @return
+	 */
+	public StoreResponse fileExistsInArchive(String archiveId, String fileName);
 }

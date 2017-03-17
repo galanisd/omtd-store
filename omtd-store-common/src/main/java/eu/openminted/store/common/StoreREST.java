@@ -17,4 +17,7 @@ public class StoreREST {
 	
 	public static final String archiveID = "archiveID";
 	
+	public static final String archiveExists = "archiveExists";
+	public static final String fileExistsInArchive = "fileExistsInArchive";
+		
 }

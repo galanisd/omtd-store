@@ -98,5 +98,11 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 		return null;
 	}
 
+	@Override
+	public StoreResponse storeFile(byte[] bytes, String archiveID, String fileName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

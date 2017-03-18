@@ -12,7 +12,10 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.AbstractResource;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -148,7 +151,8 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		
 		return post(destination(endpoint, StoreREST.finalizeArchive), map);
 	}
-		
+
+	/*
 	@Override
 	public StoreResponse storeFile(File file, String archiveID, String fileName) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
@@ -169,7 +173,24 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		
 		StoreResponse resp = st.getBody(); 
 		return resp;
-	}	
+	}
+	*/
+	
+	@Override
+	public StoreResponse storeFile(File file, String archiveID, String fileName) {
+		return storeResource(new FileSystemResource(file), archiveID, fileName);
+	}
+
+	//@Override
+	public StoreResponse storeFile(byte[] bytes, String archiveID, String fileName) {
+		ByteArrayResource byteArrayResource = new ByteArrayResource(bytes){
+            @Override
+            public String getFilename(){
+                return fileName;
+            }
+        };
+		return storeResource(byteArrayResource, archiveID, fileName);
+	}
 	
 	@Override
 	public StoreResponse downloadFile(String fileName, String destination) {		
@@ -196,6 +217,27 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	// == === ==
 	// == === ==	
 	// == === ==
+	
+	public StoreResponse storeResource(AbstractResource resource, String archiveID, String fileName) {
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		map.add("file", resource);
+		map.add("fileName", fileName);
+		map.add(StoreREST.archiveID, archiveID);
+
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+		SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+		requestFactory.setBufferRequestBody(false);
+		restTemplate.setRequestFactory(requestFactory);
+		
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
+		ResponseEntity<StoreResponse> st = restTemplate.postForEntity(destination(endpoint, StoreREST.uploadFile), requestEntity, StoreResponse.class);
+		
+		StoreResponse resp = st.getBody(); 
+		return resp;
+	}	
 	
 	/**
 	 * Downloads from server.

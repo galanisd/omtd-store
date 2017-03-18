@@ -57,6 +57,15 @@ public interface OMTDStoreHandler {
 	public StoreResponse storeFile(File file, String archiveID, String fileName);
 	
 	/**
+	 * Uploads a file in a archive.
+	 * @param bytes
+	 * @param archiveID
+	 * @param fileName
+	 * @return
+	 */
+	public StoreResponse storeFile(byte[] bytes, String archiveID, String fileName);
+	
+	/**
 	 * Downloads a file.
 	 * @param fileName
 	 * @param destination

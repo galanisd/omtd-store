@@ -121,6 +121,19 @@ For more information on managing the store service image and container please co
 
 
 
+## omtd-store-rest-client ##
+
+In order to integrate the Store Service to your JAVA application use  the following Maven coordinates(`omtd-store-rest-client`).
+
+```
+  <groupId>eu.openminted</groupId>
+  <artifactId>omtd-store-rest-client</artifactId>
+  <version>VERSION</version>  
+``` 
+where `VERSION` is the current version of the library (e.g. 0.0.1-SNAPSHOT).
+ 
+
+
  
 
 

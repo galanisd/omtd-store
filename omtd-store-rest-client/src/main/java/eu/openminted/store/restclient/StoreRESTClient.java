@@ -98,6 +98,12 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	}
 
 	@Override
+	public StoreResponse createArchive() {
+		StoreResponse response = restTemplate.getForObject(destination(endpoint, StoreREST.createArchive), StoreResponse.class);
+		return response;
+	}
+	
+	@Override
 	public StoreResponse archiveExists(String archiveId) {
 		// TODO Auto-generated method stub
 		return null;
@@ -105,8 +111,11 @@ public class StoreRESTClient implements OMTDStoreHandler{
 
 	@Override
 	public StoreResponse fileExistsInArchive(String archiveId, String fileName) {
-		// TODO Auto-generated method stub
-		return null;
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		map.add(StoreREST.archiveID, archiveId);
+		map.add(StoreREST.fileName, fileName);
+		
+		return post(destination(endpoint, StoreREST.fileExistsInArchive), map);
 	}
 	
 	@Override
@@ -121,11 +130,6 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		return response;
 	}
 	
-	@Override
-	public StoreResponse createArchive() {
-		StoreResponse response = restTemplate.getForObject(destination(endpoint, StoreREST.createArchive), StoreResponse.class);
-		return response;
-	}
 
 	@Override
 	public StoreResponse deleteArchive(String archiveID) {
@@ -147,7 +151,7 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	@Override
 	public StoreResponse finalizeArchive(String archiveID) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		map.add("archiveID", archiveID);
+		map.add(StoreREST.archiveID, archiveID);
 		
 		return post(destination(endpoint, StoreREST.finalizeArchive), map);
 	}
@@ -196,7 +200,7 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	public StoreResponse downloadFile(String fileName, String destination) {		
 		// Parameters
 		MultiValueMap<String, Object> callParameters = new LinkedMultiValueMap<String, Object>();
-		callParameters.add("fileName", fileName);
+		callParameters.add(StoreREST.fileName, fileName);
 		
 		boolean resp = downloadFromServer(callParameters, StoreREST.downloadFile, fileName, destination);
 		
@@ -220,8 +224,8 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	
 	public StoreResponse storeResource(AbstractResource resource, String archiveID, String fileName) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		map.add("file", resource);
-		map.add("fileName", fileName);
+		map.add(StoreREST.file, resource);
+		map.add(StoreREST.fileName, fileName);
 		map.add(StoreREST.archiveID, archiveID);
 
 		RestTemplate restTemplate = new RestTemplate();
@@ -272,7 +276,7 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	}
 	
 	/**
-	 * Create a post message to {@code serviceEndpoint}.
+	 * Create a POST message to {@code serviceEndpoint}.
 	 * @param serviceEndpoint
 	 * @param map
 	 * @return

@@ -104,5 +104,11 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 		return null;
 	}
 
+	@Override
+	public StoreResponse deleteFile(String archiveID, String fileName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

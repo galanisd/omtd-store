@@ -74,6 +74,14 @@ public interface OMTDStoreHandler {
 	public StoreResponse downloadFile(String fileName, String destination);
 	
 	/**
+	 * Deletes a file.
+	 * @param fileName
+	 * @param destination
+	 * @return
+	 */
+	public StoreResponse deleteFile(String archiveID, String fileName);
+	
+	/**
 	 * Downloads a file.
 	 * @param fileName
 	 * @param localDestination

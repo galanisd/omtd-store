@@ -135,10 +135,21 @@ public class StoreController {
      */
     @RequestMapping(value=StoreREST.deleteArchive, method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public StoreResponse deleteArhive(@RequestParam(StoreREST.archiveID) String archiveId){
+    public StoreResponse deleteArchive(@RequestParam(StoreREST.archiveID) String archiveId){
     	String response = String.valueOf(storeService.deleteArchive(archiveId, true));
     	return new StoreResponse(response, "");
     }    
+
+    /**
+     * Delete archive.
+     * @return action status
+     */
+    @RequestMapping(value=StoreREST.deleteFile, method=RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public StoreResponse deleteFile(@RequestParam(StoreREST.archiveID) String archiveId, @RequestParam(StoreREST.fileName) String fileName){
+    	String response = String.valueOf(storeService.deleteFile(archiveId, fileName));
+    	return new StoreResponse(response, "");
+    }
     
     /**
      * Upload file.
@@ -149,7 +160,7 @@ public class StoreController {
      */
     @RequestMapping(value=StoreREST.uploadFile, method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public StoreResponse uploadFile(@RequestParam(StoreREST.archiveID) String archiveId, @RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+    public StoreResponse uploadFile(@RequestParam(StoreREST.archiveID) String archiveId, @RequestParam(StoreREST.fileName) String fileName, @RequestParam("file") MultipartFile file) {
     	StoreResponse resp = new StoreResponse();
     	String response = ""; 
     	
@@ -172,10 +183,10 @@ public class StoreController {
      */
     @RequestMapping(value=StoreREST.downloadFile, method=RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Resource> downloadFile(@RequestParam("fileName") String fname){
+    public ResponseEntity<Resource> downloadFile(@RequestParam(StoreREST.fileName) String fileName){
        	    	
-        InputStream fileInputStream = storeService.downloadFile(fname);
-        return Utils.download(fileInputStream, fname);
+        InputStream fileInputStream = storeService.downloadFile(fileName);
+        return Utils.download(fileInputStream, fileName);
 	}
     
 }

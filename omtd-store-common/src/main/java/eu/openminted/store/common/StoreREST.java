@@ -11,9 +11,10 @@ public class StoreREST {
 	
 	public static final String listFiles = "/store/listFiles/";
 	public static final String deleteAll = "/store/deleteAll/";	
-	
+		
 	public static final String uploadFile = "/store/uploadFile/";
 	public static final String downloadFile = "/store/downloadFile/";
+	public static final String deleteFile = "/store/deleteFile/";
 		
 	public static final String archiveExists = "/store/archiveExists/";
 	public static final String fileExistsInArchive = "/store/fileExistsInArchive/";

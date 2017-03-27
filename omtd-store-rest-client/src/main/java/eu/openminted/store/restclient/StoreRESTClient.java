@@ -208,6 +208,15 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	}
 	
 	@Override
+	public StoreResponse deleteFile(String archiveID, String fileName) {
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		map.add(StoreREST.archiveID, archiveID);
+		map.add(StoreREST.fileName, fileName);
+		
+		return post(destination(endpoint, StoreREST.deleteFile), map);
+	}
+	
+	@Override
 	public StoreResponse downloadArchive(String archiveID, String localDestination) {		
 		// Parameters
 		MultiValueMap<String, Object> callParameters = new LinkedMultiValueMap<String, Object>();
@@ -322,5 +331,7 @@ public class StoreRESTClient implements OMTDStoreHandler{
             }                     
         }
     }
+
+	
 	
 }

@@ -52,6 +52,11 @@ public class StoreController {
     	return new StoreResponse(response, "");    
     }
 
+    /**
+     * Creates an archive with the provided id.
+     * @param archiveId
+     * @return
+     */
     @RequestMapping(value=StoreREST.createArchive, method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public StoreResponse createArchive(@RequestParam(StoreREST.archiveID) String archiveId){
@@ -59,6 +64,11 @@ public class StoreController {
     	return new StoreResponse(response, "");        	
     }
 
+    /**
+     * Checks if the given archive exists.
+     * @param archiveId
+     * @return
+     */
     @RequestMapping(value=StoreREST.archiveExists, method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public StoreResponse archiveExists(@RequestParam(StoreREST.archiveID) String archiveId){
@@ -66,9 +76,15 @@ public class StoreController {
     	return new StoreResponse(response, "");
     }
 
+    /**
+     * Check if the given file exists in an archive. 
+     * @param archiveId
+     * @param fileName
+     * @return
+     */
     @RequestMapping(value=StoreREST.fileExistsInArchive, method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public StoreResponse fileExistsInArchive(@RequestParam(StoreREST.archiveID)String archiveId, @RequestParam("fileName") String fileName){
+    public StoreResponse fileExistsInArchive(@RequestParam(StoreREST.archiveID)String archiveId, @RequestParam(StoreREST.fileName) String fileName){
     	String response = String.valueOf(storeService.fileExistsInArchive(archiveId, fileName));
     	return new StoreResponse(response, "");
     }
@@ -94,8 +110,7 @@ public class StoreController {
     	String response = String.valueOf(storeService.finalizeArchive(archiveId));
     	return new StoreResponse(response, "");
     }
-   
-    	
+       	
     /**
      * Download archive
      * @return
@@ -141,7 +156,7 @@ public class StoreController {
     }    
 
     /**
-     * Delete archive.
+     * Delete file.
      * @return action status
      */
     @RequestMapping(value=StoreREST.deleteFile, method=RequestMethod.POST, produces = "application/json")
@@ -160,7 +175,7 @@ public class StoreController {
      */
     @RequestMapping(value=StoreREST.uploadFile, method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public StoreResponse uploadFile(@RequestParam(StoreREST.archiveID) String archiveId, @RequestParam(StoreREST.fileName) String fileName, @RequestParam("file") MultipartFile file) {
+    public StoreResponse uploadFile(@RequestParam(StoreREST.archiveID) String archiveId, @RequestParam(StoreREST.fileName) String fileName, @RequestParam(StoreREST.file) MultipartFile file) {
     	StoreResponse resp = new StoreResponse();
     	String response = ""; 
     	

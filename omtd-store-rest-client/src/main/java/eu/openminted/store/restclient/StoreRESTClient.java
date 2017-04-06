@@ -91,10 +91,10 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	
 	@Override
 	public StoreResponse createArchive(String archiveId) {
-		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		map.add(StoreREST.archiveID, archiveId);
+		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
+		params.add(StoreREST.archiveID, archiveId);
 		
-		return post(destination(endpoint, StoreREST.createArchive), map);
+		return post(destination(endpoint, StoreREST.createArchive), params);
 	}
 
 	@Override
@@ -105,17 +105,19 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	
 	@Override
 	public StoreResponse archiveExists(String archiveId) {
-		// TODO Auto-generated method stub
-		return null;
+		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
+		params.add(StoreREST.archiveID, archiveId);
+		
+		return post(destination(endpoint, StoreREST.archiveExists), params);
 	}
 
 	@Override
 	public StoreResponse fileExistsInArchive(String archiveId, String fileName) {
-		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		map.add(StoreREST.archiveID, archiveId);
-		map.add(StoreREST.fileName, fileName);
+		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
+		params.add(StoreREST.archiveID, archiveId);
+		params.add(StoreREST.fileName, fileName);
 		
-		return post(destination(endpoint, StoreREST.fileExistsInArchive), map);
+		return post(destination(endpoint, StoreREST.fileExistsInArchive), params);
 	}
 	
 	@Override
@@ -133,27 +135,27 @@ public class StoreRESTClient implements OMTDStoreHandler{
 
 	@Override
 	public StoreResponse deleteArchive(String archiveID) {
-		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		map.add(StoreREST.archiveID, archiveID);
+		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
+		params.add(StoreREST.archiveID, archiveID);
 		
-		return post(destination(endpoint, StoreREST.deleteArchive), map);
+		return post(destination(endpoint, StoreREST.deleteArchive), params);
 	}
 			
 	@Override
 	public StoreResponse createSubArchive(String archiveID, String archive) {
-		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		map.add(StoreREST.archiveID, archiveID);
-		map.add("archiveName", archive);
+		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
+		params.add(StoreREST.archiveID, archiveID);
+		params.add("archiveName", archive);
 				
-		return post(destination(endpoint, StoreREST.createSubArchive), map);
+		return post(destination(endpoint, StoreREST.createSubArchive), params);
 	}
 	
 	@Override
 	public StoreResponse finalizeArchive(String archiveID) {
-		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		map.add(StoreREST.archiveID, archiveID);
+		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
+		params.add(StoreREST.archiveID, archiveID);
 		
-		return post(destination(endpoint, StoreREST.finalizeArchive), map);
+		return post(destination(endpoint, StoreREST.finalizeArchive), params);
 	}
 
 	/*
@@ -209,11 +211,11 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	
 	@Override
 	public StoreResponse deleteFile(String archiveID, String fileName) {
-		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		map.add(StoreREST.archiveID, archiveID);
-		map.add(StoreREST.fileName, fileName);
+		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
+		params.add(StoreREST.archiveID, archiveID);
+		params.add(StoreREST.fileName, fileName);
 		
-		return post(destination(endpoint, StoreREST.deleteFile), map);
+		return post(destination(endpoint, StoreREST.deleteFile), params);
 	}
 	
 	@Override
@@ -232,10 +234,10 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	// == === ==
 	
 	public StoreResponse storeResource(AbstractResource resource, String archiveID, String fileName) {
-		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		map.add(StoreREST.file, resource);
-		map.add(StoreREST.fileName, fileName);
-		map.add(StoreREST.archiveID, archiveID);
+		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
+		params.add(StoreREST.file, resource);
+		params.add(StoreREST.fileName, fileName);
+		params.add(StoreREST.archiveID, archiveID);
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -245,7 +247,7 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		requestFactory.setBufferRequestBody(false);
 		restTemplate.setRequestFactory(requestFactory);
 		
-		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(params, headers);	
 		ResponseEntity<StoreResponse> st = restTemplate.postForEntity(destination(endpoint, StoreREST.uploadFile), requestEntity, StoreResponse.class);
 		
 		StoreResponse resp = st.getBody(); 

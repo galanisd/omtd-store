@@ -84,6 +84,16 @@ public class RestInterfaceTests {
     }
 
     /**
+     * Creates an archive with specific name.
+     * @throws Exception
+     */
+    @Test
+    public void createArchWithSpecificName() throws Exception {
+    	String archId = System.currentTimeMillis() + "";    	
+    	assertTrue(store.createArchive(archId).getResponse().equalsIgnoreCase("true"));    	
+    }
+    
+    /**
      * Creates an archive.
      * @throws Exception
      */
@@ -93,6 +103,16 @@ public class RestInterfaceTests {
     	assertNotNull(archId);    	
     }
 
+    /**
+     * ArchiveExists
+     * @throws Exception
+     */
+    @Test
+    public void archiveExists() throws Exception {
+    	String archId = store.createArchive().getResponse();
+    	assertTrue(archId != null && store.archiveExists(archId).getResponse().equalsIgnoreCase("true"));
+    }
+    
     /**
      * Creates and deletes an archive.
      * @throws Exception
@@ -120,11 +140,26 @@ public class RestInterfaceTests {
      */
     @Test
     public void uploadFile() throws Exception {
-        ClassPathResource resource = new ClassPathResource("test.txt", getClass());
+    	String fileName = "test.txt";
+        ClassPathResource resource = new ClassPathResource(fileName, getClass());
         String archiveID = store.createArchive().getResponse();        
         String status = store.storeFile(resource.getFile(), archiveID, resource.getFile().getName()).getResponse();
         assertTrue(archiveID != null && status.equalsIgnoreCase("true"));
     }
+    
+    /**
+     * Check if file exists.
+     * @throws Exception
+     */
+    @Test
+    public void checkFileExists() throws Exception {
+    	String fileName = "test.txt";
+        ClassPathResource resource = new ClassPathResource(fileName, getClass());
+        String archiveID = store.createArchive().getResponse();        
+        String status = store.storeFile(resource.getFile(), archiveID, resource.getFile().getName()).getResponse();
+        assertTrue(archiveID != null && status.equalsIgnoreCase("true") && store.fileExistsInArchive(archiveID, fileName).getResponse().equalsIgnoreCase("true"));
+    }
+    
     // === == === == === ==  
     
     /**
@@ -138,7 +173,8 @@ public class RestInterfaceTests {
     }
     
     // == === ==
-    
+    // == === ==
+        
     /*
     @Test
     public void shouldUploadFile() throws Exception {

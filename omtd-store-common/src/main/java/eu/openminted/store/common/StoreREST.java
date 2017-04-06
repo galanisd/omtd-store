@@ -1,5 +1,10 @@
 package eu.openminted.store.common;
 
+/**
+ * 
+ * @author galanisd
+ *
+ */
 public class StoreREST {
 	
 	// Endpoints

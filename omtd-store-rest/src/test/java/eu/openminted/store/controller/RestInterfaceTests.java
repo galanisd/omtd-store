@@ -141,9 +141,9 @@ public class RestInterfaceTests {
     @Test
     public void uploadFile() throws Exception {
     	String fileName = "test.txt";
-        ClassPathResource resource = new ClassPathResource(fileName, getClass());
-        String archiveID = store.createArchive().getResponse();        
-        String status = store.storeFile(resource.getFile(), archiveID, resource.getFile().getName()).getResponse();
+    	String ret [] = upload(fileName);
+        String archiveID = ret[0];        
+        String status = ret[1];
         assertTrue(archiveID != null && status.equalsIgnoreCase("true"));
     }
     
@@ -154,9 +154,9 @@ public class RestInterfaceTests {
     @Test
     public void checkFileExists() throws Exception {
     	String fileName = "test.txt";
-        ClassPathResource resource = new ClassPathResource(fileName, getClass());
-        String archiveID = store.createArchive().getResponse();        
-        String status = store.storeFile(resource.getFile(), archiveID, resource.getFile().getName()).getResponse();
+    	String ret [] = upload(fileName);
+        String archiveID = ret[0];        
+        String status = ret[1];
         assertTrue(archiveID != null && status.equalsIgnoreCase("true") && store.fileExistsInArchive(archiveID, fileName).getResponse().equalsIgnoreCase("true"));
     }
     
@@ -175,6 +175,17 @@ public class RestInterfaceTests {
     // == === ==
     // == === ==
         
+    private String[] upload(String fileName) throws Exception{    	
+        ClassPathResource resource = new ClassPathResource(fileName, getClass());
+        String archiveID = store.createArchive().getResponse();        
+        String status = store.storeFile(resource.getFile(), archiveID, resource.getFile().getName()).getResponse();
+        
+        String ret[] = new String[2];
+        ret[0] = archiveID;
+        ret[1] = status;
+        return ret;
+    }
+    
     /*
     @Test
     public void shouldUploadFile() throws Exception {

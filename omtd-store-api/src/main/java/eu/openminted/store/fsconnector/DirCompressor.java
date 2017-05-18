@@ -62,7 +62,8 @@ public class DirCompressor {
 			FileInputStream in = new FileInputStream(files[i].getAbsolutePath());
 			log.debug(" Adding: " + files[i].getAbsolutePath());
 			
-			String rel = files[i].getAbsolutePath().substring(rootStore.length() + 1);
+			String rel = files[i].getAbsolutePath().substring(rootStore.length() -1);
+			//String rel = files[i].getAbsolutePath().substring(rootStore.length() + 1);
 			
 			out.putNextEntry(new ZipEntry(rel));
 			int len;

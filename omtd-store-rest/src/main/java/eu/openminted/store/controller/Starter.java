@@ -23,7 +23,7 @@ public class Starter {
 		appConfigtr.configure();
 		
 		// Run app within a Spring Context.
-		SpringApplication springApplication = new SpringApplication(ApplicationBoot.class);
+		SpringApplication springApplication = new SpringApplication(ApplicationBoot.class);		
 		springApplication.run();
 	}
 

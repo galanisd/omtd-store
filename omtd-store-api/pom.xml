@@ -51,6 +51,12 @@
   			<version>0.0.1-SNAPSHOT</version>
   		</dependency>
   		
+  		<dependency>
+  			<groupId>eu.openminted</groupId>
+			<artifactId>omtd-utils-files</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	
 		<dependency>
     		<groupId>gr.grnet</groupId>
     		<artifactId>orka-pithos</artifactId>    		

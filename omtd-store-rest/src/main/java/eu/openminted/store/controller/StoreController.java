@@ -19,6 +19,7 @@ import eu.openminted.store.common.StoreREST;
 import eu.openminted.store.common.StoreResponse;
 import eu.openminted.store.core.StoreException;
 import eu.openminted.store.core.StoreService;
+import eu.openminted.utils.webservices.Utils;
 
 /**
  * A Spring Controller for the Store Service.

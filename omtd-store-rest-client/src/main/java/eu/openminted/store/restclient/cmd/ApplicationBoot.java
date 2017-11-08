@@ -1,6 +1,7 @@
 package eu.openminted.store.restclient.cmd;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 //import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.util.StringUtils;
 
 import eu.openminted.store.common.StoreResponse;
 import eu.openminted.store.restclient.StoreRESTClient;
@@ -21,7 +23,6 @@ import eu.openminted.store.restclient.StoreRESTClient;
  *
  */
 @SpringBootApplication
-//@ComponentScan(basePackages = {"eu.openminted.store.restclient"})
 @ComponentScan(basePackageClasses = {StoreRESTClient.class})
 public class ApplicationBoot implements CommandLineRunner {
 
@@ -33,96 +34,125 @@ public class ApplicationBoot implements CommandLineRunner {
 	@Autowired
 	private StoreRESTClient store;
 
+	boolean notQuiting = true;
+	
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("\n\nStarting Store Command Line Client ");
 		setEndpoint(defaultEndpoint);
 		System.out.println("Using default endpoint: " + defaultEndpoint + "\n\n");
 
+		if(args.length > 0 && args[0].equalsIgnoreCase("url")){
+			setEndpoint(args[1]);
+			String [] newArray = Arrays.copyOfRange(args, 2, args.length);
+			final String command = concat(newArray);
+			executeParsedCommand(command);
+		}else{
+			System.out.println("interactive");
+			interactive();
+		}
+	}
+
+	public String concat(String[] args) {
+		  String result = args[0];
+		  for (int i = 1; i < args.length; i++) {
+		    result = result + " " + args[i];
+		  }
+		  return result;
+		}
+	
+	private void interactive(){
 		printHelp();
 
 		final Scanner console = new Scanner(System.in);
-		boolean notQuiting = true;
 		while (notQuiting) {
 			System.out.print("\nStoreClient\\> ");
 
-			try {
+			try{
 				final String command = console.nextLine().trim().replaceAll("\\s{2,}", " ");
-				if (command.equals(Commands.quit)) {
-					System.out.println("Bye!");
-					notQuiting = false;
-				} else if (command.startsWith(Commands.setEndpoint)) {
-					final String[] allCMDArgs = command.split(" ");
-					if (allCMDArgs.length != 2) {
-						checkCMDSyntax();
-						this.printHelp();
-					} else {
-						setEndpoint(allCMDArgs[1]);
-					}
-				} else if (command.equals(Commands.printEndpoint)) {
-					this.printEndpoint();
-				} else if (command.equals(Commands.createArch)) {
-					responsePrinterRaw(store.createArchive());
-				}  else if (command.startsWith(Commands.deleteArch)) {
-					final String[] allCMDArgs = command.split(" ");
-					if (allCMDArgs.length != 2) {
-						checkCMDSyntax();
-						this.printHelp();
-					} else {						
-						String archiveID = allCMDArgs[1];						
-						responsePrinter(store.deleteArchive(archiveID));
-					}	
-				} 				
-				else if (command.equals(Commands.listFiles)) {
-					responsePrinterRaw(store.listFiles());
-				} else if (command.startsWith(Commands.uploadFileToArch)) {
-					final String[] allCMDArgs = command.split(" ");
-					if (allCMDArgs.length != 3) {
-						checkCMDSyntax();
-						this.printHelp();
-					} else {
-						String fileName = allCMDArgs[1];
-						String archiveID = allCMDArgs[2];
-						File file = new File(fileName);
-						responsePrinter(store.storeFile(file, archiveID, file.getName()));
-					}															
-				} else if (command.startsWith(Commands.downloadArch)) {
-					final String[] allCMDArgs = command.split(" ");
-					if (allCMDArgs.length != 3) {
-						checkCMDSyntax();
-						this.printHelp();
-					} else {
-						String archiveID = allCMDArgs[1];
-						String destination = allCMDArgs[2];
-						responsePrinter(store.downloadArchive(archiveID, destination));
-					}
-				} else if (command.equals(Commands.deleteAll)) {
-					responsePrinter(store.deleteAll());
-				} else if (command.startsWith(Commands.finalizeArch)) {
-					final String[] allCMDArgs = command.split(" ");
-					if (allCMDArgs.length != 2) {
-						checkCMDSyntax();
-						this.printHelp();
-					} else {
-						String archiveID = allCMDArgs[1];
-						responsePrinter(store.finalizeArchive(archiveID));
-					}
-				} else if (command.equals(Commands.help)) {
+				executeParsedCommand(command);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}//while
+		console.close();		
+	}
+	
+	private void executeParsedCommand(String command){
+		try {
+			
+			if (command.equals(Commands.quit)) {
+				System.out.println("Bye!");
+				notQuiting = false;
+			} else if (command.startsWith(Commands.setEndpoint)) {
+				final String[] allCMDArgs = command.split(" ");
+				if (allCMDArgs.length != 2) {
+					checkCMDSyntax();
 					this.printHelp();
 				} else {
-					this.unknownCommand();
-					this.printHelp();
+					setEndpoint(allCMDArgs[1]);
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				error();
-				//printHelp();
+			} else if (command.equals(Commands.printEndpoint)) {
+				this.printEndpoint();
+			} else if (command.equals(Commands.createArch)) {
+				responsePrinterRaw(store.createArchive());
+			}  else if (command.startsWith(Commands.deleteArch)) {
+				final String[] allCMDArgs = command.split(" ");
+				if (allCMDArgs.length != 2) {
+					checkCMDSyntax();
+					this.printHelp();
+				} else {						
+					String archiveID = allCMDArgs[1];						
+					responsePrinter(store.deleteArchive(archiveID));
+				}	
+			} 				
+			else if (command.equals(Commands.listFiles)) {
+				responsePrinterRaw(store.listFiles());
+			} else if (command.startsWith(Commands.uploadFileToArch)) {
+				final String[] allCMDArgs = command.split(" ");
+				if (allCMDArgs.length != 3) {
+					checkCMDSyntax();
+					this.printHelp();
+				} else {
+					String fileName = allCMDArgs[1];
+					String archiveID = allCMDArgs[2];
+					File file = new File(fileName);
+					responsePrinter(store.storeFile(file, archiveID, file.getName()));
+				}															
+			} else if (command.startsWith(Commands.downloadArch)) {
+				final String[] allCMDArgs = command.split(" ");
+				if (allCMDArgs.length != 3) {
+					checkCMDSyntax();
+					this.printHelp();
+				} else {
+					String archiveID = allCMDArgs[1];
+					String destination = allCMDArgs[2];
+					responsePrinter(store.downloadArchive(archiveID, destination));
+				}
+			} else if (command.equals(Commands.deleteAll)) {
+				responsePrinter(store.deleteAll());
+			} else if (command.startsWith(Commands.finalizeArch)) {
+				final String[] allCMDArgs = command.split(" ");
+				if (allCMDArgs.length != 2) {
+					checkCMDSyntax();
+					this.printHelp();
+				} else {
+					String archiveID = allCMDArgs[1];
+					responsePrinter(store.finalizeArchive(archiveID));
+				}
+			} else if (command.equals(Commands.help)) {
+				this.printHelp();
+			} else {
+				this.unknownCommand();
+				this.printHelp();
 			}
-		}//
-		
-		console.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			error();
+			//printHelp();
+		}		
 	}
-
+	
 	/**
 	 * Sets endpoint.
 	 * @param endpoint

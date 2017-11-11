@@ -39,8 +39,6 @@ public class ApplicationBoot implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("\n\nStarting Store Command Line Client ");
-		setEndpoint(defaultEndpoint);
-		System.out.println("Using default endpoint: " + defaultEndpoint + "\n\n");
 
 		if(args.length > 0 && args[0].equalsIgnoreCase("url")){
 			setEndpoint(args[1]);
@@ -48,6 +46,8 @@ public class ApplicationBoot implements CommandLineRunner {
 			final String command = concat(newArray);
 			executeParsedCommand(command);
 		}else{
+			setEndpoint(defaultEndpoint);
+			System.out.println("Using default endpoint: " + defaultEndpoint + "\n\n");
 			System.out.println("interactive");
 			interactive();
 		}

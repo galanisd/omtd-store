@@ -110,5 +110,12 @@
         </plugins>
     </build>
 
+	<repositories>
+		<repository>
+			<id>omtd-3rdparty</id>
+			<name>3rparty</name>
+			<url>https://repo.openminted.eu/content/repositories/thirdparty/</url>
+		</repository>
+	</repositories>
     
 </project>

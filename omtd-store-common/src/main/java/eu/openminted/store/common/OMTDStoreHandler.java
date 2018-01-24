@@ -12,6 +12,22 @@ public interface OMTDStoreHandler {
 	public StoreResponse listFiles();
 
 	/**
+	 * List all files in a specific Archive.
+     * @param archiveId
+	 * @return
+	 */
+	public StoreResponse listFiles(String archiveId);
+
+	/**
+	 * List files in a specific Archive using paging.
+     * @param archiveId
+     * @param from
+     * @param size
+	 * @return
+	 */
+	public StoreResponse listFiles(String archiveId, int from, int size);
+
+	/**
 	 * Delete all files in the Store.
 	 * @return
 	 */

@@ -27,7 +27,7 @@ public class StoreMetadataDefault implements StoreMetadata{
 	}
 
 	@Override
-	public ArrayList<String> getParentArchives(String archiveId) {
+	public ArrayList<String> getParentArchives(String archiveId) { // FIXME: maybe inverse the archivesList before return it
 		ArrayList<String> archivesList = new ArrayList<String>();
 		
 		String current = archiveId;

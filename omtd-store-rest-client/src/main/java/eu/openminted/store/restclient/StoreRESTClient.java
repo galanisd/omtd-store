@@ -127,6 +127,24 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	}
 
 	@Override
+	public StoreResponse listFiles(String archiveID) {
+		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
+		params.add(StoreREST.archiveID, archiveID);
+
+		return post(destination(endpoint, StoreREST.listFilesInArch), params);
+	}
+
+	@Override
+	public StoreResponse listFiles(String archiveID, int from, int size) {
+		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
+		params.add(StoreREST.archiveID, archiveID);
+		params.add(StoreREST.fileListIndex, from);
+		params.add(StoreREST.fileListSize, size);
+
+		return post(destination(endpoint, StoreREST.listFilesPaged), params);
+	}
+
+	@Override
 	public StoreResponse deleteAll() {
 		StoreResponse response = restTemplate.getForObject(destination(endpoint, StoreREST.deleteAll), StoreResponse.class);
 		return response;
@@ -334,6 +352,6 @@ public class StoreRESTClient implements OMTDStoreHandler{
         }
     }
 
-	
+
 	
 }

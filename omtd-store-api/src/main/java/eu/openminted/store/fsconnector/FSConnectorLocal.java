@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -73,6 +74,44 @@ public class FSConnectorLocal implements FSConnector{
 		}
 		
 		return list;
+	}
+
+	@Override
+	public String listAllFiles(String path) {
+        String list = "";
+        File dir = new File(localRoot+path);
+//        ArrayList<File> allFiles = listFileTree(dir); // returns all files recursively
+        File[] allFiles = dir.listFiles(); // returns files in directory
+        for(File f : allFiles){
+            list = list + f.getAbsolutePath().substring(this.localRoot.length()) + "\n";
+        }
+
+        return list;
+
+	}
+
+	@Override
+	public String listAllFiles(String path, int from, int size) {
+        String list = "";
+        File dir = new File(localRoot+path);
+        File[] files = dir.listFiles();
+        // get absolute values to avoid errors with negative numbers.
+        from = Math.abs(from);
+        size = Math.abs(size);
+        if(files != null) {
+            if((from + size) < files.length) {
+                for (int i = from; i < from + size; i++) {
+                    list = list + files[i].getAbsolutePath().substring(this.localRoot.length()) + "\n";
+                }
+            } else {
+                for (int i = from; i < files.length; i++) {
+                    list = list + files[i].getAbsolutePath().substring(this.localRoot.length()) + "\n";
+                }
+            }
+        }
+
+        return list;
+
 	}
 
 	public static ArrayList<File> listFileTree(File dir) {

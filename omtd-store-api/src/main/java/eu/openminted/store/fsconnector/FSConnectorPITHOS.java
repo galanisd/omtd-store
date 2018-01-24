@@ -1,14 +1,11 @@
 package eu.openminted.store.fsconnector;
 
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 
 import gr.grnet.escience.commons.Utils;
 import gr.grnet.escience.fs.pithos.PithosFileSystem;
-import gr.grnet.escience.fs.pithos.PithosInputStream;
 import gr.grnet.escience.fs.pithos.PithosObject;
-import gr.grnet.escience.fs.pithos.PithosOutputStream;
 import gr.grnet.escience.fs.pithos.PithosPath;
 //import eu.openminted.storage.fsconnector.debug.HadoopPithosConnector;
 import gr.grnet.escience.pithos.rest.HadoopPithosConnector;
@@ -102,6 +99,32 @@ public class FSConnectorPITHOS implements FSConnector {
 		
 		/*
 		String[] filePaths = result.split("\\s+");				
+		for (String file : filePaths) {
+			result = result + file + "\n";
+		}*/
+
+		return result;
+	}
+
+	@Override // FIXME: currently is the same with "listAllFiles()" just to avoid compilation error
+	public String listAllFiles(String fileName) {
+		String result = connector.getFileList(workingContainer);
+
+		/*
+		String[] filePaths = result.split("\\s+");
+		for (String file : filePaths) {
+			result = result + file + "\n";
+		}*/
+
+		return result;
+	}
+
+	@Override // FIXME: currently is the same with "listAllFiles()" just to avoid compilation error
+	public String listAllFiles(String fileName, int from, int size) {
+		String result = connector.getFileList(workingContainer);
+
+		/*
+		String[] filePaths = result.split("\\s+");
 		for (String file : filePaths) {
 			result = result + file + "\n";
 		}*/

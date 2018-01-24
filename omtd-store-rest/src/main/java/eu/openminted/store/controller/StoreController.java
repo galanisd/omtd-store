@@ -133,6 +133,32 @@ public class StoreController {
     	String response = storeService.listAllFiles();  
     	return new StoreResponse(response, "");    	   
     }
+
+    /**
+     * List files in Archive.
+     * @param archiveID
+     * @return a list of files.
+     */
+    @RequestMapping(value=StoreREST.listFilesInArch, method=RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public StoreResponse listFilesInArch(@RequestParam(StoreREST.archiveID) String archiveID){
+    	String response = storeService.listAllFiles(archiveID);
+    	return new StoreResponse(response, "");
+    }
+
+    /**
+     * List files in Archive.
+     * @param archiveID
+     * @param from
+     * @param size
+     * @return a list of files.
+     */
+    @RequestMapping(value=StoreREST.listFilesPaged, method=RequestMethod.POST, produces = "application/json") // FIXME: ls with paging
+    @ResponseBody
+    public StoreResponse listFilesPaged(@RequestParam(StoreREST.archiveID) String archiveID, @RequestParam(StoreREST.fileListIndex) int from, @RequestParam(StoreREST.fileListSize) int size){
+    	String response = storeService.listAllFiles(archiveID, from, size);
+    	return new StoreResponse(response, "");
+    }
     
     /**
      * Delete all files.

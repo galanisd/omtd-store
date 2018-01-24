@@ -7,7 +7,7 @@ import java.util.List;
  *
  */
 class ArchiveInfo {
-	
+
     private String id;
     private List<ArchiveInfo> subArchives;
     private List<String> files;

@@ -83,9 +83,9 @@ public interface StoreService {
      * @return true if the files was stored.
      */    
     boolean storeFile(InputStream is, String fileName);
-    
+
     /**
-     * Downloads file. 
+     * Downloads file.
      * @param fileName is the path of the file.
      * @return
      */
@@ -108,6 +108,19 @@ public interface StoreService {
      * @param fileName
      */
     public String listAllFiles();
+
+    /**
+     * Lists all files.
+     * @param fileName
+     */
+    public String listAllFiles(String fileName);
+
+    /**
+     * Lists all files.
+     * @param fileName
+     * @param from
+     */
+    public String listAllFiles(String fileName, int from, int size);
 
     /**
      * Archive exists

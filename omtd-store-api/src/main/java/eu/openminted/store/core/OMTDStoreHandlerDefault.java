@@ -33,6 +33,18 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 	}
 
 	@Override
+	public StoreResponse listFiles(String archiveID) {
+		String response = storeService.listAllFiles(archiveID);
+		return new StoreResponse(response, "");
+	}
+
+	@Override
+	public StoreResponse listFiles(String archiveID, int from, int size) {
+		String response = storeService.listAllFiles(archiveID, from, size);
+		return new StoreResponse(response, "");
+	}
+
+	@Override
 	public StoreResponse deleteAll() {
     	String response = String.valueOf(storeService.deleteAll());
     	return new StoreResponse(response, "");  

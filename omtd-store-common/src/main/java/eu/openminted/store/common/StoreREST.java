@@ -15,7 +15,9 @@ public class StoreREST {
 	public static final String downloadArchive = "/store/downloadArchive/";
 	
 	public static final String listFiles = "/store/listFiles/";
-	public static final String deleteAll = "/store/deleteAll/";	
+	public static final String listFilesInArch = "/store/listFilesInArch/";
+	public static final String listFilesPaged = "/store/listFilesPaged/";
+	public static final String deleteAll = "/store/deleteAll/";
 		
 	public static final String uploadFile = "/store/uploadFile/";
 	public static final String downloadFile = "/store/downloadFile/";
@@ -25,7 +27,9 @@ public class StoreREST {
 	public static final String fileExistsInArchive = "/store/fileExistsInArchive/";
 	
 	// Params.
-	public static final String archiveID = "archiveID"; 
+	public static final String archiveID = "archiveID";
+	public static final String fileListIndex = "fileListIndex";
+	public static final String fileListSize = "fileListSize";
 	public static final String fileName = "fileName";
 	public static final String file = "file";
 }

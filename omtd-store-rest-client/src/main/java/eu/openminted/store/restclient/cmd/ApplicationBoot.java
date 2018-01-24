@@ -105,9 +105,28 @@ public class ApplicationBoot implements CommandLineRunner {
 					String archiveID = allCMDArgs[1];						
 					responsePrinter(store.deleteArchive(archiveID));
 				}	
-			} 				
-			else if (command.equals(Commands.listFiles)) {
-				responsePrinterRaw(store.listFiles());
+			}
+			else if (command.startsWith(Commands.listFiles)) {
+				final String[] allCMDArgs = command.split(" ");
+				if (allCMDArgs.length > 4) {
+					checkCMDSyntax();
+					this.printHelp();
+				} else if (allCMDArgs.length == 4) {
+                    String archiveID = allCMDArgs[1];
+                    int from = Integer.parseInt(allCMDArgs[2]);
+                    int size = Integer.parseInt(allCMDArgs[3]);
+                    responsePrinterRaw(store.listFiles(archiveID, from, size));
+                } else if (allCMDArgs.length == 3) {
+                    String archiveID = allCMDArgs[1];
+                    int size = Integer.parseInt(allCMDArgs[2]);
+                    responsePrinterRaw(store.listFiles(archiveID, 0, size));
+                } else if (allCMDArgs.length == 2) {
+					String archiveID = allCMDArgs[1];
+                    responsePrinterRaw(store.listFiles(archiveID));
+				} else {
+                    responsePrinterRaw(store.listFiles());
+                }
+
 			} else if (command.startsWith(Commands.uploadFileToArch)) {
 				final String[] allCMDArgs = command.split(" ");
 				if (allCMDArgs.length != 3) {
@@ -128,6 +147,16 @@ public class ApplicationBoot implements CommandLineRunner {
 					String archiveID = allCMDArgs[1];
 					String destination = allCMDArgs[2];
 					responsePrinter(store.downloadArchive(archiveID, destination));
+				}
+			} else if (command.startsWith(Commands.downloadFile)) {
+				final String[] allCMDArgs = command.split(" ");
+				if (allCMDArgs.length != 3) {
+					checkCMDSyntax();
+					this.printHelp();
+				} else {
+					String archiveID = allCMDArgs[1];
+					String destination = allCMDArgs[2];
+					responsePrinter(store.downloadFile(archiveID, destination));
 				}
 			} else if (command.equals(Commands.deleteAll)) {
 				responsePrinter(store.deleteAll());
@@ -196,6 +225,8 @@ public class ApplicationBoot implements CommandLineRunner {
 		System.out.printf(format, Commands.listFiles, " => List all files in the store.");
 		System.out.printf(format, Commands.deleteAll , " => Delete all files in the store.");
 		System.out.printf(format, Commands.uploadFileToArch + " [filePath] [archiveID] ", " => Uploads a file to an archive");
+		System.out.printf(format, Commands.downloadFile + " [filePath] [destinationPath]  ",
+				" => Downloads a specified file to destinationPath");
 		System.out.printf(format, Commands.downloadArch + " [archiveID] [destinationPath]  ",
 				" => Downloads an archive zip to destinationPath");
 		System.out.printf(format, Commands.finalizeArch+ " [archiveID]", " => Finalize Archive.");

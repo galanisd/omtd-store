@@ -45,8 +45,25 @@ public interface FSConnector {
 	/**
 	 * List all files.
 	 * @return
+     * @param fileName
 	 */
-	String listAllFiles();	
+	String listAllFiles();
+
+	/**
+	 * List all files.
+	 * @return
+     * @param fileName
+	 */
+	String listAllFiles(String fileName);
+
+	/**
+	 * List all files.
+	 * @return
+     * @param fileName
+     * @param from
+     * @param size
+	 */
+	String listAllFiles(String fileName, int from, int size);
 	
 	/**
 	 * Download.

@@ -7,9 +7,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
+import eu.openminted.store.core.Publication;
 import org.apache.commons.io.FileUtils;
+import org.apache.zookeeper.server.persistence.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,6 +73,7 @@ public class FSConnectorLocal implements FSConnector{
 		String list = "";
 		File root = new File(localRoot);
 		ArrayList<File> allFiles = listFileTree(root);
+		Collections.sort(allFiles);
 		for(File f : allFiles){
 			list = list + f.getAbsolutePath().substring(this.localRoot.length()) + "\n";
 		}
@@ -77,35 +82,39 @@ public class FSConnectorLocal implements FSConnector{
 	}
 
 	@Override
-	public String listAllFiles(String path) {
-        String list = "";
+	public List<String> listFiles(String path) {
+        List<String> list = new ArrayList<>();
         File dir = new File(localRoot+path);
 //        ArrayList<File> allFiles = listFileTree(dir); // returns all files recursively
         File[] allFiles = dir.listFiles(); // returns files in directory
+        Arrays.sort(allFiles);
         for(File f : allFiles){
-            list = list + f.getAbsolutePath().substring(this.localRoot.length()) + "\n";
+//            list.add(f.getName());  // gets only filenames TODO remove
+            list.add(f.getAbsolutePath().substring(this.localRoot.length()));
         }
-
         return list;
 
 	}
 
 	@Override
-	public String listAllFiles(String path, int from, int size) {
-        String list = "";
+	public List<String> listFiles(String path, int from, int size) {
+        List<String> list = new ArrayList<>();
         File dir = new File(localRoot+path);
         File[] files = dir.listFiles();
+        Arrays.sort(files);
         // get absolute values to avoid errors with negative numbers.
         from = Math.abs(from);
         size = Math.abs(size);
         if(files != null) {
             if((from + size) < files.length) {
                 for (int i = from; i < from + size; i++) {
-                    list = list + files[i].getAbsolutePath().substring(this.localRoot.length()) + "\n";
+//                    list = list + files[i].getName() + "\n"; // TODO: remove
+                    list.add(files[i].getName());
                 }
             } else {
                 for (int i = from; i < files.length; i++) {
-                    list = list + files[i].getAbsolutePath().substring(this.localRoot.length()) + "\n";
+//                    list = list + files[i].getName() + "\n"; // TODO: remove
+                    list.add(files[i].getName());
                 }
             }
         }
@@ -114,7 +123,12 @@ public class FSConnectorLocal implements FSConnector{
 
 	}
 
-	public static ArrayList<File> listFileTree(File dir) {
+    @Override
+    public ArrayList<Publication> listCorpus(String corpusId, int from, int size) {
+        return null; // TODO write code
+    }
+
+    public static ArrayList<File> listFileTree(File dir) {
 		ArrayList<File> fileTree = new ArrayList<File>();
 		
 	    if(dir == null || dir.listFiles() == null){

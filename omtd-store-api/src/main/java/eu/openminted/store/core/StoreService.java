@@ -1,6 +1,8 @@
 package eu.openminted.store.core;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Store Service of OpenMinTeD.
@@ -113,14 +115,23 @@ public interface StoreService {
      * Lists all files.
      * @param fileName
      */
-    public String listAllFiles(String fileName);
+    public List<String> listFiles(String fileName);
 
     /**
      * Lists all files.
      * @param fileName
      * @param from
+     * @param size
      */
-    public String listAllFiles(String fileName, int from, int size);
+    public List<String> listFiles(String fileName, int from, int size);
+
+    /**
+     * Lists Corpus.
+     * @param corpusId
+     * @param from
+     * @param size
+     */
+    public ArrayList<Publication> listCorpus(String corpusId, int from, int size); // FIXME: corpusId or archiveId?
 
     /**
      * Archive exists

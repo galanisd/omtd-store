@@ -2,6 +2,8 @@ package eu.openminted.store.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import eu.openminted.store.config.StoreProperties;
 import eu.openminted.store.fsconnector.FSConnector;
@@ -170,15 +172,20 @@ public class StoreServiceGeneric implements StoreService{
 	}
 
 	@Override
-	public String listAllFiles(String fileName) {
+	public List<String> listFiles(String fileName) {
 		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
-		return connector.listAllFiles(fileName);
+		return connector.listFiles(fileName);
 	}
 
 	@Override
-	public String listAllFiles(String fileName, int from, int size) {
+	public List<String> listFiles(String fileName, int from, int size) {
 		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
-		return connector.listAllFiles(fileName, from, size);
+		return connector.listFiles(fileName, from, size);
+	}
+
+	@Override
+	public ArrayList<Publication> listCorpus(String corpusId, int from, int size) {
+		return connector.listCorpus(corpusId, from, size); // TODO: complete function
 	}
 
 	@Override

@@ -115,17 +115,39 @@ public class ApplicationBoot implements CommandLineRunner {
                     String archiveID = allCMDArgs[1];
                     int from = Integer.parseInt(allCMDArgs[2]);
                     int size = Integer.parseInt(allCMDArgs[3]);
-                    responsePrinterRaw(store.listFiles(archiveID, from, size));
+//                    responsePrinterRaw(store.listFiles(archiveID, from, size));
+					System.out.println(store.listFiles(archiveID, from, size).toString());
                 } else if (allCMDArgs.length == 3) {
                     String archiveID = allCMDArgs[1];
                     int size = Integer.parseInt(allCMDArgs[2]);
-                    responsePrinterRaw(store.listFiles(archiveID, 0, size));
+//                    responsePrinterRaw(store.listFiles(archiveID, 0, size));
+					System.out.println(store.listFiles(archiveID, 0, size).toString());
                 } else if (allCMDArgs.length == 2) {
 					String archiveID = allCMDArgs[1];
-                    responsePrinterRaw(store.listFiles(archiveID));
+//                    responsePrinterRaw(store.listFiles(archiveID));
+					System.out.println(store.listFiles(archiveID).toString());
 				} else {
                     responsePrinterRaw(store.listFiles());
                 }
+
+//			} // FIXME: fix listCorpus
+//			else if (command.startsWith(Commands.listCorpus)) {
+//				final String[] allCMDArgs = command.split(" ");
+//				if (allCMDArgs.length > 4) {
+//					checkCMDSyntax();
+//					this.printHelp();
+//				} else if (allCMDArgs.length == 4) {
+//                    String archiveID = allCMDArgs[1];
+//                    int from = Integer.parseInt(allCMDArgs[2]);
+//                    int size = Integer.parseInt(allCMDArgs[3]);
+//                    responsePrinterRaw(store.listCorpus(archiveID, from, size));
+//                } else if (allCMDArgs.length == 3) {
+//                    String archiveID = allCMDArgs[1];
+//                    int size = Integer.parseInt(allCMDArgs[2]);
+//                    responsePrinterRaw(store.listCorpus(archiveID, 0, size));
+//                } else {
+//                    checkCMDSyntax();
+//                }
 
 			} else if (command.startsWith(Commands.uploadFileToArch)) {
 				final String[] allCMDArgs = command.split(" ");

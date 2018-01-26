@@ -1,6 +1,8 @@
 package eu.openminted.store.common;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public interface OMTDStoreHandler {
@@ -16,16 +18,25 @@ public interface OMTDStoreHandler {
      * @param archiveId
 	 * @return
 	 */
-	public StoreResponse listFiles(String archiveId);
+	public List<String> listFiles(String archiveId);
 
 	/**
-	 * List files in a specific Archive using paging.
+	 * List {@param size} files in a specific Archive starting from {@param from}.
      * @param archiveId
      * @param from
      * @param size
 	 * @return
 	 */
-	public StoreResponse listFiles(String archiveId, int from, int size);
+	public List<String> listFiles(String archiveId, int from, int size);
+
+//	/**
+//	 * List {@param size} files in a specific Corpus starting from {@param from}.
+//     * @param corpusId
+//     * @param from
+//     * @param size
+//	 * @return
+//	 */
+//	public CorpusSubset listCorpus(String corpusId, int from, int size); // FIXME: probably will be moved to other project
 
 	/**
 	 * Delete all files in the Store.

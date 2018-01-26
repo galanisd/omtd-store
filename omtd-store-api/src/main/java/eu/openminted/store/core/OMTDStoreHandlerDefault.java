@@ -1,6 +1,8 @@
 package eu.openminted.store.core;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +16,7 @@ import eu.openminted.store.common.StoreResponse;
 public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 
 	private static final Logger log = LoggerFactory.getLogger(OMTDStoreHandlerDefault.class);
-	
+
     private final StoreService storeService;
 
     /**
@@ -24,36 +26,39 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
     @Autowired
     public OMTDStoreHandlerDefault(StoreService storeService) {
        this.storeService = storeService;
-    }   
-    
+    }
+
 	@Override
 	public StoreResponse listFiles() {
-    	String response = storeService.listAllFiles();  
-    	return new StoreResponse(response, "");  
+    	String response = storeService.listAllFiles();
+    	return new StoreResponse(response, "");
 	}
 
 	@Override
-	public StoreResponse listFiles(String archiveID) {
-		String response = storeService.listAllFiles(archiveID);
-		return new StoreResponse(response, "");
+	public List<String> listFiles(String archiveId) {
+		return storeService.listFiles(archiveId);
 	}
 
 	@Override
-	public StoreResponse listFiles(String archiveID, int from, int size) {
-		String response = storeService.listAllFiles(archiveID, from, size);
-		return new StoreResponse(response, "");
+	public List<String> listFiles(String archiveId, int from, int size) {
+		return storeService.listFiles(archiveId, from, size);
 	}
+
+//	@Override  // FIXME: response must be a String, but listCorpus returns ArrayList<Publication>
+//	public CorpusSubset listCorpus(String corpusId, int from, int size) {
+//		return new ArrayList<>(Publication) = storeService.listCorpus(corpusId, from, size); // FIXME: look OMTDStoreHandler
+//	}
 
 	@Override
 	public StoreResponse deleteAll() {
     	String response = String.valueOf(storeService.deleteAll());
-    	return new StoreResponse(response, "");  
+    	return new StoreResponse(response, "");
 	}
 
 	@Override
 	public StoreResponse createArchive() {
-    	String response = String.valueOf(storeService.createArchive()); 
-    	return new StoreResponse(response, "");  
+    	String response = String.valueOf(storeService.createArchive());
+    	return new StoreResponse(response, "");
 	}
 
 	@Override
@@ -77,7 +82,7 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 	@Override
 	public StoreResponse storeFile(File file, String archiveID, String fileName) {
 		// TODO Auto-generated method stub
-		return null;    	
+		return null;
 	}
 
 	@Override
@@ -122,5 +127,5 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 		return null;
 	}
 
-	
+
 }

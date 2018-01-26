@@ -2,7 +2,10 @@ package eu.openminted.store.fsconnector;
 
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
+import eu.openminted.store.core.Publication;
 import gr.grnet.escience.commons.Utils;
 import gr.grnet.escience.fs.pithos.PithosFileSystem;
 import gr.grnet.escience.fs.pithos.PithosObject;
@@ -107,7 +110,7 @@ public class FSConnectorPITHOS implements FSConnector {
 	}
 
 	@Override // FIXME: currently is the same with "listAllFiles()" just to avoid compilation error
-	public String listAllFiles(String fileName) {
+	public List<String> listFiles(String fileName) {
 		String result = connector.getFileList(workingContainer);
 
 		/*
@@ -116,11 +119,12 @@ public class FSConnectorPITHOS implements FSConnector {
 			result = result + file + "\n";
 		}*/
 
-		return result;
+//		return result;
+		return null;
 	}
 
 	@Override // FIXME: currently is the same with "listAllFiles()" just to avoid compilation error
-	public String listAllFiles(String fileName, int from, int size) {
+	public List<String> listFiles(String fileName, int from, int size) {
 		String result = connector.getFileList(workingContainer);
 
 		/*
@@ -129,8 +133,14 @@ public class FSConnectorPITHOS implements FSConnector {
 			result = result + file + "\n";
 		}*/
 
-		return result;
+//		return result;
+		return null;
 	}
+
+    @Override
+    public ArrayList<Publication> listCorpus(String corpusId, int from, int size) {
+        return null; // TODO write code
+    }
 
 	@Override
 	public boolean deleteAll() {

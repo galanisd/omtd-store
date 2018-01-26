@@ -105,7 +105,7 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	
 	@Override
 	public StoreResponse archiveExists(String archiveId) {
-		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
+		MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
 		params.add(StoreREST.archiveID, archiveId);
 		
 		return post(destination(endpoint, StoreREST.archiveExists), params);
@@ -121,27 +121,40 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	}
 	
 	@Override
+	@Deprecated
 	public StoreResponse listFiles() {		
 		StoreResponse response = restTemplate.getForObject(destination(endpoint, StoreREST.listFiles), StoreResponse.class);
 		return response;
 	}
 
 	@Override
-	public StoreResponse listFiles(String archiveID) {
+	public List<String> listFiles(String archiveID) {
 		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
 		params.add(StoreREST.archiveID, archiveID);
 
-		return post(destination(endpoint, StoreREST.listFilesInArch), params);
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(params, headers);
+		ResponseEntity<String[]> st = restTemplate.postForEntity(endpoint + StoreREST.listFilesInArch, requestEntity, String[].class);
+
+		return new ArrayList(Arrays.asList(st.getBody()));
 	}
 
 	@Override
-	public StoreResponse listFiles(String archiveID, int from, int size) {
+	public List<String> listFiles(String archiveID, int from, int size) {
 		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
 		params.add(StoreREST.archiveID, archiveID);
 		params.add(StoreREST.fileListIndex, from);
 		params.add(StoreREST.fileListSize, size);
 
-		return post(destination(endpoint, StoreREST.listFilesPaged), params);
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(params, headers);
+		ResponseEntity<String[]> st = restTemplate.postForEntity(endpoint + StoreREST.listFilesInArch, requestEntity, String[].class);
+
+		return new ArrayList(Arrays.asList(st.getBody()));
 	}
 
 	@Override

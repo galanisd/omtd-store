@@ -1,6 +1,10 @@
 package eu.openminted.store.fsconnector;
 
+import eu.openminted.store.core.Publication;
+
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author galanisd
@@ -54,7 +58,7 @@ public interface FSConnector {
 	 * @return
      * @param fileName
 	 */
-	String listAllFiles(String fileName);
+	List<String> listFiles(String fileName);
 
 	/**
 	 * List all files.
@@ -63,7 +67,16 @@ public interface FSConnector {
      * @param from
      * @param size
 	 */
-	String listAllFiles(String fileName, int from, int size);
+	List<String> listFiles(String fileName, int from, int size);
+
+	/**
+	 * List all files.
+	 * @return
+     * @param corpusId
+     * @param from
+     * @param size
+	 */
+	ArrayList<Publication> listCorpus(String corpusId, int from, int size);
 	
 	/**
 	 * Download.

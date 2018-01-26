@@ -1,6 +1,8 @@
 package eu.openminted.store.controller;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -141,9 +143,8 @@ public class StoreController {
      */
     @RequestMapping(value=StoreREST.listFilesInArch, method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public StoreResponse listFilesInArch(@RequestParam(StoreREST.archiveID) String archiveID){
-    	String response = storeService.listAllFiles(archiveID);
-    	return new StoreResponse(response, "");
+    public List<String> listFilesInArch(@RequestParam(StoreREST.archiveID) String archiveID){
+    	return storeService.listFiles(archiveID);
     }
 
     /**
@@ -153,12 +154,25 @@ public class StoreController {
      * @param size
      * @return a list of files.
      */
-    @RequestMapping(value=StoreREST.listFilesPaged, method=RequestMethod.POST, produces = "application/json") // FIXME: ls with paging
+    @RequestMapping(value=StoreREST.listFilesPaged, method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public StoreResponse listFilesPaged(@RequestParam(StoreREST.archiveID) String archiveID, @RequestParam(StoreREST.fileListIndex) int from, @RequestParam(StoreREST.fileListSize) int size){
-    	String response = storeService.listAllFiles(archiveID, from, size);
-    	return new StoreResponse(response, "");
+    public List<String> listFilesPaged(@RequestParam(StoreREST.archiveID) String archiveID, @RequestParam(StoreREST.fileListIndex) int from, @RequestParam(StoreREST.fileListSize) int size){
+    	return storeService.listFiles(archiveID, from, size);
     }
+
+//    /** // FIXME: complete function
+//     * List Publications in Corpus.
+//     * @param corpusID
+//     * @param from
+//     * @param size
+//     * @return a list of publications.
+//     */
+//    @RequestMapping(value=StoreREST.listFilesPaged, method=RequestMethod.POST, produces = "application/json")
+//    @ResponseBody
+//    public StoreResponse listCorpus(@RequestParam(value = "corpusID") String corpusID, @RequestParam(value = "from") int from, @RequestParam(value = "size") int size){
+//    	String response = storeService.listCorpus(corpusID, from, size);
+//    	return new StoreResponse(response, "");
+//    }
     
     /**
      * Delete all files.

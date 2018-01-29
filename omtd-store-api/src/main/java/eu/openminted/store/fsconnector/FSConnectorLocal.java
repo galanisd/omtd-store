@@ -11,9 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import eu.openminted.store.core.Publication;
 import org.apache.commons.io.FileUtils;
-import org.apache.zookeeper.server.persistence.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,16 +80,28 @@ public class FSConnectorLocal implements FSConnector{
 	}
 
 	@Override
-	public List<String> listFiles(String path) {
+	public List<String> listFiles(String path, boolean listDirectories, boolean recursive) {
         List<String> list = new ArrayList<>();
         File dir = new File(localRoot+path);
-//        ArrayList<File> allFiles = listFileTree(dir); // returns all files recursively
-        File[] allFiles = dir.listFiles(); // returns files in directory
-        Arrays.sort(allFiles);
-        for(File f : allFiles){
-//            list.add(f.getName());  // gets only filenames TODO remove
-            list.add(f.getAbsolutePath().substring(this.localRoot.length()));
+        List<File> allFiles;
+        if(recursive) {
+            allFiles = listFileTree(dir); // returns all files in directory recursively
+        } else {
+            allFiles = Arrays.asList(dir.listFiles()); // returns files in directory
         }
+        Collections.sort(allFiles);
+        if(listDirectories) { // if user wants to retrieve directories
+            for (File f : allFiles) {
+                list.add(f.getAbsolutePath().substring(this.localRoot.length()));
+            }
+        } else { // if user does not want to retrieve directories
+            for (File f : allFiles) {
+                if(f.isDirectory())
+                    continue;
+                list.add(f.getAbsolutePath().substring(this.localRoot.length()));
+            }
+        }
+
         return list;
 
 	}
@@ -123,10 +133,10 @@ public class FSConnectorLocal implements FSConnector{
 
 	}
 
-    @Override
-    public ArrayList<Publication> listCorpus(String corpusId, int from, int size) {
-        return null; // TODO write code
-    }
+//    @Override // TODO: remove
+//    public ArrayList<Publication> listCorpus(String corpusId, int from, int size) {
+//        return null; // TODO write code
+//    }
 
     public static ArrayList<File> listFileTree(File dir) {
 		ArrayList<File> fileTree = new ArrayList<File>();

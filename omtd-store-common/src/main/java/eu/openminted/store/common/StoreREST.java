@@ -28,6 +28,8 @@ public class StoreREST {
 	
 	// Params.
 	public static final String archiveID = "archiveID";
+	public static final String listDirectories = "listDirectories";
+	public static final String recursive = "recursive";
 	public static final String fileListIndex = "fileListIndex";
 	public static final String fileListSize = "fileListSize";
 	public static final String fileName = "fileName";

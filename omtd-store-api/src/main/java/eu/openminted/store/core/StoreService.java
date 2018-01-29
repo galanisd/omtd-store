@@ -1,7 +1,6 @@
 package eu.openminted.store.core;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -112,26 +111,30 @@ public interface StoreService {
     public String listAllFiles();
 
     /**
-     * Lists all files.
+     * Lists files inside {@param fileName}.
      * @param fileName
+     * @param listDirectories
+     * @param recursive
+     * @return {@link List<String>}
      */
-    public List<String> listFiles(String fileName);
+    public List<String> listFiles(String fileName, boolean listDirectories, boolean recursive);
 
     /**
-     * Lists all files.
+     * Lists {@param size} files starting from {@param from}.
      * @param fileName
      * @param from
      * @param size
+     * @return {@link List<String>}
      */
     public List<String> listFiles(String fileName, int from, int size);
 
-    /**
-     * Lists Corpus.
-     * @param corpusId
-     * @param from
-     * @param size
-     */
-    public ArrayList<Publication> listCorpus(String corpusId, int from, int size); // FIXME: corpusId or archiveId?
+//    /** //TODO: remove
+//     * Lists Corpus.
+//     * @param corpusId
+//     * @param from
+//     * @param size
+//     */
+//    public ArrayList<Publication> listCorpus(String corpusId, int from, int size); // FIXME: corpusId or archiveId?
 
     /**
      * Archive exists

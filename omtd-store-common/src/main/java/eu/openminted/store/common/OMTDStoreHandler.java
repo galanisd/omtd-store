@@ -16,9 +16,11 @@ public interface OMTDStoreHandler {
 	/**
 	 * List all files in a specific Archive.
      * @param archiveId
-	 * @return
+	 * @param listDirectories
+	 * @param recursive
+	 * @return {@link List<String>}
 	 */
-	public List<String> listFiles(String archiveId);
+	public List<String> listFiles(String archiveId, boolean listDirectories, boolean recursive);
 
 	/**
 	 * List {@param size} files in a specific Archive starting from {@param from}.

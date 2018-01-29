@@ -128,9 +128,11 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	}
 
 	@Override
-	public List<String> listFiles(String archiveID) {
+	public List<String> listFiles(String archiveID, boolean listDirectories, boolean recursive) {
 		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
 		params.add(StoreREST.archiveID, archiveID);
+		params.add(StoreREST.listDirectories, listDirectories);
+		params.add(StoreREST.recursive, recursive);
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -152,7 +154,7 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		HttpHeaders headers = new HttpHeaders();
 
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(params, headers);
-		ResponseEntity<String[]> st = restTemplate.postForEntity(endpoint + StoreREST.listFilesInArch, requestEntity, String[].class);
+		ResponseEntity<String[]> st = restTemplate.postForEntity(endpoint + StoreREST.listFilesPaged, requestEntity, String[].class);
 
 		return new ArrayList(Arrays.asList(st.getBody()));
 	}

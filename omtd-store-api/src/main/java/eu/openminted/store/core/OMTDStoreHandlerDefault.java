@@ -35,8 +35,8 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 	}
 
 	@Override
-	public List<String> listFiles(String archiveId) {
-		return storeService.listFiles(archiveId);
+	public List<String> listFiles(String archiveId, boolean listDirectories, boolean recursive) {
+		return storeService.listFiles(archiveId, listDirectories, recursive);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 		return storeService.listFiles(archiveId, from, size);
 	}
 
-//	@Override  // FIXME: response must be a String, but listCorpus returns ArrayList<Publication>
+//	@Override  // TODO: remove
 //	public CorpusSubset listCorpus(String corpusId, int from, int size) {
 //		return new ArrayList<>(Publication) = storeService.listCorpus(corpusId, from, size); // FIXME: look OMTDStoreHandler
 //	}

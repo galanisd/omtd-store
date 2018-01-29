@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import eu.openminted.store.restclient.Corpus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class ApplicationBoot implements CommandLineRunner {
 	
 	@Autowired
 	private StoreRESTClient store;
+
+	private Corpus mycorpus;
 
 	boolean notQuiting = true;
 	
@@ -79,6 +82,14 @@ public class ApplicationBoot implements CommandLineRunner {
 	}
 	
 	private void executeParsedCommand(String command){
+        boolean flag;
+        boolean listDirs;
+        boolean recursive;
+        flag = false;
+        listDirs = false;
+        recursive = false;
+        int from = 0;
+        int size = 100000;
 		try {
 			
 			if (command.equals(Commands.quit)) {
@@ -113,21 +124,62 @@ public class ApplicationBoot implements CommandLineRunner {
 					this.printHelp();
 				} else if (allCMDArgs.length == 4) {
                     String archiveID = allCMDArgs[1];
-                    int from = Integer.parseInt(allCMDArgs[2]);
-                    int size = Integer.parseInt(allCMDArgs[3]);
-//                    responsePrinterRaw(store.listFiles(archiveID, from, size));
-					System.out.println(store.listFiles(archiveID, from, size).toString());
+                    if (command.contains(" -R")) {
+                        flag = true;
+                        recursive = true;
+                        System.out.println("contains -R");
+                    }
+                    if (command.contains(" -d")) {
+                        flag = true;
+                        listDirs = true;
+                        System.out.println("contains -d");
+                    }
+                    try {
+                        from = Integer.parseInt(allCMDArgs[2]);
+                        size = Integer.parseInt(allCMDArgs[3]);
+                    } catch (Exception e) {
+
+                    } finally {
+                        System.out.println("from: "+ from + " size: " + size);
+                    }
+                    if (flag) {
+                        System.out.println(store.listFiles(archiveID, listDirs, recursive).toString());
+                    } else {
+                        System.out.println(store.listFiles(archiveID, from, size).toString());
+                    }
                 } else if (allCMDArgs.length == 3) {
                     String archiveID = allCMDArgs[1];
-                    int size = Integer.parseInt(allCMDArgs[2]);
-//                    responsePrinterRaw(store.listFiles(archiveID, 0, size));
-					System.out.println(store.listFiles(archiveID, 0, size).toString());
+                    if (command.contains(" -R")) {
+                        flag = true;
+                        recursive = true;
+                        System.out.println("contains -R");
+                    } else if (command.contains(" -d")) {
+                        flag = true;
+                        listDirs = true;
+                        System.out.println("contains -d");
+                    } else {
+                        try {
+                            size = Integer.parseInt(allCMDArgs[2]);
+                        } catch (Exception e) {
+
+                        } finally {
+                            System.out.println("from: "+ from + " size: " + size);
+                        }
+                    }
+                    if (flag) {
+                        System.out.println(store.listFiles(archiveID, listDirs, recursive).toString());
+                    } else {
+                        System.out.println(store.listFiles(archiveID, 0, size).toString());
+                    }
                 } else if (allCMDArgs.length == 2) {
 					String archiveID = allCMDArgs[1];
 //                    responsePrinterRaw(store.listFiles(archiveID));
-					System.out.println(store.listFiles(archiveID).toString());
+                    mycorpus = new Corpus(archiveID);
+//                    System.out.println(store.listFiles(archiveID, false, false).toString());
 				} else {
                     responsePrinterRaw(store.listFiles());
+
+
                 }
 
 //			} // FIXME: fix listCorpus
@@ -201,7 +253,7 @@ public class ApplicationBoot implements CommandLineRunner {
 			e.printStackTrace();
 			error();
 			//printHelp();
-		}		
+		}
 	}
 	
 	/**

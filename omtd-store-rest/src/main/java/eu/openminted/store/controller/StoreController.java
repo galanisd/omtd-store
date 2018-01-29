@@ -143,8 +143,10 @@ public class StoreController {
      */
     @RequestMapping(value=StoreREST.listFilesInArch, method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public List<String> listFilesInArch(@RequestParam(StoreREST.archiveID) String archiveID){
-    	return storeService.listFiles(archiveID);
+    public List<String> listFilesInArch(@RequestParam(StoreREST.archiveID) String archiveID,
+                                        @RequestParam(StoreREST.listDirectories) boolean listDirectories,
+                                        @RequestParam(StoreREST.recursive) boolean recursive){
+    	return storeService.listFiles(archiveID, listDirectories, recursive);
     }
 
     /**
@@ -156,11 +158,13 @@ public class StoreController {
      */
     @RequestMapping(value=StoreREST.listFilesPaged, method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public List<String> listFilesPaged(@RequestParam(StoreREST.archiveID) String archiveID, @RequestParam(StoreREST.fileListIndex) int from, @RequestParam(StoreREST.fileListSize) int size){
+    public List<String> listFilesPaged(@RequestParam(StoreREST.archiveID) String archiveID,
+                                       @RequestParam(StoreREST.fileListIndex) int from,
+                                       @RequestParam(StoreREST.fileListSize) int size){
     	return storeService.listFiles(archiveID, from, size);
     }
 
-//    /** // FIXME: complete function
+//    /** // TODO: remove
 //     * List Publications in Corpus.
 //     * @param corpusID
 //     * @param from

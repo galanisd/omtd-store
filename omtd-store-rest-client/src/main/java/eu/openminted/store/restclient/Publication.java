@@ -1,4 +1,4 @@
-package eu.openminted.store.core;
+package eu.openminted.store.restclient;
 
 /**
  * A class used to represent a publication inside a Corpus.

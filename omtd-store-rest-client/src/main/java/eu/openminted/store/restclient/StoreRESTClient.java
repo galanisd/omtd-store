@@ -252,7 +252,7 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	}
 	
 	@Override
-	public StoreResponse downloadArchive(String archiveID, String localDestination) {		
+	public StoreResponse downloadArchive(String archiveID, String localDestination) {
 		// Parameters
 		MultiValueMap<String, Object> callParameters = new LinkedMultiValueMap<String, Object>();
 		callParameters.add(StoreREST.archiveID, archiveID);

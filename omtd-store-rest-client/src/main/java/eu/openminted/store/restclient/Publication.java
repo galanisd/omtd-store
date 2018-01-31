@@ -41,6 +41,18 @@ public class Publication {
     }
 
 
+    public void printPublicationInfo() {
+        System.out.println("\n");
+        System.out.println("Archive ID:\t" + this.getArchiveId());
+        System.out.println("Pub ID:  \t" + this.getId());
+        System.out.println("Title:   \t" + this.getTitle());
+        System.out.println("Abstract:\t" + this.isHasAbstract());
+        System.out.println("Fulltext:\t" + this.isHasFulltext());
+        System.out.println("Metadata:\t" + this.isHasMetadata());
+        System.out.println("Annotations:\t" + this.isHasAnnotations());
+    }
+
+
     public String getId() {
         return id;
     }

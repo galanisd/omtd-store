@@ -1,6 +1,7 @@
 package eu.openminted.store.restclient;
 
 import eu.openminted.store.common.StoreResponse;
+import eu.openminted.utils.files.ZipToDir;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
@@ -83,7 +84,8 @@ public class Corpus {
             try {
                 File save_dir = new File(metadata_zip.getParent().toString());
 //                unzip(metadata_zip, metadata_zip.getParent().toString());
-                unpackToWorkDir(metadata_zip, save_dir);
+//                unpackToWorkDir(metadata_zip, save_dir); // FIXME: this one works
+                ZipToDir.unpackToWorkDir(metadata_zip, save_dir); // FIXME: this one doesn't work
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -222,49 +224,6 @@ public class Corpus {
         }
     }
 
-/*    public static void unzip(File source, String out) throws IOException {
-        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(source))) {
-
-            ZipEntry entry = zis.getNextEntry();
-
-            while (entry != null) {
-
-                File file = new File(out, entry.getName());
-
-                if (entry.isDirectory()) {
-                    file.mkdirs();
-                } else {
-                    File parent = file.getParentFile();
-
-                    if (!parent.exists()) {
-                        parent.mkdirs();
-                    }
-
-                    try {
-
-                        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-
-                        byte[] buffer = new byte[1024];
-
-                        int location;
-
-                        while ((location = zis.read(buffer)) > 0) {
-                            bos.write(buffer, 0, location);
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                entry = zis.getNextEntry();
-            }
-        }
-    }*/
-
-//    Unzip unzipper = new Unzip();
-//    unzipper.setSrc(theZIPFile);
-//    unzipper.setDest(theTargetFolder);
-//    unzipper.execute();
 
 //    private List<String> listFilesInArchPostREST(String archiveId, boolean listDirs, boolean recursive) {
 //        RestTemplate restTemplate = new RestTemplate();

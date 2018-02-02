@@ -7,7 +7,7 @@ package eu.openminted.store.restclient;
  *
  */
 
-public class Publication {
+public class PublicationInfo {
 
     private String id;
     private String title;
@@ -17,19 +17,19 @@ public class Publication {
     private boolean hasMetadata = false;
     private boolean hasAnnotations = false;
 
-    public Publication(String id, String archiveId) {
+    public PublicationInfo(String id, String archiveId) {
         this.id = id;
         this.title = id;
         this.archiveId = archiveId;
     }
 
-    public Publication(String id, String title, String archiveId) {
+    public PublicationInfo(String id, String title, String archiveId) {
         this.id = id;
         this.title = title;
         this.archiveId = archiveId;
     }
 
-    public Publication(String id, String title, String archiveId, boolean hasFulltext,
+    public PublicationInfo(String id, String title, String archiveId, boolean hasFulltext,
                        boolean hasAbstract, boolean hasMetadata, boolean hasAnnotations) {
         this.id = id;
         this.title = title;

@@ -3,7 +3,6 @@ package eu.openminted.store.restclient;
 import eu.openminted.store.common.StoreResponse;
 import eu.openminted.utils.files.ZipToDir;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -19,8 +18,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 /**
  * Class representing a corpus of publications.
@@ -79,13 +76,12 @@ public class Corpus {
             // download metadata folder as zip
             metadata_zip.getParentFile().mkdirs();
             System.out.println("Downloading: " + metadata_zip.toString());
-            StoreResponse response = client.downloadArchive(archiveId + "/metadata", metadata_zip.toString()); // FIXME: response?
+//            StoreResponse response = client.downloadArchive(archiveId + "/metadata", metadata_zip.toString()); // FIXME: response?
+            StoreResponse response = client.fetchMetadata(archiveId, metadata_zip.toString()); // FIXME: response?
 
             try {
                 File save_dir = new File(metadata_zip.getParent().toString());
-//                unzip(metadata_zip, metadata_zip.getParent().toString());
-//                unpackToWorkDir(metadata_zip, save_dir); // FIXME: this one works
-                ZipToDir.unpackToWorkDir(metadata_zip, save_dir); // FIXME: this one doesn't work
+                ZipToDir.unpackToWorkDir(metadata_zip, save_dir);
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -183,68 +179,6 @@ public class Corpus {
         return title;
 //        return titles;
     }
-
-
-    public static void unpackToWorkDir(File archiveFile, File toDir) throws IOException {
-        ZipFile zipFile = null;
-        try {
-            zipFile = new ZipFile(archiveFile);
-//            Enumeration<ZipArchiveEntry> zipEntries = zipFile.getEntriesInPhysicalOrder();
-            Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
-            while (zipEntries.hasMoreElements()) {
-                ZipEntry entry = zipEntries.nextElement();
-                String entryName = entry.getName();
-                File outFile = new File(toDir, entryName);
-                if (!outFile.getParentFile().exists()) {
-                    if (!outFile.getParentFile().mkdirs()) {
-                        throw new IOException(
-                                "Failed to create parent directory: " + outFile.getParentFile().getCanonicalPath());
-                    }
-                }
-                if (entry.isDirectory()) {
-                    if (!outFile.mkdir()) {
-                        throw new IOException("Failed to create directory: " + outFile.getCanonicalPath());
-                    }
-                } else {
-                    InputStream zipStream = null;
-                    OutputStream outFileStream = null;
-                    zipStream = zipFile.getInputStream(entry);
-                    outFileStream = new FileOutputStream(outFile);
-                    try {
-                        IOUtils.copy(zipStream, outFileStream);
-                    } finally {
-                        IOUtils.closeQuietly(zipStream);
-                        IOUtils.closeQuietly(outFileStream);
-                    }
-                }
-            }
-        } finally {
-//            ZipFile.closeQuietly(zipFile);
-            zipFile.close();
-        }
-    }
-
-
-//    private List<String> listFilesInArchPostREST(String archiveId, boolean listDirs, boolean recursive) {
-//        RestTemplate restTemplate = new RestTemplate();
-//
-//        MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-//        params.add(StoreREST.archiveID, archiveId);
-//        params.add(StoreREST.listDirectories, listDirs);
-//        params.add(StoreREST.recursive, recursive);
-//
-//        HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(params);
-//
-//        String[] paths;
-//        try {
-//            paths = restTemplate.postForObject(endpoint + StoreREST.listFilesInArch, request, String[].class);
-//            return new ArrayList<>(Arrays.asList(paths));
-//        } catch (Exception e) {
-//            System.out.println("ERROR: could not retrieve file list.");
-//            System.out.println(e);
-//        }
-//        return null;
-//    }
 
 
     /**

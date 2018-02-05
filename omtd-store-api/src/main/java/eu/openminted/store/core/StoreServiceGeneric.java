@@ -2,6 +2,8 @@ package eu.openminted.store.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -128,6 +130,14 @@ public class StoreServiceGeneric implements StoreService{
 	}
 
 	@Override
+	public InputStream fetchMetadata(String archiveId) {
+        finalizeArchive(archiveId + "/metadata"); // only used to compress the metadata directory
+        InputStream inStream = downloadFile(archiveId + "/metadata.zip");
+        deleteFile(archiveId, "metadata.zip"); // delete the metadata.zip file that was created
+        return inStream;
+	}
+
+	@Override
 	public ArchiveInfo getArchiveInfo(String archiveId) {
 		// TODO Auto-generated method stub
 		return null;
@@ -182,11 +192,6 @@ public class StoreServiceGeneric implements StoreService{
 		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
 		return connector.listFiles(fileName, from, size);
 	}
-
-//	@Override // TODO: remove
-//	public ArrayList<Publication> listCorpus(String corpusId, int from, int size) {
-//		return connector.listCorpus(corpusId, from, size); // TODO: complete function
-//	}
 
 	@Override
 	public InputStream downloadFile(String fileName) {

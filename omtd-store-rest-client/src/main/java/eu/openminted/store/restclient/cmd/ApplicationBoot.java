@@ -174,32 +174,26 @@ public class ApplicationBoot implements CommandLineRunner {
                 } else if (allCMDArgs.length == 2) {
 					String archiveID = allCMDArgs[1];
 //                    responsePrinterRaw(store.listFiles(archiveID));
-                    mycorpus = new Corpus(archiveID);
-//                    System.out.println(store.listFiles(archiveID, false, false).toString());
+
+                    System.out.println(store.listFiles(archiveID, false, false).toString());
 				} else {
                     responsePrinterRaw(store.listFiles());
 
 
                 }
 
-//			} // FIXME: fix listCorpus
-//			else if (command.startsWith(Commands.listCorpus)) {
-//				final String[] allCMDArgs = command.split(" ");
-//				if (allCMDArgs.length > 4) {
-//					checkCMDSyntax();
-//					this.printHelp();
-//				} else if (allCMDArgs.length == 4) {
-//                    String archiveID = allCMDArgs[1];
-//                    int from = Integer.parseInt(allCMDArgs[2]);
-//                    int size = Integer.parseInt(allCMDArgs[3]);
-//                    responsePrinterRaw(store.listCorpus(archiveID, from, size));
-//                } else if (allCMDArgs.length == 3) {
-//                    String archiveID = allCMDArgs[1];
-//                    int size = Integer.parseInt(allCMDArgs[2]);
-//                    responsePrinterRaw(store.listCorpus(archiveID, 0, size));
-//                } else {
-//                    checkCMDSyntax();
-//                }
+			} // FIXME: fix listCorpus
+			else if (command.startsWith(Commands.getCorpusInfo)) {
+				final String[] allCMDArgs = command.split(" ");
+				if (allCMDArgs.length > 2) {
+					checkCMDSyntax();
+					this.printHelp();
+				} else if (allCMDArgs.length == 2) {
+                    String archiveID = allCMDArgs[1];
+					mycorpus = new Corpus(archiveID);
+                } else {
+                    checkCMDSyntax();
+                }
 
 			} else if (command.startsWith(Commands.uploadFileToArch)) {
 				final String[] allCMDArgs = command.split(" ");
@@ -303,6 +297,8 @@ public class ApplicationBoot implements CommandLineRunner {
 				" => Downloads a specified file to destinationPath");
 		System.out.printf(format, Commands.downloadArch + " [archiveID] [destinationPath]  ",
 				" => Downloads an archive zip to destinationPath");
+		System.out.printf(format, Commands.getCorpusInfo + " [archiveID] ",
+                " => Creates information on publications of an archive");
 		System.out.printf(format, Commands.finalizeArch+ " [archiveID]", " => Finalize Archive.");
 
 	}

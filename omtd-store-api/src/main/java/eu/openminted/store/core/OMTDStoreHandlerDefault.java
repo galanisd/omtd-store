@@ -44,11 +44,6 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 		return storeService.listFiles(archiveId, from, size);
 	}
 
-//	@Override  // TODO: remove
-//	public CorpusSubset listCorpus(String corpusId, int from, int size) {
-//		return new ArrayList<>(Publication) = storeService.listCorpus(corpusId, from, size); // FIXME: look OMTDStoreHandler
-//	}
-
 	@Override
 	public StoreResponse deleteAll() {
     	String response = String.valueOf(storeService.deleteAll());
@@ -93,6 +88,12 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 
 	@Override
 	public StoreResponse downloadArchive(String archiveID, String localDestination) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public StoreResponse fetchMetadata(String archiveID, String localDestination) {
 		// TODO Auto-generated method stub
 		return null;
 	}

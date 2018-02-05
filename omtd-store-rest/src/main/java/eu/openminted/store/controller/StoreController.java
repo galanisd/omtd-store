@@ -124,6 +124,19 @@ public class StoreController {
         InputStream fileInputStream = storeService.downloadArchive(archiveId);
         return Utils.download(fileInputStream, archiveId);
     }
+
+    /**
+     * Download the metadata of the archive.
+     * @return
+     */
+    @RequestMapping(value=StoreREST.fetchMetadata, method=RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Resource> fetchMetadata(@RequestParam(StoreREST.archiveID) String archiveId){
+//        InputStream fileInputStream = storeService.fetchMetadata(archiveId + "/metadata");
+//        return Utils.download(fileInputStream, archiveId + "/metadata");
+        InputStream fileInputStream = storeService.fetchMetadata(archiveId);
+        return Utils.download(fileInputStream, archiveId);
+    }
     
     /**
      * List files
@@ -238,7 +251,7 @@ public class StoreController {
     
     /** 
      * Download file
-     * @param fname
+     * @param fileName
      * @return
      */
     @RequestMapping(value=StoreREST.downloadFile, method=RequestMethod.POST)

@@ -13,7 +13,9 @@ public class StoreREST {
 	public static final String deleteArchive = "/store/deleteArchive/";
 	public static final String finalizeArchive = "/store/finalizeArchive/";
 	public static final String downloadArchive = "/store/downloadArchive/";
-	
+
+	public static final String fetchMetadata = "/store/fetchMetadata/";
+
 	public static final String listFiles = "/store/listFiles/";
 	public static final String listFilesInArch = "/store/listFilesInArch/";
 	public static final String listFilesPaged = "/store/listFilesPaged/";

@@ -55,7 +55,14 @@ public interface StoreService {
      * @param archiveId
      * @return
      */
-    boolean finalizeArchive(String archiveId);    
+    boolean finalizeArchive(String archiveId);
+
+    /**
+     * Finalize archive.
+     * @param archiveId
+     * @return
+     */
+    InputStream fetchMetadata(String archiveId);
     
     /**
      * Get archive info for an archive 

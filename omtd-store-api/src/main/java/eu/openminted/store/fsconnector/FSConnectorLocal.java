@@ -133,11 +133,6 @@ public class FSConnectorLocal implements FSConnector{
 
 	}
 
-//    @Override // TODO: remove
-//    public ArrayList<Publication> listCorpus(String corpusId, int from, int size) {
-//        return null; // TODO write code
-//    }
-
     public static ArrayList<File> listFileTree(File dir) {
 		ArrayList<File> fileTree = new ArrayList<File>();
 		
@@ -183,7 +178,6 @@ public class FSConnectorLocal implements FSConnector{
 	@Override
 	public InputStream download(String targetFileName) {
 		FileInputStream fis = null;
-		
 		try{
 			Path path = Paths.get(targetFileName);
 			log.info("Opened FileInputStream:" + path.toFile().getAbsolutePath());
@@ -214,8 +208,8 @@ public class FSConnectorLocal implements FSConnector{
 	}
 
 	@Override
-	public boolean compressDir(String dir, String zipFile) {		
-		try{			
+	public boolean compressDir(String dir, String zipFile) {
+		try{
 			DirCompressor compressor = new DirCompressor(localRoot);
 			return compressor.zipDir(zipFile, dir);			
 		}catch(Exception e){

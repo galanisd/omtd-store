@@ -7,7 +7,7 @@ public class Commands {
 	public final static String createArch = "createArch";
 	public final static String deleteArch = "deleteArch"; 
 	public final static String listFiles = "ls";
-	public final static String listCorpus = "listCorpus";
+	public final static String getCorpusInfo = "ci";
 	public final static String downloadFile = "downloadFile";
 	public final static String downloadArch = "downloadArch";
 	public final static String deleteAll = "deleteAll";

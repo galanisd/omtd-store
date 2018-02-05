@@ -31,15 +31,6 @@ public interface OMTDStoreHandler {
 	 */
 	public List<String> listFiles(String archiveId, int from, int size);
 
-//	/**
-//	 * List {@param size} files in a specific Corpus starting from {@param from}.
-//     * @param corpusId
-//     * @param from
-//     * @param size
-//	 * @return
-//	 */
-//	public CorpusSubset listCorpus(String corpusId, int from, int size); // FIXME: probably will be moved to other project
-
 	/**
 	 * Delete all files in the Store.
 	 * @return
@@ -104,19 +95,27 @@ public interface OMTDStoreHandler {
 	
 	/**
 	 * Deletes a file.
+	 * @param archiveID
 	 * @param fileName
-	 * @param destination
 	 * @return
 	 */
 	public StoreResponse deleteFile(String archiveID, String fileName);
 	
 	/**
 	 * Downloads a file.
-	 * @param fileName
+	 * @param archiveID
 	 * @param localDestination
 	 * @return
 	 */
-	public StoreResponse downloadArchive(String archiveID, String localDestination);	
+	public StoreResponse downloadArchive(String archiveID, String localDestination);
+
+	/**
+	 * Downloads a file.
+	 * @param archiveID
+	 * @param localDestination
+	 * @return
+	 */
+	public StoreResponse fetchMetadata(String archiveID, String localDestination);
     
 	/**
 	 * @param archiveId

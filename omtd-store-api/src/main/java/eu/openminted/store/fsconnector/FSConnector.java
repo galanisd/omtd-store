@@ -68,15 +68,6 @@ public interface FSConnector {
 	 * @return {@link List<String>}
 	 */
 	List<String> listFiles(String fileName, int from, int size);
-
-//	/** //TODO: remove
-//	 * List all files.
-//	 * @return
-//     * @param corpusId
-//     * @param from
-//     * @param size
-//	 */
-//	ArrayList<Publication> listCorpus(String corpusId, int from, int size);
 	
 	/**
 	 * Download.

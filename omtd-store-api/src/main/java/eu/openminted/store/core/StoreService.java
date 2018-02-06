@@ -135,14 +135,6 @@ public interface StoreService {
      */
     public List<String> listFiles(String fileName, int from, int size);
 
-//    /** //TODO: remove
-//     * Lists Corpus.
-//     * @param corpusId
-//     * @param from
-//     * @param size
-//     */
-//    public ArrayList<Publication> listCorpus(String corpusId, int from, int size); // FIXME: corpusId or archiveId?
-
     /**
      * Archive exists
      * @param archiveId

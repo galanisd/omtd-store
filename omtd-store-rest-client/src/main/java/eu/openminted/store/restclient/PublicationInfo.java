@@ -4,7 +4,6 @@ package eu.openminted.store.restclient;
  * A class used to represent a publication inside a Corpus.
  *
  * @author spyroukostas
- *
  */
 
 public class PublicationInfo {
@@ -30,7 +29,7 @@ public class PublicationInfo {
     }
 
     public PublicationInfo(String id, String title, String archiveId, boolean hasFulltext,
-                       boolean hasAbstract, boolean hasMetadata, boolean hasAnnotations) {
+                           boolean hasAbstract, boolean hasMetadata, boolean hasAnnotations) {
         this.id = id;
         this.title = title;
         this.archiveId = archiveId;

@@ -25,11 +25,9 @@ import java.util.stream.Collectors;
  * @author spyroukostas
  */
 
-public class Corpus {
+public class CorpusContent {
 
     private int totalPublications;
-    private int indexFrom;
-    private int subsetSize;
     private String archiveId;
     private List<String> filepaths;
     private List<PublicationInfo> publications = null;
@@ -37,7 +35,7 @@ public class Corpus {
     private String endpoint = "http://localhost:8080/"; // FIXME: get value from property file.
 
 
-    public Corpus(String archiveId) {
+    public CorpusContent(String archiveId) {
         this.archiveId = archiveId;
 
         // create a rest client
@@ -45,16 +43,9 @@ public class Corpus {
 
         // retrieve all files inside the archive
         this.filepaths = client.listFiles(archiveId, false, true);  // FIXME: add 'ignoreZipFiles' argument.
-//        this.filepaths = listFilesInArchPostREST(archiveId, false, true);
 
         // analyze file-paths and create publication entries
         createPublicationEntries();
-
-
-        printPublications(this.publications);
-
-
-//        System.out.println(extractPublicationTitles(archiveId));
     }
 
 
@@ -69,14 +60,11 @@ public class Corpus {
 
         File metadata_zip = new File(System.getProperty("java.io.tmpdir") + "/corpus_metadata/" + archiveId + ".zip");
         File metadata_dir = new File(FilenameUtils.removeExtension(metadata_zip.toString()) + "/metadata");
-//        System.out.println("Parent:" + metadata_zip.getParentFile().toString());
 
         if (!metadata_dir.exists()) {
 
             // download metadata folder as zip
             metadata_zip.getParentFile().mkdirs();
-            System.out.println("Downloading: " + metadata_zip.toString());
-//            StoreResponse response = client.downloadArchive(archiveId + "/metadata", metadata_zip.toString()); // FIXME: response?
             StoreResponse response = client.fetchMetadata(archiveId, metadata_zip.toString()); // FIXME: response?
 
             try {
@@ -102,7 +90,6 @@ public class Corpus {
                 if (!(title = extractTitleFromXML(f.toString())).equals("")) {
                     id = FilenameUtils.removeExtension(f.getName());
                     publication_titles.put(id, title);
-//                    System.out.println("file: " + FilenameUtils.removeExtension(f.getName()) + "\n\tTitle: " + title);
                 }
             }
         } catch (NullPointerException e) {
@@ -122,10 +109,8 @@ public class Corpus {
     private String extractTitleFromXML(String filename) {
         File xml = new File(filename);
         String title = "";
-//        List<String > titles = new ArrayList<>();
         if (!xml.exists()) {
             return title;
-//            return titles;
         }
 
         try {
@@ -142,30 +127,6 @@ public class Corpus {
 
             title = expr.evaluate(document);
 
-/* TODO: uncomment and edit to retrieve all titles
-            Object result = expr.evaluate(document, XPathConstants.NODE);
-
-//            System.out.println("XML doc value: " + result.toString());
-
-            //Iterate over results
-            NodeList nodes = (NodeList) result;
-
-
-            if (nodes != null) {
-                System.out.println("Number of titles: " + nodes.getLength());  // FIXME: does not retrieve multiple titles.
-                for (int i = 0; i < nodes.getLength(); i++) {
-                    if (nodes.item(i) != null) {
-                        titles.add(nodes.item(i).getNodeValue());
-                        System.out.println("XML doc value: i = " + i + " :: " + (nodes.item(i).getNodeValue()));
-                    } else {
-                        System.out.println("Something is wrong: i = " + i + " :: " + (result.toString()));
-                    }
-                }
-            } else {
-                // return no title
-            }
-*/
-
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (SAXException e) {
@@ -177,13 +138,11 @@ public class Corpus {
         }
 
         return title;
-//        return titles;
     }
 
 
     /**
      * Populates the list of Publications.
-     *
      */
     private void createPublicationEntries() {
         int abstractMask = 0x0001;
@@ -246,9 +205,7 @@ public class Corpus {
             String id = (String) it.next();
             int value = publicationInfo.get(id);
             String title = publication_titles.get(id);
-            if (title != null && !title.equals("")) {
-                System.out.println("Title: " + title);
-            } else {
+            if (title == null || title.equals("")) {
                 title = id;
             }
 
@@ -271,7 +228,7 @@ public class Corpus {
      */
     public void printPublications(List<PublicationInfo> publications) {
         if (publications != null) {
-            System.out.println("Printing Publication Info:");
+            System.out.println("\nPrinting Publication Info:");
             publications.forEach(pub -> pub.printPublicationInfo());
         }
     }

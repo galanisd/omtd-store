@@ -80,7 +80,7 @@ public class FSConnectorLocal implements FSConnector{
 	}
 
 	@Override
-	public List<String> listFiles(String path, boolean listDirectories, boolean recursive) {
+	public List<String> listFiles(String path, boolean listDirectories, boolean recursive, boolean ignoreZips) {
         List<String> list = new ArrayList<>();
         File dir = new File(localRoot+path);
         List<File> allFiles;
@@ -90,6 +90,20 @@ public class FSConnectorLocal implements FSConnector{
             allFiles = Arrays.asList(dir.listFiles()); // returns files in directory
         }
         Collections.sort(allFiles);
+        if(ignoreZips) {
+            List<File> files = new ArrayList<>();
+//            for(int i = 0; i<allFiles.size(); i++) {
+//                if(!allFiles.get(i).toString().toLowerCase().endsWith(".zip")) {
+//                        files.add(allFiles.get(i));
+//                }
+//            }
+            allFiles.forEach(f -> {
+                if (!f.toString().toLowerCase().endsWith(".zip")) {
+                    files.add(f);
+                }
+            });
+            allFiles = files;
+        }
         if(listDirectories) { // if user wants to retrieve directories
             for (File f : allFiles) {
                 list.add(f.getAbsolutePath().substring(this.localRoot.length()));

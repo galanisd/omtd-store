@@ -99,7 +99,8 @@ public class StoreRESTClient implements OMTDStoreHandler{
 
 	@Override
 	public StoreResponse createArchive() {
-		StoreResponse response = restTemplate.getForObject(destination(endpoint, StoreREST.createArchive), StoreResponse.class);
+		StoreResponse response = restTemplate
+				.getForObject(destination(endpoint, StoreREST.createArchive), StoreResponse.class);
 		return response;
 	}
 	
@@ -123,22 +124,26 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	@Override
 	@Deprecated
 	public StoreResponse listFiles() {		
-		StoreResponse response = restTemplate.getForObject(destination(endpoint, StoreREST.listFiles), StoreResponse.class);
+		StoreResponse response = restTemplate
+				.getForObject(destination(endpoint, StoreREST.listFiles), StoreResponse.class);
 		return response;
 	}
 
 	@Override
-	public List<String> listFiles(String archiveID, boolean listDirectories, boolean recursive) {
+	public List<String> listFiles(String archiveID, boolean listDirectories,
+								  boolean recursive, boolean ignoreZipFiles) {
 		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
 		params.add(StoreREST.archiveID, archiveID);
 		params.add(StoreREST.listDirectories, listDirectories);
 		params.add(StoreREST.recursive, recursive);
+		params.add(StoreREST.ignoreZipFiles, ignoreZipFiles);
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(params, headers);
-		ResponseEntity<String[]> st = restTemplate.postForEntity(endpoint + StoreREST.listFilesInArch, requestEntity, String[].class);
+		ResponseEntity<String[]> st = restTemplate
+				.postForEntity(endpoint + StoreREST.listFilesInArch, requestEntity, String[].class);
 
 		return new ArrayList(Arrays.asList(st.getBody()));
 	}
@@ -154,14 +159,16 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		HttpHeaders headers = new HttpHeaders();
 
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(params, headers);
-		ResponseEntity<String[]> st = restTemplate.postForEntity(endpoint + StoreREST.listFilesPaged, requestEntity, String[].class);
+		ResponseEntity<String[]> st = restTemplate
+				.postForEntity(endpoint + StoreREST.listFilesPaged, requestEntity, String[].class);
 
 		return new ArrayList(Arrays.asList(st.getBody()));
 	}
 
 	@Override
 	public StoreResponse deleteAll() {
-		StoreResponse response = restTemplate.getForObject(destination(endpoint, StoreREST.deleteAll), StoreResponse.class);
+		StoreResponse response = restTemplate
+				.getForObject(destination(endpoint, StoreREST.deleteAll), StoreResponse.class);
 		return response;
 	}
 	
@@ -208,7 +215,8 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		restTemplate.setRequestFactory(requestFactory);
 		
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
-		ResponseEntity<StoreResponse> st = restTemplate.postForEntity(destination(endpoint, StoreREST.uploadFile), requestEntity, StoreResponse.class);
+		ResponseEntity<StoreResponse> st = restTemplate
+				.postForEntity(destination(endpoint, StoreREST.uploadFile), requestEntity, StoreResponse.class);
 		
 		StoreResponse resp = st.getBody(); 
 		return resp;
@@ -292,7 +300,8 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		restTemplate.setRequestFactory(requestFactory);
 		
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(params, headers);	
-		ResponseEntity<StoreResponse> st = restTemplate.postForEntity(destination(endpoint, StoreREST.uploadFile), requestEntity, StoreResponse.class);
+		ResponseEntity<StoreResponse> st = restTemplate
+				.postForEntity(destination(endpoint, StoreREST.uploadFile), requestEntity, StoreResponse.class);
 		
 		StoreResponse resp = st.getBody(); 
 		return resp;
@@ -306,7 +315,8 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	 * @param destination
 	 * @return
 	 */
-	private boolean downloadFromServer(MultiValueMap<String, Object> parameters, String service, String fileName, String destination){
+	private boolean downloadFromServer(MultiValueMap<String, Object> parameters, String service,
+									   String fileName, String destination){
 		try{			
 			// Callback
 			RequestCallback requestCallback = new DataRequestCallback(parameters);			
@@ -341,7 +351,8 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		HttpHeaders headers = new HttpHeaders();
 		
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(map, headers);	
-		ResponseEntity<StoreResponse> st = restTemplate.postForEntity(serviceEndpoint, requestEntity, StoreResponse.class);
+		ResponseEntity<StoreResponse> st = restTemplate
+				.postForEntity(serviceEndpoint, requestEntity, StoreResponse.class);
 		return st.getBody();
 	}
 	

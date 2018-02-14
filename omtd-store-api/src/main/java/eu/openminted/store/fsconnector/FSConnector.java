@@ -58,7 +58,7 @@ public interface FSConnector {
 	 * @param recursive
 	 * @return {@link List<String>}
 	 */
-	List<String> listFiles(String fileName, boolean listDirectories, boolean recursive);
+	List<String> listFiles(String fileName, boolean listDirectories, boolean recursive, boolean ignoreZips);
 
 	/**
 	 * List all files.

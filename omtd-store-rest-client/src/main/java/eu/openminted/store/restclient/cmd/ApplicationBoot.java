@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import eu.openminted.store.restclient.CorpusContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +31,6 @@ public class ApplicationBoot implements CommandLineRunner {
 
     @Autowired
     private StoreRESTClient store;
-
-    private CorpusContent mycorpus;
 
     boolean notQuiting = true;
 
@@ -140,7 +137,8 @@ public class ApplicationBoot implements CommandLineRunner {
                         System.out.println("from: " + from + " size: " + size);
                     }
                     if (flag) {
-                        System.out.println(store.listFiles(archiveID, listDirs, recursive).toString());
+                        System.out.println(store
+                                .listFiles(archiveID, listDirs, recursive, true).toString());
                     } else {
                         System.out.println(store.listFiles(archiveID, from, size).toString());
                     }
@@ -164,7 +162,8 @@ public class ApplicationBoot implements CommandLineRunner {
                         }
                     }
                     if (flag) {
-                        System.out.println(store.listFiles(archiveID, listDirs, recursive).toString());
+                        System.out.println(store
+                                .listFiles(archiveID, listDirs, recursive, true).toString());
                     } else {
                         System.out.println(store.listFiles(archiveID, 0, size).toString());
                     }
@@ -172,25 +171,12 @@ public class ApplicationBoot implements CommandLineRunner {
                     String archiveID = allCMDArgs[1];
 //                    responsePrinterRaw(store.listFiles(archiveID));
 
-                    System.out.println(store.listFiles(archiveID, false, false).toString());
+                    System.out.println(store
+                            .listFiles(archiveID, false, false, false).toString());
                 } else {
                     responsePrinterRaw(store.listFiles());
 
 
-                }
-
-            } // FIXME: fix listCorpus
-            else if (command.startsWith(Commands.getCorpusInfo)) {
-                final String[] allCMDArgs = command.split(" ");
-                if (allCMDArgs.length > 2) {
-                    checkCMDSyntax();
-                    this.printHelp();
-                } else if (allCMDArgs.length == 2) {
-                    String archiveID = allCMDArgs[1];
-                    mycorpus = new CorpusContent(archiveID);
-                    mycorpus.printPublications(mycorpus.getPublicationsInfo());
-                } else {
-                    checkCMDSyntax();
                 }
 
             } else if (command.startsWith(Commands.uploadFileToArch)) {

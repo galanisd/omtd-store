@@ -108,7 +108,7 @@ public class FSConnectorPITHOS implements FSConnector {
 	}
 
 	@Override // FIXME: currently is the same with "listAllFiles()" just to avoid compilation error
-	public List<String> listFiles(String fileName, boolean listDirectories, boolean recursive) {
+	public List<String> listFiles(String fileName, boolean listDirectories, boolean recursive, boolean ignoreZips) {
 		String result = connector.getFileList(workingContainer);
 
 		/*

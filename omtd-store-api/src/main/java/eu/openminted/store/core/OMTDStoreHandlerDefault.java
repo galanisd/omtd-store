@@ -35,8 +35,8 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 	}
 
 	@Override
-	public List<String> listFiles(String archiveId, boolean listDirectories, boolean recursive) {
-		return storeService.listFiles(archiveId, listDirectories, recursive);
+	public List<String> listFiles(String archiveId, boolean listDirectories, boolean recursive, boolean ignoreZips) {
+		return storeService.listFiles(archiveId, listDirectories, recursive, ignoreZips);
 	}
 
 	@Override

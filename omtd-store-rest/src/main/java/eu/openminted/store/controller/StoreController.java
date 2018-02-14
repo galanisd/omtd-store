@@ -162,9 +162,13 @@ public class StoreController {
     @RequestMapping(value = StoreREST.listFilesInArch, method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public List<String> listFilesInArch(@RequestParam(StoreREST.archiveID) String archiveID,
-                                        @RequestParam(StoreREST.listDirectories) boolean listDirectories,
-                                        @RequestParam(StoreREST.recursive) boolean recursive) {
-        return storeService.listFiles(archiveID, listDirectories, recursive);
+                                        @RequestParam(value = StoreREST.listDirectories, defaultValue = "false")
+                                                    boolean listDirectories,
+                                        @RequestParam(value = StoreREST.recursive, defaultValue = "true")
+                                                    boolean recursive,
+                                        @RequestParam(value = StoreREST.ignoreZipFiles, defaultValue = "true")
+                                                    boolean ignoreZipFiles) {
+        return storeService.listFiles(archiveID, listDirectories, recursive, ignoreZipFiles);
     }
 
     /**

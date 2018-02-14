@@ -124,7 +124,7 @@ public interface StoreService {
      * @param recursive
      * @return {@link List<String>}
      */
-    public List<String> listFiles(String fileName, boolean listDirectories, boolean recursive);
+    public List<String> listFiles(String fileName, boolean listDirectories, boolean recursive, boolean ignoreZips);
 
     /**
      * Lists {@param size} files starting from {@param from}.

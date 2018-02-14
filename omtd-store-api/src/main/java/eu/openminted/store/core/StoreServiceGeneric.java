@@ -182,9 +182,9 @@ public class StoreServiceGeneric implements StoreService{
 	}
 
 	@Override
-	public List<String> listFiles(String fileName, boolean listDirectories, boolean recursive) {
+	public List<String> listFiles(String fileName, boolean listDirectories, boolean recursive, boolean ignoreZips) {
 		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
-		return connector.listFiles(fileName, listDirectories, recursive);
+		return connector.listFiles(fileName, listDirectories, recursive, ignoreZips);
 	}
 
 	@Override

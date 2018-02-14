@@ -32,6 +32,7 @@ public class StoreREST {
 	public static final String archiveID = "archiveID";
 	public static final String listDirectories = "listDirectories";
 	public static final String recursive = "recursive";
+	public static final String ignoreZipFiles = "ignoreZipFiles";
 	public static final String fileListIndex = "fileListIndex";
 	public static final String fileListSize = "fileListSize";
 	public static final String fileName = "fileName";

@@ -95,4 +95,14 @@ public interface FSConnector {
 	 * @return
 	 */
 	public boolean exists(String path);
+
+
+	/**
+	 * Copies the content from {@param src} to {@param dst}.
+	 *
+	 * @param src
+	 * @param dst
+	 * @return
+	 */
+	boolean copyContent(String src, String dst);
 }

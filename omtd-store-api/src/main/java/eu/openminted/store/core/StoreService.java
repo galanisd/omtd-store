@@ -32,7 +32,15 @@ public interface StoreService {
      * @return the identifier of the archive
      * 
      */
+
     String createArchive(String parentArchiveId, String name);
+
+    /**
+     * Clones the contents of an archive to a new archive.
+     *
+     * @return {@link String} the identifier of the new archive
+     */
+    String cloneArchive(String archiveId);
     
     /**
      * Deletes an archive.

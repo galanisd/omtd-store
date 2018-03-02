@@ -2,6 +2,7 @@ package eu.openminted.store.fsconnector;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,6 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.openminted.utils.files.DirCompressor;
+
+import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 
 /**
@@ -215,7 +220,7 @@ public class FSConnectorLocal implements FSConnector{
 			}			
 			return status;
 		}else{
-			status = Paths.get(folder).toFile().delete();			
+			status = Paths.get(folder).toFile().delete();
 		}
 		
 		return status;
@@ -252,6 +257,19 @@ public class FSConnectorLocal implements FSConnector{
 		
 		return false;
 	}
-	
-	
+
+	@Override
+	public boolean copyContent(String src, String dst) {
+		File from = new File(src);
+        File to = new File(dst);
+        try {
+            FileUtils.copyDirectory(from, to);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+	}
+
+
 }

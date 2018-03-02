@@ -101,7 +101,8 @@ public class StoreServiceGeneric implements StoreService{
 		// Get new archive id.
 		String archiveId = name;
 		// Create Folder.
-		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), parentArchiveId);
+		String destinationFolderAbsolutePathForParent = Helper.
+                getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), parentArchiveId);
 //		String destinationFolderAbsolutePath = Helper.appendDirToPath(destinationFolderAbsolutePathForParent, archiveId); //TODO remove
 		String destinationFolderAbsolutePath = Helper.appendToPath(destinationFolderAbsolutePathForParent, archiveId);
 		log.info(destinationFolderAbsolutePath.toString());
@@ -114,6 +115,36 @@ public class StoreServiceGeneric implements StoreService{
     		return null;
     	}
 	}
+
+	@Override
+	public String cloneArchive(String archiveId) {
+
+	    if (!archiveExists(archiveId)) {
+	        log.info("cloneArchive : source archive does not exist");
+	        return null;
+        }
+
+	    // Create new archive id.
+		String newArchiveId;
+		do {
+			newArchiveId = idGen.generateId();
+		} while (archiveExists(newArchiveId));
+		boolean creationStatus = createArchive(newArchiveId);
+
+		if(creationStatus){
+            String srcAbsolutePath = Helper.
+                    getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
+            String dstAbsolutePath = Helper.
+                    getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), newArchiveId);
+            log.info("cloneArchive : source: " + srcAbsolutePath);
+            log.info("cloneArchive : destination: " + dstAbsolutePath);
+			if (connector.copyContent(srcAbsolutePath, dstAbsolutePath)) {
+				return newArchiveId;
+			} else deleteArchive(newArchiveId, true);
+		}
+		return null;
+	}
+
 
 	@Override
 	public boolean deleteArchive(String archiveId, boolean force) {

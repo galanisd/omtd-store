@@ -9,6 +9,7 @@ public class StoreREST {
 	
 	// Endpoints
 	public static final String createArchive = "/store/createArchive/";
+	public static final String cloneArchive = "/store/cloneArchive/";
 	public static final String createSubArchive = "/store/createSubArchive/";
 	public static final String deleteArchive = "/store/deleteArchive/";
 	public static final String finalizeArchive = "/store/finalizeArchive/";

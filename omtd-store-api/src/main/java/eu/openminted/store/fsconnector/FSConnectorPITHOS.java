@@ -208,4 +208,10 @@ public class FSConnectorPITHOS implements FSConnector {
 		PithosPath pithosPath = new PithosPath(workingContainer, path);
 		return false;
 	}
+
+	@Override
+	public boolean copyContent(String src, String dst) {
+		// TODO function
+		return false;
+	}
 }

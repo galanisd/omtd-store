@@ -10,7 +10,7 @@ public class ApplicationConfigTestParams {
 	public final static String testFilesCfg = "testFilesCfg";
 		
 	/** Test files locations */
-	public final static String testFilesDefault = "/eu/openminted/store/config/testFiles.properties"; // FIXME: change file
+	public final static String testFilesDefault = "/eu/openminted/store/config/testFiles.properties";
 	
 	// == === ==
 	

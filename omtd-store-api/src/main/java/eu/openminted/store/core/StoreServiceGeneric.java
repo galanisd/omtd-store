@@ -103,7 +103,6 @@ public class StoreServiceGeneric implements StoreService{
 		// Create Folder.
 		String destinationFolderAbsolutePathForParent = Helper.
                 getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), parentArchiveId);
-//		String destinationFolderAbsolutePath = Helper.appendDirToPath(destinationFolderAbsolutePathForParent, archiveId); //TODO remove
 		String destinationFolderAbsolutePath = Helper.appendToPath(destinationFolderAbsolutePathForParent, archiveId);
 		log.info(destinationFolderAbsolutePath.toString());
 		boolean creationStatus = connector.makeFolder(destinationFolderAbsolutePath);
@@ -178,7 +177,6 @@ public class StoreServiceGeneric implements StoreService{
 	public boolean storeFile(String archiveId, InputStream is, String fileName) {
 		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
 		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
-//		String destinationFile = Helper.appendFileToPath(destinationFolderAbsolutePathForParent, fileName); //TODO remove
 		String destinationFile = Helper.appendToPath(destinationFolderAbsolutePathForParent, fileName);
 
 		return connector.storeFile(destinationFile, is);
@@ -194,7 +192,6 @@ public class StoreServiceGeneric implements StoreService{
 	public boolean deleteFile(String archiveId, String fileName) {
 		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
 		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
-//		String destinationFile = Helper.appendFileToPath(destinationFolderAbsolutePathForParent, fileName); //TODO remove
 		String destinationFile = Helper.appendToPath(destinationFolderAbsolutePathForParent, fileName);
 		return connector.deleteFile(destinationFile);
 					
@@ -245,7 +242,6 @@ public class StoreServiceGeneric implements StoreService{
 	@Override
 	public boolean fileExistsInArchive(String archiveId, String fileName) {
 		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
-//		String destinationFile = Helper.appendFileToPath(destinationFolderAbsolutePathForParent, fileName);	//TODO remove
 		String destinationFile = Helper.appendToPath(destinationFolderAbsolutePathForParent, fileName);
 		return connector.exists(destinationFile);
 	}

@@ -137,12 +137,10 @@ public class FSConnectorLocal implements FSConnector{
         if(files != null) {
             if((from + size) < files.length) {
                 for (int i = from; i < from + size; i++) {
-//                    list = list + files[i].getName() + "\n"; // TODO: remove
                     list.add(files[i].getName());
                 }
             } else {
                 for (int i = from; i < files.length; i++) {
-//                    list = list + files[i].getName() + "\n"; // TODO: remove
                     list.add(files[i].getName());
                 }
             }

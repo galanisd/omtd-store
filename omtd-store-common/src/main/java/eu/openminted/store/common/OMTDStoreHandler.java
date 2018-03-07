@@ -45,6 +45,11 @@ public interface OMTDStoreHandler {
 	public StoreResponse createArchive(String archiveId);
 	
 	/**
+	 * Clone an existing archive
+	 */
+	public StoreResponse cloneArchive(String archiveId);
+	
+	/**
 	 * Creates an archive
 	 * @return the id of the archive.
 	 */

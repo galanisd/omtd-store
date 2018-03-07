@@ -103,6 +103,12 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public StoreResponse cloneArchive(String archiveId) {
+		//TODO we should maybe implement this?
+		return null;
+	}
 
 	@Override
 	public StoreResponse archiveExists(String archiveId) {

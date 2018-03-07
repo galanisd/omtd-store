@@ -96,6 +96,14 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		
 		return post(destination(endpoint, StoreREST.createArchive), params);
 	}
+	
+	@Override
+	public StoreResponse cloneArchive(String archiveId) {
+		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
+		params.add(StoreREST.archiveID, archiveId);
+		
+		return post(destination(endpoint, StoreREST.cloneArchive), params);
+	}
 
 	@Override
 	public StoreResponse createArchive() {

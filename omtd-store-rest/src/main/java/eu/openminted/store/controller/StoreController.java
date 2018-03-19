@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -69,10 +71,9 @@ public class StoreController {
      * @param archiveId
      * @return {@link String}
      */
-    @RequestMapping(value = StoreREST.cloneArchive+"{"+StoreREST.archiveID+"}",
-            method = RequestMethod.PUT, headers = "omtd-store-cloneArchive")
+    @RequestMapping(value = StoreREST.cloneArchive, method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public StoreResponse cloneArchive(@PathVariable(StoreREST.archiveID) String archiveId) {
+    public StoreResponse cloneArchive(@RequestParam(StoreREST.archiveID) String archiveId) {
         String response = String.valueOf(storeService.cloneArchive(archiveId));
         if (response != "null") {
             return new StoreResponse(response, "archive cloned successfully");

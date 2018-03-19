@@ -101,7 +101,7 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	public StoreResponse cloneArchive(String archiveId) {
 		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
 		params.add(StoreREST.archiveID, archiveId);
-		
+		log.info("cloneArchive" + endpoint + " " + StoreREST.cloneArchive);
 		return post(destination(endpoint, StoreREST.cloneArchive), params);
 	}
 

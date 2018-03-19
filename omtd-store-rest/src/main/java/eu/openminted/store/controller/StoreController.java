@@ -74,8 +74,9 @@ public class StoreController {
     @RequestMapping(value = StoreREST.cloneArchive, method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public StoreResponse cloneArchive(@RequestParam(StoreREST.archiveID) String archiveId) {
-        String response = String.valueOf(storeService.cloneArchive(archiveId));
-        if (response != "null") {
+        String response = storeService.cloneArchive(archiveId);
+        log.info("cloneArchive response:" + response + " for " + archiveId);
+        if (response != null) {
             return new StoreResponse(response, "archive cloned successfully");
         }
         return new StoreResponse(response, "could not clone archive");

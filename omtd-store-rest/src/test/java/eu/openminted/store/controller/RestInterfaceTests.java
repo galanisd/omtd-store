@@ -104,6 +104,17 @@ public class RestInterfaceTests {
     }
 
     /**
+     * Creates an archive and then clones it.
+     */
+    @Test
+    public void cloneArch() {
+    	String archId = store.createArchive().getResponse();
+        assertNotNull(archId);
+    	String arch2Id = store.cloneArchive(archId).getResponse();
+    	assertNotNull(arch2Id);
+    }
+
+    /**
      * ArchiveExists
      * @throws Exception
      */

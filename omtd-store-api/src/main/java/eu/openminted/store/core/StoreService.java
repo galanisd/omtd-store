@@ -26,13 +26,12 @@ public interface StoreService {
     /**
      * Initializes a new empty archive contained in the parent archive
      * 
-     * @param parent The parent archive id
+     * @param parentArchiveId The parent archive id
      * @param name the name of the new archive
      *
      * @return the identifier of the archive
      * 
      */
-
     String createArchive(String parentArchiveId, String name);
 
     /**
@@ -109,7 +108,6 @@ public interface StoreService {
     
     /**
      * Deletes all files.
-     * @param fileName
      */
     boolean deleteAll();
     
@@ -121,7 +119,6 @@ public interface StoreService {
     
     /**
      * Lists all files.
-     * @param fileName
      */
     public String listAllFiles();
 

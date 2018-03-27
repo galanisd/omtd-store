@@ -1,10 +1,16 @@
 package eu.openminted.store.core;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import eu.openminted.store.config.StoreProperties;
@@ -167,6 +173,38 @@ public class StoreServiceGeneric implements StoreService{
         return inStream;
 	}
 
+    @Override
+    public long archiveSize(String archiveId) {
+        long size = 0;
+
+        Path folder = Paths.get(Helper.
+                getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId));
+        try {
+            size = Files.walk(folder)
+                    .filter(p -> p.toFile().isFile())
+                    .mapToLong(p -> p.toFile().length())
+                    .sum();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return size;
+    }
+
+	@Override
+	public long archiveSizeOnDisk(String archiveId) {
+        long size = 0;
+
+        log.info("archiveSize : archiveId = " + archiveId);
+        if (archiveExists(archiveId)) {
+            File dir = new File(Helper.
+                    getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId));
+            size = FileUtils.sizeOfDirectory(dir);
+            log.info("archiveSize : size = "+ Long.toString(size));
+        }
+	    return size;
+	}
+
 	@Override
 	public ArchiveInfo getArchiveInfo(String archiveId) {
 		// TODO Auto-generated method stub
@@ -176,7 +214,8 @@ public class StoreServiceGeneric implements StoreService{
 	@Override
 	public boolean storeFile(String archiveId, InputStream is, String fileName) {
 		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
-		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
+		String destinationFolderAbsolutePathForParent = Helper.
+                getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
 		String destinationFile = Helper.appendToPath(destinationFolderAbsolutePathForParent, fileName);
 
 		return connector.storeFile(destinationFile, is);
@@ -191,7 +230,8 @@ public class StoreServiceGeneric implements StoreService{
 	@Override
 	public boolean deleteFile(String archiveId, String fileName) {
 		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
-		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
+		String destinationFolderAbsolutePathForParent = Helper.
+                getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
 		String destinationFile = Helper.appendToPath(destinationFolderAbsolutePathForParent, fileName);
 		return connector.deleteFile(destinationFile);
 					
@@ -235,13 +275,15 @@ public class StoreServiceGeneric implements StoreService{
 
 	@Override
 	public boolean archiveExists(String archiveId) {
-		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
+		String destinationFolderAbsolutePathForParent = Helper.
+                getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
 		return connector.isDir(destinationFolderAbsolutePathForParent);
 	}
 
 	@Override
 	public boolean fileExistsInArchive(String archiveId, String fileName) {
-		String destinationFolderAbsolutePathForParent = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
+		String destinationFolderAbsolutePathForParent = Helper.
+                getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
 		String destinationFile = Helper.appendToPath(destinationFolderAbsolutePathForParent, fileName);
 		return connector.exists(destinationFile);
 	}

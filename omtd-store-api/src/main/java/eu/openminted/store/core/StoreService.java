@@ -65,11 +65,25 @@ public interface StoreService {
     boolean finalizeArchive(String archiveId);
 
     /**
-     * Finalize archive.
+     * Retrieves the metadata of the archive.
      * @param archiveId
      * @return
      */
     InputStream fetchMetadata(String archiveId);
+
+    /**
+     * Calculates the size of the archive.
+     * @param archiveId
+     * @return
+     */
+    long archiveSize(String archiveId);
+
+    /**
+     * Calculates the size of the archive.
+     * @param archiveId
+     * @return
+     */
+    long archiveSizeOnDisk(String archiveId);
     
     /**
      * Get archive info for an archive 

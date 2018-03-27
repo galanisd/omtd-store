@@ -33,6 +33,20 @@ public interface OMTDStoreHandler {
 	public List<String> listFiles(String archiveId, int from, int size);
 
 	/**
+	 * Retrieves the total size of all the contents of an Archive.
+     * @param archiveId
+	 * @return
+	 */
+	long getSize(String archiveId);
+
+	/**
+	 * Retrieves the size of an Archive.
+     * @param archiveId
+	 * @return
+	 */
+	long getSizeOnDisk(String archiveId);
+
+	/**
 	 * Delete all files in the Store.
 	 * @return
 	 */

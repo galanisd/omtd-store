@@ -17,6 +17,9 @@ public class StoreREST {
 
 	public static final String fetchMetadata = "/store/fetchMetadata/";
 
+	public static final String getSize = "/store/getSize/";
+	public static final String getSizeOnDisk = "/store/getSizeOnDisk/";
+
 	public static final String listFiles = "/store/listFiles/";
 	public static final String listFilesInArch = "/store/listFilesInArch/";
 	public static final String listFilesPaged = "/store/listFilesPaged/";

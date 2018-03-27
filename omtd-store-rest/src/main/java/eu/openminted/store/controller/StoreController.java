@@ -158,6 +158,30 @@ public class StoreController {
     }
 
     /**
+     * Calculates the size of the archive.
+     *
+     * @return
+     */
+    @RequestMapping(value = StoreREST.getSize, method = RequestMethod.GET)
+    @ResponseBody
+    public long getSize(@RequestParam(StoreREST.archiveID) String archiveId) {
+        long size = storeService.archiveSize(archiveId);
+        return size;
+    }
+
+    /**
+     * Calculates the size of the archive.
+     *
+     * @return
+     */
+    @RequestMapping(value = StoreREST.getSizeOnDisk, method = RequestMethod.GET)
+    @ResponseBody
+    public long getSizeOnDisk(@RequestParam(StoreREST.archiveID) String archiveId) {
+        long size = storeService.archiveSizeOnDisk(archiveId);
+        return size;
+    }
+
+    /**
      * List files
      *
      * @return a list of files.

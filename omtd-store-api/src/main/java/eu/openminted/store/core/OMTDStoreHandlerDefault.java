@@ -45,6 +45,16 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 	}
 
 	@Override
+	public long getSize(String archiveId) {
+		return storeService.archiveSize(archiveId);
+	}
+
+	@Override
+	public long getSizeOnDisk(String archiveId) {
+		return storeService.archiveSizeOnDisk(archiveId);
+	}
+
+	@Override
 	public StoreResponse deleteAll() {
     	String response = String.valueOf(storeService.deleteAll());
     	return new StoreResponse(response, "");

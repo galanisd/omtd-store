@@ -15,7 +15,8 @@ public class StoreREST {
 	public static final String finalizeArchive = "/store/finalizeArchive/";
 	public static final String downloadArchive = "/store/downloadArchive/";
 
-	public static final String fetchMetadata = "/store/fetchMetadata/";
+	public static final String fetchMetadata = "/store/metadata/fetchMetadata/";
+	public static final String fetchAnnotations = "/store/annotations/fetchAnnotations/";
 
 	public static final String getSize = "/store/getSize/";
 	public static final String getSizeOnDisk = "/store/getSizeOnDisk/";
@@ -23,6 +24,7 @@ public class StoreREST {
 	public static final String listFiles = "/store/listFiles/";
 	public static final String listFilesInArch = "/store/listFilesInArch/";
 	public static final String listFilesPaged = "/store/listFilesPaged/";
+
 	public static final String deleteAll = "/store/deleteAll/";
 		
 	public static final String uploadFile = "/store/uploadFile/";

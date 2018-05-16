@@ -109,6 +109,12 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 	}
 
 	@Override
+	public StoreResponse fetchAnnotations(String archiveID, String localDestination) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public StoreResponse createArchive(String archiveId) {
 		// TODO Auto-generated method stub
 		return null;

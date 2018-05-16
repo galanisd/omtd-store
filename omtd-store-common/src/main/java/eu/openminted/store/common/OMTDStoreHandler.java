@@ -130,12 +130,20 @@ public interface OMTDStoreHandler {
 	public StoreResponse downloadArchive(String archiveID, String localDestination);
 
 	/**
-	 * Downloads a file.
+	 * Downloads as zip the metadata of an archive.
 	 * @param archiveID
 	 * @param localDestination
 	 * @return
 	 */
 	public StoreResponse fetchMetadata(String archiveID, String localDestination);
+
+	/**
+	 * Downloads as zip the annotations of an archive.
+	 * @param archiveID
+	 * @param localDestination
+	 * @return
+	 */
+	public StoreResponse fetchAnnotations(String archiveID, String localDestination);
     
 	/**
 	 * @param archiveId

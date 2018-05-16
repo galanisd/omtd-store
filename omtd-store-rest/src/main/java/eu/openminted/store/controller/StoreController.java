@@ -150,10 +150,22 @@ public class StoreController {
      *
      * @return
      */
-    @RequestMapping(value = StoreREST.fetchMetadata, method = RequestMethod.POST)
+    @RequestMapping(value = StoreREST.fetchMetadata, method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Resource> fetchMetadata(@RequestParam(StoreREST.archiveID) String archiveId) {
         InputStream fileInputStream = storeService.fetchMetadata(archiveId);
+        return Utils.download(fileInputStream, archiveId);
+    }
+
+    /**
+     * Download the annotations of the archive.
+     *
+     * @return
+     */
+    @RequestMapping(value = StoreREST.fetchAnnotations, method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Resource> fetchAnnotations(@RequestParam(StoreREST.archiveID) String archiveId) {
+        InputStream fileInputStream = storeService.fetchAnnotations(archiveId);
         return Utils.download(fileInputStream, archiveId);
     }
 

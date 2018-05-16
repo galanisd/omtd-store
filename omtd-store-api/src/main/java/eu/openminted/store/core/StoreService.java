@@ -72,6 +72,13 @@ public interface StoreService {
     InputStream fetchMetadata(String archiveId);
 
     /**
+     * Retrieves the annotations of the archive.
+     * @param archiveId
+     * @return
+     */
+    InputStream fetchAnnotations(String archiveId);
+
+    /**
      * Calculates the size of the archive.
      * @param archiveId
      * @return

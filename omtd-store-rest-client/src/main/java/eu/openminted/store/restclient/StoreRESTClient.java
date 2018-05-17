@@ -297,7 +297,7 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		callParameters.add(StoreREST.archiveID, archiveID);
 
 		boolean resp = downloadFromServer(callParameters, StoreREST.fetchMetadata,
-				archiveID, localDestination, HttpMethod.GET);
+				archiveID, localDestination);
 
 		return new StoreResponse(String.valueOf(resp), "");
 	}
@@ -309,7 +309,7 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		callParameters.add(StoreREST.archiveID, archiveID);
 
 		boolean resp = downloadFromServer(callParameters, StoreREST.fetchAnnotations,
-				archiveID, localDestination, HttpMethod.GET);
+				archiveID, localDestination);
 
 		return new StoreResponse(String.valueOf(resp), "");
 	}
@@ -369,34 +369,6 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		return true;
 	}
 
-	/**
-	 * Downloads from server.
-	 * @param parameters
-	 * @param service
-	 * @param fileName
-	 * @param destination
-	 * @return
-	 */
-	private boolean downloadFromServer(MultiValueMap<String, Object> parameters, String service,
-									   String fileName, String destination, HttpMethod method){
-		try{
-			// Callback
-			RequestCallback requestCallback = new DataRequestCallback(parameters);
-			// Streams the response.
-			ResponseExtractor<Void> responseExtractor = response -> {
-			    // Write the response to a file.
-			    Path path = Paths.get(destination);
-			    Files.copy(response.getBody(), path, StandardCopyOption.REPLACE_EXISTING);
-			    return null;
-			};
-			restTemplate.execute(destination(endpoint, service), method, requestCallback, responseExtractor);
-		}catch(Exception e){
-			log.debug("ERROR", e);
-			return false;
-		}
-
-		return true;
-	}
 	
 	private String destination(String endpoint, String service){
 		return endpoint + service;

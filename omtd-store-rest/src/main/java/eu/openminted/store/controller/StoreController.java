@@ -150,7 +150,7 @@ public class StoreController {
      *
      * @return
      */
-    @RequestMapping(value = StoreREST.fetchMetadata, method = RequestMethod.GET)
+    @RequestMapping(value = StoreREST.fetchMetadata, method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Resource> fetchMetadata(@RequestParam(StoreREST.archiveID) String archiveId) {
         InputStream fileInputStream = storeService.fetchMetadata(archiveId);
@@ -162,7 +162,7 @@ public class StoreController {
      *
      * @return
      */
-    @RequestMapping(value = StoreREST.fetchAnnotations, method = RequestMethod.GET)
+    @RequestMapping(value = StoreREST.fetchAnnotations, method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Resource> fetchAnnotations(@RequestParam(StoreREST.archiveID) String archiveId) {
         InputStream fileInputStream = storeService.fetchAnnotations(archiveId);

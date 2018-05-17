@@ -308,7 +308,7 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		MultiValueMap<String, Object> callParameters = new LinkedMultiValueMap<String, Object>();
 		callParameters.add(StoreREST.archiveID, archiveID);
 
-		boolean resp = downloadFromServer(callParameters, StoreREST.fetchMetadata,
+		boolean resp = downloadFromServer(callParameters, StoreREST.fetchAnnotations,
 				archiveID, localDestination, HttpMethod.GET);
 
 		return new StoreResponse(String.valueOf(resp), "");

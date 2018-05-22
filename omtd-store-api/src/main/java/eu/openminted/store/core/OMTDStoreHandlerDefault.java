@@ -150,5 +150,11 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 		return null;
 	}
 
+	@Override
+	public StoreResponse moveFile(String archiveID, String fileName, String moveTo) {
+		String response = String.valueOf(storeService.moveFile(archiveID,fileName,moveTo));
+		return new StoreResponse(response, "");
+	}
+
 
 }

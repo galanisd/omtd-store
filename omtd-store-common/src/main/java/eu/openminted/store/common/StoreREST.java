@@ -30,7 +30,8 @@ public class StoreREST {
 	public static final String uploadFile = "/store/uploadFile/";
 	public static final String downloadFile = "/store/downloadFile/";
 	public static final String deleteFile = "/store/deleteFile/";
-		
+	public static final String moveFile = "/store/moveFile/";
+
 	public static final String archiveExists = "/store/archiveExists/";
 	public static final String fileExistsInArchive = "/store/fileExistsInArchive/";
 	
@@ -42,5 +43,6 @@ public class StoreREST {
 	public static final String fileListIndex = "fileListIndex";
 	public static final String fileListSize = "fileListSize";
 	public static final String fileName = "fileName";
+	public static final String moveTo = "moveTo";
 	public static final String file = "file";
 }

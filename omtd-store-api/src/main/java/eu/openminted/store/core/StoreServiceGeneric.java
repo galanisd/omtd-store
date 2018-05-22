@@ -246,6 +246,19 @@ public class StoreServiceGeneric implements StoreService{
 	}
 
 	@Override
+	public boolean moveFile(String archiveId, String fileName, String moveTo) {
+		String sourceFolderAbsolutePathForParent = Helper.
+				getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
+
+		String destinationFolderAbsolutePathForParent = Helper.
+				appendToPath(sourceFolderAbsolutePathForParent, moveTo);
+
+		sourceFolderAbsolutePathForParent = Helper.appendToPath(sourceFolderAbsolutePathForParent, fileName);
+
+		return connector.copyContent(sourceFolderAbsolutePathForParent, destinationFolderAbsolutePathForParent) && connector.deleteFile(sourceFolderAbsolutePathForParent);
+	}
+
+	@Override
 	public boolean deleteAll() {
 		//FSConnector connector = FSConnectorBuilder.getConnector(type, storageProperties);
 		return connector.deleteAll();

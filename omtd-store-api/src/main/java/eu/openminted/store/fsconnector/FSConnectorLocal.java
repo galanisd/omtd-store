@@ -269,5 +269,10 @@ public class FSConnectorLocal implements FSConnector{
         return true;
 	}
 
+	@Override
+	public boolean moveFile(String sourceFolderAbsolutePathForParent, String destinationFolderAbsolutePathForParent) {
+		return false;
+	}
+
 
 }

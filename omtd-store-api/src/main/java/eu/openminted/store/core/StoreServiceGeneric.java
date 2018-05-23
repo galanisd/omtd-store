@@ -255,6 +255,8 @@ public class StoreServiceGeneric implements StoreService{
 
 		sourceFolderAbsolutePathForParent = Helper.appendToPath(sourceFolderAbsolutePathForParent, fileName);
 
+		log.info("Copying " + sourceFolderAbsolutePathForParent + " to " + destinationFolderAbsolutePathForParent);
+
 		return connector.copyContent(sourceFolderAbsolutePathForParent, destinationFolderAbsolutePathForParent) && connector.deleteFile(sourceFolderAbsolutePathForParent);
 	}
 

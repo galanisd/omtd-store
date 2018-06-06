@@ -137,6 +137,14 @@ public interface StoreService {
      * @param fileName
      */
     boolean deleteFile(String archiveId, String fileName);
+
+    /**
+     * Moves a file.
+     * @param archiveId
+     * @param fileName
+     * @param moveTo
+     */
+    boolean moveFile(String archiveId, String fileName, String moveTo);
     
     /**
      * Lists all files.

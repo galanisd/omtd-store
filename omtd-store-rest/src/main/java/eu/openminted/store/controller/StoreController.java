@@ -276,6 +276,18 @@ public class StoreController {
     }
 
     /**
+     * Move file.
+     *
+     * @return action status
+     */
+    @RequestMapping(value = StoreREST.moveFile, method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public StoreResponse moveFile(@RequestParam(StoreREST.archiveID) String archiveId, @RequestParam(StoreREST.fileName) String fileName, @RequestParam(StoreREST.moveTo) String moveTo) {
+        String response = String.valueOf(storeService.moveFile(archiveId, fileName, moveTo));
+        return new StoreResponse(response, "");
+    }
+
+    /**
      * Upload file.
      *
      * @param archiveId

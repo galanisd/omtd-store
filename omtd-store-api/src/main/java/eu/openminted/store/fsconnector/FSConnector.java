@@ -105,4 +105,5 @@ public interface FSConnector {
 	 * @return
 	 */
 	boolean copyContent(String src, String dst);
+
 }

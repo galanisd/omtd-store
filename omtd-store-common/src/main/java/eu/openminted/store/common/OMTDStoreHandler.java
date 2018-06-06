@@ -120,6 +120,15 @@ public interface OMTDStoreHandler {
 	 * @return
 	 */
 	public StoreResponse deleteFile(String archiveID, String fileName);
+
+	/**
+	 * Moves a file.
+	 * @param archiveID
+	 * @param fileName
+	 * @param moveTo
+	 * @return
+	 */
+	public StoreResponse moveFile(String archiveID, String fileName, String moveTo);
 	
 	/**
 	 * Downloads a file.

@@ -146,8 +146,14 @@ public class OMTDStoreHandlerDefault implements OMTDStoreHandler{
 
 	@Override
 	public StoreResponse deleteFile(String archiveID, String fileName) {
-		// TODO Auto-generated method stub
-		return null;
+		String response = String.valueOf(storeService.deleteFile(archiveID,fileName));
+		return new StoreResponse(response, "");
+	}
+
+	@Override
+	public StoreResponse moveFile(String archiveID, String fileName, String moveTo) {
+		String response = String.valueOf(storeService.moveFile(archiveID,fileName,moveTo));
+		return new StoreResponse(response, "");
 	}
 
 

@@ -1,22 +1,22 @@
 package eu.openminted.store.controller;
 
-import java.io.InputStream;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import eu.openminted.store.common.StoreREST;
 import eu.openminted.store.common.StoreResponse;
 import eu.openminted.store.core.StoreService;
 import eu.openminted.utils.webservices.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.ws.rs.QueryParam;
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * A Spring Controller for the Store Service.
@@ -307,6 +307,7 @@ public class StoreController {
      * @param fileName
      * @return
      */
+    @Deprecated
     @RequestMapping(value = StoreREST.downloadFile, method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Resource> downloadFile(@RequestParam(StoreREST.fileName) String fileName) {
@@ -314,5 +315,20 @@ public class StoreController {
         InputStream fileInputStream = storeService.downloadFile(fileName);
         return Utils.download(fileInputStream, fileName);
     }
+
+    /**
+     * Download file
+     *
+     * @param fileName
+     * @return
+     */
+    @RequestMapping(value = "/store/downloadFile", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Resource> downloadFileGet(@RequestParam("filename") String fileName) {
+
+        InputStream fileInputStream = storeService.downloadFile(fileName);
+        return Utils.download(fileInputStream, fileName);
+    }
+
 
 }

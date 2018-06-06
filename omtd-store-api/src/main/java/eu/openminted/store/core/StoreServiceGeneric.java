@@ -78,6 +78,7 @@ public class StoreServiceGeneric implements StoreService{
 	@Override
 	public boolean createArchive(String archiveId) {
 		// Create Folder.
+
 		String destinationFolderAbsolutePath = Helper.getAbsolutePathForArchive(storeMetadata, storeProperties.getStorageRoot(), archiveId);
 		log.info(destinationFolderAbsolutePath.toString());
 		boolean creationStatus = connector.makeFolder(destinationFolderAbsolutePath);

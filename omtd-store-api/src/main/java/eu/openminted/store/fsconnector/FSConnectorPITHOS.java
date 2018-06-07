@@ -1,15 +1,26 @@
 package eu.openminted.store.fsconnector;
 
-import java.io.InputStream;
+import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
+import eu.openminted.utils.files.DirCompressor;
 import gr.grnet.escience.commons.Utils;
 import gr.grnet.escience.fs.pithos.PithosFileSystem;
 import gr.grnet.escience.fs.pithos.PithosObject;
 import gr.grnet.escience.fs.pithos.PithosPath;
 //import eu.openminted.storage.fsconnector.debug.HadoopPithosConnector;
 import gr.grnet.escience.pithos.rest.HadoopPithosConnector;
+import org.apache.commons.compress.compressors.FileNameUtil;
+import org.apache.commons.io.FileSystemUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,24 +50,26 @@ public class FSConnectorPITHOS implements FSConnector {
 		try {
 			this.pithosRoot = pithosRoot;
 			this.workingContainer = pithosRoot.substring(PITHOSURI.length(), pithosRoot.length()-1);
-			log.debug("workingContainer->" + workingContainer);
+			log.info("workingContainer->" + workingContainer);
 			connector = new HadoopPithosConnector(pithosUrl, pithosToken, uuid);
+			log.info(connector.getUrl());
 			// workaround.
 			PithosFileSystem.setHadoopPithosConnector(connector);
 
 		} catch (Exception e) {
-			log.debug("Error on initialization", e);
+			log.info("Error on initialization", e);
 		}
 	}
 
 	public boolean makeFolder(String fileName) {
 		String resultCode = "-1";
 		log.debug("makeFolder->" + fileName);
-		String relativePath = fileName.substring(pithosRoot.length(), fileName.length()-1);
-		log.debug("final->" + relativePath);		
+		String relativePath = fileName.substring(pithosRoot.length()-1, fileName.length());
+		log.debug("final->" + relativePath);
 		resultCode = connector.uploadFileToPithos(workingContainer, relativePath, true);
 
 		log.debug("resultCode->" + resultCode);
+
 		if (resultCode != null && resultCode.equals("201")) {
 			return true;
 		} else {
@@ -66,7 +79,6 @@ public class FSConnectorPITHOS implements FSConnector {
 
 	@Override
 	public boolean storeFile(String targetFileName, InputStream is) {
-
 		try {
 			String relativeTarget = targetFileName.substring(pithosRoot.length());
 			
@@ -111,14 +123,26 @@ public class FSConnectorPITHOS implements FSConnector {
 	public List<String> listFiles(String fileName, boolean listDirectories, boolean recursive, boolean ignoreZips) {
 		String result = connector.getFileList(workingContainer);
 
-		/*
-		String[] filePaths = result.split("\\s+");
-		for (String file : filePaths) {
-			result = result + file + "\n";
-		}*/
 
-//		return result;
-		return null;
+		String resultSplitted[] = result.split("\n");
+		List<String> results = new ArrayList<>();
+		for (String file : resultSplitted) {
+			if (file.contains(fileName))
+				results.add(file);
+		}
+		if(!listDirectories){
+			results.removeIf(file -> FilenameUtils.getExtension(file).isEmpty());
+		}
+
+		if(!recursive){
+			results.removeIf(file -> file.split("/").length!=2);
+		}
+
+		if(ignoreZips){
+			results.removeIf(file -> FilenameUtils.getExtension(file).equals("zip"));
+		}
+
+		return results;
 	}
 
 	@Override // FIXME: currently is the same with "listAllFiles()" just to avoid compilation error
@@ -155,8 +179,8 @@ public class FSConnectorPITHOS implements FSConnector {
 	
 	@Override
 	public boolean deleteFolder(String folder, boolean recursively) {
-		// TODO Auto-generated method stub
-		return false;
+        String prefix[] = folder.split("/");
+		return deleteFile(prefix[prefix.length-1]);
 	}
 
 	@Override
@@ -164,7 +188,6 @@ public class FSConnectorPITHOS implements FSConnector {
 		log.debug("deleting->" + fileName);
 		String resultCode = connector.deletePithosObject(workingContainer, fileName);
 		log.debug("resultCode->" + resultCode);
-
 		if (resultCode.contains("204")) {
 			return true;
 		}
@@ -176,7 +199,7 @@ public class FSConnectorPITHOS implements FSConnector {
 		String target = targetFileName.substring(pithosRoot.length());
 		log.debug("target->" + target);
 		PithosPath pithosPath = new PithosPath(workingContainer, target);
-		log.info("parent->" + pithosPath.getParent());
+		log.debug("parent->" + pithosPath.getParent());
 		String pathEsc = null;
 
 		try {
@@ -186,32 +209,62 @@ public class FSConnectorPITHOS implements FSConnector {
 			log.debug("Error on downloading", e);
 		}
 		eu.openminted.store.fsconnector.debug.PithosInputStream pithosInputStream = new eu.openminted.store.fsconnector.debug.PithosInputStream(workingContainer, pathEsc);
-		
+
 		return pithosInputStream;
 		
 	}
 
 	@Override
 	public boolean compressDir(String dir, String zipFile) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			deleteFile(zipFile.substring(pithosRoot.length()));
+			File tempFile = Files.createTempFile(System.currentTimeMillis()+"",".zip").toFile();
+			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(tempFile.getPath()));
+			for(String file: listFiles(dir.substring(pithosRoot.length()).replace("/",""),false,true,true)) {
+				out.putNextEntry(new ZipEntry(file));
+				InputStream in = connector.pithosObjectInputStream(workingContainer,file);
+				byte[] b = new byte[1024*1024*10];
+				int count;
+
+				while ((count = in.read(b)) > 0) {
+					out.write(b, 0, count);
+				}
+				in.close();
+				out.closeEntry();
+			}
+			out.close();
+			storeFile(zipFile, new FileInputStream(tempFile));
+			tempFile.delete();
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override
 	public boolean isDir(String path) {
-		// TODO Auto-generated method stub
-		return false;
+		return connector.getFileList(workingContainer).contains(path.substring(pithosRoot.length()));
 	}
 
 	@Override
 	public boolean exists(String path) {
-		PithosPath pithosPath = new PithosPath(workingContainer, path);
-		return false;
+		return connector.getFileList(workingContainer).contains(path.substring(pithosRoot.length()));
 	}
 
 	@Override
 	public boolean copyContent(String src, String dst) {
-		// TODO function
-		return false;
+		src = src.substring(pithosRoot.length());
+		dst = dst.substring(pithosRoot.length());
+
+		for(String file: listFiles(src.substring(pithosRoot.length()), true, true, true)) {
+            log.info("Transferring files from "+ file + " to " + file.replace(src,dst));
+			try {
+				connector.copy_object(workingContainer, file, workingContainer, file.replace(src,dst), new HashMap<>(), new HashMap<>());
+			} catch (IOException e) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

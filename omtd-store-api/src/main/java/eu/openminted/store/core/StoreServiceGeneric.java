@@ -145,7 +145,8 @@ public class StoreServiceGeneric implements StoreService{
             log.info("cloneArchive : destination: " + dstAbsolutePath);
 			if (connector.copyContent(srcAbsolutePath, dstAbsolutePath)) {
 				return newArchiveId;
-			} else deleteArchive(newArchiveId, true);
+			} else
+				deleteArchive(newArchiveId, true);
 		}
 		return null;
 	}

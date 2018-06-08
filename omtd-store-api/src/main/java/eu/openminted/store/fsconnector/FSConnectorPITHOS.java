@@ -80,7 +80,7 @@ public class FSConnectorPITHOS implements FSConnector {
 	@Override
 	public boolean storeFile(String targetFileName, InputStream is) {
 		try {
-			String relativeTarget = targetFileName.substring(pithosRoot.length());
+			String relativeTarget = targetFileName.substring(pithosRoot.length()-1);
 			
 			connector.storePithosObject(workingContainer, new PithosObject(relativeTarget, null));
 			org.apache.hadoop.conf.Configuration conf = new org.apache.hadoop.conf.Configuration();
@@ -179,12 +179,12 @@ public class FSConnectorPITHOS implements FSConnector {
 	
 	@Override
 	public boolean deleteFolder(String folder, boolean recursively) {
-        String prefix[] = folder.split("/");
-		return deleteFile(prefix[prefix.length-1]);
+		return deleteFile(folder.substring(pithosRoot.length()-1));
 	}
 
 	@Override
 	public boolean deleteFile(String fileName) {
+		fileName = fileName.substring(pithosRoot.length()-1);
 		log.debug("deleting->" + fileName);
 		String resultCode = connector.deletePithosObject(workingContainer, fileName);
 		log.debug("resultCode->" + resultCode);
@@ -196,7 +196,7 @@ public class FSConnectorPITHOS implements FSConnector {
 	
 	@Override
 	public InputStream download(String targetFileName) {
-		String target = targetFileName.substring(pithosRoot.length());
+		String target = targetFileName.substring(pithosRoot.length()-1);
 		log.debug("target->" + target);
 		PithosPath pithosPath = new PithosPath(workingContainer, target);
 		log.debug("parent->" + pithosPath.getParent());
@@ -217,10 +217,10 @@ public class FSConnectorPITHOS implements FSConnector {
 	@Override
 	public boolean compressDir(String dir, String zipFile) {
 		try {
-			deleteFile(zipFile.substring(pithosRoot.length()));
+//			deleteFile(zipFile.substring(pithosRoot.length()-1));
 			File tempFile = Files.createTempFile(System.currentTimeMillis()+"",".zip").toFile();
 			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(tempFile.getPath()));
-			for(String file: listFiles(dir.substring(pithosRoot.length()).replace("/",""),false,true,true)) {
+			for(String file: listFiles(dir.substring(pithosRoot.length()),false,true,true)) {
 				out.putNextEntry(new ZipEntry(file));
 				InputStream in = connector.pithosObjectInputStream(workingContainer,file);
 				byte[] b = new byte[1024*1024*10];
@@ -254,11 +254,10 @@ public class FSConnectorPITHOS implements FSConnector {
 
 	@Override
 	public boolean copyContent(String src, String dst) {
-		src = src.substring(pithosRoot.length());
-		dst = dst.substring(pithosRoot.length());
+		src = src.substring(pithosRoot.length()-1);
+		dst = dst.substring(pithosRoot.length()-1);
 
 		for(String file: listFiles(src.substring(pithosRoot.length()), true, true, true)) {
-            log.info("Transferring files from "+ file + " to " + file.replace(src,dst));
 			try {
 				connector.copy_object(workingContainer, file, workingContainer, file.replace(src,dst), new HashMap<>(), new HashMap<>());
 			} catch (IOException e) {

@@ -176,20 +176,21 @@ public class StoreRESTClient implements OMTDStoreHandler{
     @Override
     public long getSize(String archiveId) {
         return restTemplate
-                .getForObject(destination(endpoint, StoreREST.getSize), long.class);
+                .getForObject(String.format(
+                        "%s%s?%s=%s", endpoint, StoreREST.getSize, StoreREST.archiveID, archiveId), long.class);
     }
 
     @Override
     public long getSizeOnDisk(String archiveId) {
         return restTemplate
-                .getForObject(destination(endpoint, StoreREST.getSizeOnDisk), long.class);
+                .getForObject(String.format(
+                        "%s%s?%s=%s", endpoint, StoreREST.getSizeOnDisk, StoreREST.archiveID, archiveId), long.class);
     }
 
     @Override
 	public StoreResponse deleteAll() {
-		StoreResponse response = restTemplate
-				.getForObject(destination(endpoint, StoreREST.deleteAll), StoreResponse.class);
-		return response;
+        return restTemplate
+                .getForObject(destination(endpoint, StoreREST.deleteAll), StoreResponse.class);
 	}
 	
 

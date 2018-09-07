@@ -31,8 +31,8 @@ public class Helper {
 			rootLocation = Paths.get(storageRoot, relativePath).toString();
 
 		}else{
-			rootLocation = storageRoot;			
-		}		
+			rootLocation = storageRoot;
+		}
 		
 		if(archiveId != null && !archiveId.isEmpty()){
 			destinationFolderAbsolutePath = Paths.get(rootLocation, archiveId).toString();

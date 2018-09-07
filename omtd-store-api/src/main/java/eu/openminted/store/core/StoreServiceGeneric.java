@@ -178,7 +178,7 @@ public class StoreServiceGeneric implements StoreService{
 	public InputStream fetchAnnotations(String archiveId) {
         finalizeArchive(archiveId + "/annotations"); // only used to compress the metadata directory
         InputStream inStream = downloadFile(archiveId + "/annotations.zip");
-        deleteFile(archiveId, "annotations.zip"); // delete the metadata.zip file that was created
+//        deleteFile(archiveId, "annotations.zip"); // delete the metadata.zip file that was created
         return inStream;
 	}
 

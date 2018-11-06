@@ -244,7 +244,7 @@ public class StoreController {
      *
      * @return action status
      */
-    @RequestMapping(value = StoreREST.deleteAll, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = StoreREST.deleteAll, method = RequestMethod.DELETE, produces = "application/json")
     @ResponseBody
     public StoreResponse deleteAll() {
         String response = String.valueOf(storeService.deleteAll());
@@ -256,7 +256,7 @@ public class StoreController {
      *
      * @return action status
      */
-    @RequestMapping(value = StoreREST.deleteArchive, method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = StoreREST.deleteArchive, method = RequestMethod.DELETE, produces = "application/json")
     @ResponseBody
     public StoreResponse deleteArchive(@RequestParam(StoreREST.archiveID) String archiveId) {
         String response = String.valueOf(storeService.deleteArchive(archiveId, true));
@@ -268,7 +268,7 @@ public class StoreController {
      *
      * @return action status
      */
-    @RequestMapping(value = StoreREST.deleteFile, method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = StoreREST.deleteFile, method = RequestMethod.DELETE, produces = "application/json")
     @ResponseBody
     public StoreResponse deleteFile(@RequestParam(StoreREST.archiveID) String archiveId, @RequestParam(StoreREST.fileName) String fileName) {
         String response = String.valueOf(storeService.deleteFile(archiveId, fileName));

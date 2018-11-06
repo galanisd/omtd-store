@@ -16,11 +16,7 @@ import org.springframework.core.io.AbstractResource;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -186,8 +182,8 @@ public class StoreRESTClient implements OMTDStoreHandler{
 
     @Override
 	public StoreResponse deleteAll() {
-        return restTemplate
-                .getForObject(destination(endpoint, StoreREST.deleteAll), StoreResponse.class);
+		restTemplate.delete(destination(endpoint, StoreREST.deleteAll), StoreResponse.class);
+		return new StoreResponse("ok", "");
 	}
 	
 
@@ -195,8 +191,9 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	public StoreResponse deleteArchive(String archiveID) {
 		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
 		params.add(StoreREST.archiveID, archiveID);
-		
-		return post(destination(endpoint, StoreREST.deleteArchive), params);
+
+		restTemplate.delete(destination(endpoint, StoreREST.deleteArchive), params);
+		return new StoreResponse("ok", "");
 	}
 			
 	@Override
@@ -273,8 +270,9 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		MultiValueMap<String, Object> params = new LinkedMultiValueMap<String, Object>();
 		params.add(StoreREST.archiveID, archiveID);
 		params.add(StoreREST.fileName, fileName);
-		
-		return post(destination(endpoint, StoreREST.deleteFile), params);
+
+		restTemplate.delete(destination(endpoint, StoreREST.deleteFile), params);
+		return new StoreResponse("ok", "");
 	}
 
 	@Override

@@ -131,10 +131,9 @@ public class StoreRESTClient implements OMTDStoreHandler{
 	
 	@Override
 	@Deprecated
-	public StoreResponse listFiles() {		
-		StoreResponse response = restTemplate
+	public StoreResponse listFiles() {
+		return restTemplate
 				.getForObject(destination(endpoint, StoreREST.listFiles), StoreResponse.class);
-		return response;
 	}
 
 	@Override
@@ -146,14 +145,13 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		params.add(StoreREST.recursive, recursive);
 		params.add(StoreREST.ignoreZipFiles, ignoreZipFiles);
 
-		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(params, headers);
-		ResponseEntity<String[]> st = restTemplate
-				.postForEntity(endpoint + StoreREST.listFilesInArch, requestEntity, String[].class);
+		String[] st = restTemplate
+				.getForObject(endpoint + StoreREST.listFilesInArch, String[].class, requestEntity);
 
-		return new ArrayList(Arrays.asList(st.getBody()));
+		return new ArrayList(Arrays.asList(st));
 	}
 
 	@Override
@@ -163,14 +161,13 @@ public class StoreRESTClient implements OMTDStoreHandler{
 		params.add(StoreREST.fileListIndex, from);
 		params.add(StoreREST.fileListSize, size);
 
-		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(params, headers);
-		ResponseEntity<String[]> st = restTemplate
-				.postForEntity(endpoint + StoreREST.listFilesPaged, requestEntity, String[].class);
+		String[] st = restTemplate
+				.getForObject(endpoint + StoreREST.listFilesPaged, String[].class, requestEntity);
 
-		return new ArrayList(Arrays.asList(st.getBody()));
+		return new ArrayList(Arrays.asList(st));
 	}
 
     @Override

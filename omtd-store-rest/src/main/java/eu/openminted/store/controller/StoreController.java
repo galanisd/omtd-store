@@ -211,7 +211,7 @@ public class StoreController {
      * @param archiveID
      * @return a list of files.
      */
-    @RequestMapping(value = StoreREST.listFilesInArch, method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = StoreREST.listFilesInArch, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<String> listFilesInArch(@RequestParam(StoreREST.archiveID) String archiveID,
                                         @RequestParam(value = StoreREST.listDirectories, defaultValue = "false")
@@ -231,7 +231,7 @@ public class StoreController {
      * @param size
      * @return a list of files.
      */
-    @RequestMapping(value = StoreREST.listFilesPaged, method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = StoreREST.listFilesPaged, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<String> listFilesPaged(@RequestParam(StoreREST.archiveID) String archiveID,
                                        @RequestParam(StoreREST.fileListIndex) int from,
